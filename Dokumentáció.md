@@ -29,4 +29,5 @@ A szolgáltatás előnyei közé tartozik:
 - rugalmas megoldások
 
 menjünk haza
+oké
 
