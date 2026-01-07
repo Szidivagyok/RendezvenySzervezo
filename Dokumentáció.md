@@ -28,6 +28,5 @@ A szolgáltatás előnyei közé tartozik:
 - segítség a szervezésben
 - rugalmas megoldások
 
-menjünk haza
-oké
+
 
