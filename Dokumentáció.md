@@ -10,7 +10,7 @@ A szolgáltatás célja, hogy:
 - csökkentse a szervezéssel járó problémákat.
 
 A foglalás lépései:
-1. A megfelelő terem kiválasztása
+1. A megfelelő terem kiválasztása.
 2. Az időpont és a létszám megadása.
 4. A foglalás visszaigazolása.
 
