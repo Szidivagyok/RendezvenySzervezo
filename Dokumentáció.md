@@ -12,14 +12,14 @@ A szolgáltatás célja, hogy:
 A foglalás lépései:
 1. A megfelelő terem kiválasztása
 2. Az időpont és a létszám megadása
-4. A foglalás visszaigazolása
+4. A foglalás visszaigazolása.
 
-## 3. Célcsoport
-A szolgáltatás célcsoportja:
-- cégek
-- rendezvényszervezők
-- oktatási intézmények
-- kisebb közösségek és szervezetek
+## 3. Projekt célja
+A cél, hogy:
+- nyilvántartsuk a vendégeket
+- kezeljük a helyszíneket és időpontokat  
+- költségvetést készítsünk  
+- a programokat rendszerezzük  
 
 ## 4. A szolgáltatás előnyei
 A szolgáltatás előnyei közé tartozik:
@@ -27,6 +27,4 @@ A szolgáltatás előnyei közé tartozik:
 - könnyen átlátható teremkínálat
 - segítség a szervezésben
 - rugalmas megoldások
-
-
 
