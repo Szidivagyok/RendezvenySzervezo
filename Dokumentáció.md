@@ -11,7 +11,7 @@ A szolgáltatás célja, hogy:
 
 A foglalás lépései:
 1. A megfelelő terem kiválasztása
-2. Az időpont és a létszám megadása
+2. Az időpont és a létszám megadása.
 4. A foglalás visszaigazolása.
 
 ## 3. Projekt célja
@@ -26,5 +26,5 @@ A szolgáltatás előnyei közé tartozik:
 - egyszerű és gyors foglalás
 - könnyen átlátható teremkínálat
 - segítség a szervezésben
-- rugalmas megoldások
+- rugalmas megoldások.
 
