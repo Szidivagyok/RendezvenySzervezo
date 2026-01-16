@@ -15,11 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('cityName');
             $table->decimal('zipCode');
+            $table->string('street');
+            $table->string('houseNumber');
+            $table->string('locationName');
             $table->unique('street');
             $table->unique('houseNumber');
             $table->unique('locationName');
             $table->integer('maxCapacity');
             $table->integer('minCapacity');
+            $table->integer('priceSlashPerson');
+            $table->integer('roomPriceSlashDay');
             $table->timestamps();
         });
     }
