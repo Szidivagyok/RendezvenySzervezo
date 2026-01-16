@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('locations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('locationId')->constrained('orders')->onDelete('restrict');
             $table->string('cityName');
             $table->decimal('zipCode');
             $table->unique('street');
