@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('userId')->constrained('users')->onDelete('restrict');
             $table->foreignId('locationId')->constrained('locations')->onDelete('restrict');
-            $table->integer('HowManyPeople')->nullable();
+            $table->integer('howManyPeople')->nullable();
             $table->integer('howManyDays')->nullable();
             $table->timestamps();
         });
