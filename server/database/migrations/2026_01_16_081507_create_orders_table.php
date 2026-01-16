@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('userId')->constrained('users')->onDelete('restrict');
+            $table->foreignId('locationId')->constrained('locations')->onDelete('restrict');
+            $table->integer('HowManyPeople')->nullable();
+            $table->integer('howManyDays')->nullable();
             $table->timestamps();
         });
     }
