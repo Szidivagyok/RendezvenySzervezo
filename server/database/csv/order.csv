@@ -1,4 +1,4 @@
-Id;userId;locationId;howMany;howManyDays;orderTime
+id;userId;locationId;howManyPeople;howManyDays;orderTime
 1;2;2;72;3;datum1
 2;2;4;100;2;datum2
 3;2;5;80;1;datum3
