@@ -20,7 +20,10 @@ class DatabaseSeeder extends Seeder
 
         //Mielőtt seedelünk, minden táblát töröljünk le.
         DB::statement('DELETE FROM users');
-        
+        DB::statement('DELETE FROM orderServices');
+        DB::statement('DELETE FROM orders');
+        DB::statement('DELETE FROM services');
+        DB::statement('DELETE FROM locations');
 
 
 
