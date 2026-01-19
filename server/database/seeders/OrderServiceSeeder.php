@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Helpers\CsvReader;
+use App\Models\OrderService;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,16 +15,9 @@ class OrderServiceSeeder extends Seeder
     public function run(): void
     {
         //
-        $data =
-            [
-                [
-                    'category' => 1,
-                    'name' => 'Málna',
-                    'description' => 'Kézzel termelt egészség',
-                    'picture' => 'https://hur.webmania.cc/img/malna.jpg',
-                    'price' => 3800,
-                    'stock' => 500,
-                ],
-            ];
+        $fileName = 'csv/orderServices.csv';
+        $delimeter = ';';
+        $data = CsvReader::csvToArray($fileName,$delimeter);
+        OrderService::factory()->createMany($data);
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Helpers\CsvReader;
+use App\Models\Order;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,17 +15,9 @@ class OrderSeeder extends Seeder
     public function run(): void
     {
         //
-        $data =
-[
-    [
-        'userId' => 1,2,
-        'category' => 'Bogyós',
-        'name' => 'Málna',
-        'description' => 'Kézzel termelt egészség',
-        'picture' => 'https://hur.webmania.cc/img/malna.jpg',
-        'price' => 3800,
-        'stock' => 500,
-    ],
-];
+      $fileName = 'csv/order.csv';
+        $delimeter = ';';
+        $data = CsvReader::csvToArray($fileName,$delimeter);
+        Order::factory()->createMany($data);
     }
 }
