@@ -13,18 +13,16 @@ return new class extends Migration
     {
         Schema::create('locations', function (Blueprint $table) {
             $table->id();
-            $table->string('cityName');
-            $table->decimal('zipCode', 4);
-            $table->string('street');
-            $table->string('houseNumber');
-            $table->string('locationName');
-            $table->unique('street');
-            $table->unique('houseNumber');
-            $table->unique('locationName');
+            $table->string('cityName',80);
+            $table->string('zipCode', 4);
+            $table->string('street', 125);
+            $table->string('houseNumber', 10);
+            $table->string('locationName', 80);
+            $table->unique(['zipCode', 'street', 'houseNumber', 'locationName']);
             $table->integer('maxCapacity');
             $table->integer('minCapacity');
-            $table->integer('priceSlashPerson');
-            $table->integer('roomPriceSlashDay');
+            $table->decimal('priceSlashPerson', 10,2);
+            $table->decimal('roomPriceSlashDay', 10,2);
             $table->timestamps();
         });
     }

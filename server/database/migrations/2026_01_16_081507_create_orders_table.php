@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignId('locationId')->constrained('locations')->onDelete('restrict');
             $table->integer('howManyPeople')->nullable();
             $table->integer('howManyDays')->nullable();
+            $table->dateTime('orderTime')->nullable();
+            $table->unique(columns: ['userId', 'locationId', 'orderTime']);
             $table->timestamps();
         });
     }

@@ -14,8 +14,9 @@ return new class extends Migration
     {
         Schema::create('order_services', function (Blueprint $table) {
             $table->id();
-             $table->foreignId('orderId')->constrained('orders')->onDelete('restrict');
-             $table->foreignId('serviceId')->constrained('services')->onDelete('restrict');
+            $table->foreignId('orderId')->constrained('orders')->onDelete('restrict');
+            $table->foreignId('serviceId')->constrained('services')->onDelete('restrict');
+            $table->unique(['orderId', 'serviceId']);
             $table->timestamps();
         });
     }

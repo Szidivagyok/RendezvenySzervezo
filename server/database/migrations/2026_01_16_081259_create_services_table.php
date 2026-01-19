@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('service');
             $table->unique('service');
-             $table->integer('price');
+            $table->decimal('price', 10, 2);
             $table->timestamps();
         });
     }
