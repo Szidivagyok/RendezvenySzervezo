@@ -13,9 +13,9 @@ class LocationSeeder extends Seeder
      */
     public function run(): void
     { 
-        // $fileName = 'csv/locations.csv';
-        // $delimeter = ';';
-        // $data = CsvReader::csvToArray($fileName,$delimeter);
-        // Location::factory()->createMany($data);
+        $fileName = 'csv/locations.csv';
+        $delimeter = ';';
+        $data = CsvReader::csvToArray($fileName,$delimeter);
+        Location::factory()->createMany($data);
 }
 }
