@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Helpers\CsvReader;
+use Database\Factories\ServiceFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,48 +15,10 @@ class ServiceSeeder extends Seeder
     public function run(): void
     {
         //
-        $data =
-[
-    [
-        'service' => 'live music',
-        'price' => 70000,
+        $fileName = 'csv/schoolclasses.csv';
+        $delimeter = ';';
+        $data = CsvReader::csvToArray($fileName,$delimeter);
+        ServiceFactory::factory()->createMany($data);
 
-    ],
-    [
-        'service' => 'dj',
-        'price' => 50000,
-
-    ],
-    [
-        'service' => 'two-course',
-        'price' => 6000,
-
-    ],
-    [
-        'service' => 'three-course',
-        'price' => 10000,
-
-    ],
-    [
-        'service' => 'four-course',
-        'price' => 15000,
-
-    ],
-    [
-        'service' => 'simple',
-        'price' => 100000,
-
-    ],
-    [
-        'service' => 'medium',
-        'price' => 150000,
-
-    ],
-    [
-        'service' => 'decorative',
-        'price' => 200000,
-
-    ],
-];
     }
 }
