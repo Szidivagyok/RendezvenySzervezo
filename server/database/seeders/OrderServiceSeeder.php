@@ -13,5 +13,16 @@ class OrderServiceSeeder extends Seeder
     public function run(): void
     {
         //
+        $data =
+[
+    [
+        'category' => 1,
+        'name' => 'Málna',
+        'description' => 'Kézzel termelt egészség',
+        'picture' => 'https://hur.webmania.cc/img/malna.jpg',
+        'price' => 3800,
+        'stock' => 500,
+    ],
+];
     }
 }
