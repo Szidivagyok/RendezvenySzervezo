@@ -3,8 +3,7 @@
 namespace Database\Seeders;
 
 use App\Helpers\CsvReader;
-use Database\Factories\ServiceFactory;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Service;
 use Illuminate\Database\Seeder;
 
 class ServiceSeeder extends Seeder
@@ -15,10 +14,10 @@ class ServiceSeeder extends Seeder
     public function run(): void
     {
         //
-        $fileName = 'csv/schoolclasses.csv';
+        $fileName = 'csv/services.csv';
         $delimeter = ';';
         $data = CsvReader::csvToArray($fileName,$delimeter);
-        ServiceFactory::factory()->createMany($data);
+        Service::factory()->createMany($data);
 
     }
 }

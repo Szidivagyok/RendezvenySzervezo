@@ -19,11 +19,11 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         //Mielőtt seedelünk, minden táblát töröljünk le.
-        DB::statement('DELETE FROM users');
-        DB::statement('DELETE FROM orderServices');
+        DB::statement('DELETE FROM order_services');
         DB::statement('DELETE FROM orders');
         DB::statement('DELETE FROM services');
         DB::statement('DELETE FROM locations');
+        DB::statement('DELETE FROM users');
 
 
 
@@ -31,9 +31,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             ServiceSeeder::class,
-            OrderServiceSeeder::class,
-            OrderSeeder::class,
             LocationSeeder::class,
+            OrderSeeder::class,
+            OrderServiceSeeder::class,
             
         ]);
     }
