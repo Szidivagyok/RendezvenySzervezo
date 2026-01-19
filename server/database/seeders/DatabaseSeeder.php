@@ -20,12 +20,18 @@ class DatabaseSeeder extends Seeder
 
         //Mielőtt seedelünk, minden táblát töröljünk le.
         DB::statement('DELETE FROM users');
+        
 
 
 
         //Ami Seeder osztály itt fel van sorolva, annak lefut a run() metódusa
         $this->call([
             UserSeeder::class,
+            ServiceSeeder::class,
+            OrderServiceSeeder::class,
+            OrderSeeder::class,
+            LocationSeeder::class,
+            
         ]);
     }
 }
