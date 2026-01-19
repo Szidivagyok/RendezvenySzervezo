@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Helpers\CsvReader;
 use App\Models\OrderService;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class OrderServiceSeeder extends Seeder
