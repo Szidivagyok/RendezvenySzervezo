@@ -23,6 +23,8 @@ class StoreOrderServiceRequest extends FormRequest
     {
         return [
             //
+             'orderId' => 'required|integer|exists:orders,id',
+            'serviceId' => 'required|integer|exists:services,id',
         ];
     }
 }

@@ -22,6 +22,15 @@ class StoreLocationRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'cityName' => 'required|string|max:255',
+            'zipCode' => 'required|string|max:10',
+            'street' => 'required|string|max:255',
+            'houseNumber' => 'required|string|max:10',
+            'locationName' => 'required|string|max:255',
+            'maxCapacity' => 'required|integer|min:1',
+            'minCapacity' => 'required|integer|min:1',
+            'priceSlashPerson' => 'required|decimal|min:0',
+            'roomPriceSlashDay' => 'required|decimal|min:0',
             //
         ];
     }

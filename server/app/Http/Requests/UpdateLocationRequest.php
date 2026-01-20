@@ -23,6 +23,15 @@ class UpdateLocationRequest extends FormRequest
     {
         return [
             //
+            'cityName' => 'sometimes|string|max:255',
+            'zipCode' => 'sometimes|string|max:10',
+            'street' => 'sometimes|string|max:255',
+            'houseNumber' => 'sometimes|string|max:10',
+            'locationName' => 'sometimes|string|max:255',
+            'maxCapacity' => 'sometimes|integer|min:1',
+            'minCapacity' => 'sometimes|integer|min:1',
+            'priceSlashPerson' => 'sometimes|decimal|min:0',
+            'roomPriceSlashDay' => 'sometimes|decimal|min:0',
         ];
     }
 }

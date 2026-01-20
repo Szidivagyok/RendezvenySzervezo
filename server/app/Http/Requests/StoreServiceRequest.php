@@ -23,6 +23,8 @@ class StoreServiceRequest extends FormRequest
     {
         return [
             //
+            'service' => 'required|integer|max:255',
+            'price' => 'required|decimal|min:1',
         ];
     }
 }

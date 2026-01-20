@@ -22,6 +22,11 @@ class StoreOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'userId' => 'required|integer|exists:users,id',
+            'locationId' => 'required|integer|exists:locations,id',
+            'howManyPeople' => 'required|integer|min:1',
+            'howManyDays' => 'required|integer|min:1',
+            'orderTime' => 'required|dateTime'
             //
         ];
     }

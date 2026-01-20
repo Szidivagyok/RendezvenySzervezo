@@ -23,6 +23,8 @@ class UpdateOrderServiceRequest extends FormRequest
     {
         return [
             //
+            'orderId' => 'sometimes|integer|exists:orders,id',
+            'serviceId' => 'sometimes|integer|exists:services,id',
         ];
     }
 }
