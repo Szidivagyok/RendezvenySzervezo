@@ -149,7 +149,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 
-### post products
+### update products
 PATCH {{host}}/api/products/1
 Accept: application/json
 Content-Type: application/json
