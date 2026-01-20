@@ -122,13 +122,13 @@ Authorization: Bearer {{token}}
 
 
 ### get product by id
-get {{host}}/api/products/1
+get {{host}}/api/services/3
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### post products
-POST  {{host}}/api/products
+POST  {{host}}/api/services
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -143,14 +143,14 @@ Authorization: Bearer {{token}}
 }
 
 ### delete product by id
-delete {{host}}/api/products/104
+delete {{host}}/api/services/2
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 
 ### update products
-PATCH {{host}}/api/products/1
+PATCH {{host}}/api/services/1
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
