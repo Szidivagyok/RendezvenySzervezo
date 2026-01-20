@@ -1,184 +1,102 @@
 <?php
-
+ 
 namespace App\Http\Controllers;
-
+ 
 use App\Models\Location;
 use App\Http\Requests\StoreLocationRequest;
 use App\Http\Requests\UpdateLocationRequest;
 use Illuminate\Database\QueryException;
-
+ 
 class LocationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
-         try {
-            //code...
+        try {
             $rows = Location::all();
-            // $sql ="SELECT * FROM products";
-            // $rows = DB::select($sql);
-            $status = 200;
-            $data = [
+ 
+            return response()->json([
                 'message' => 'OK',
                 'data' => $rows
-            ];
+            ], 200, options: JSON_UNESCAPED_UNICODE);
+ 
         } catch (\Exception $e) {
-            //throw $th;
-            $status = 500;
-            $data = [
-                'message' => "Server error {$e->getCode()}",
-                'data' => $rows
-            ];
+            return response()->json([
+                'message' => "Server error: {$e->getCode()}",
+                'data' => []
+            ], 500, options: JSON_UNESCAPED_UNICODE);
         }
-
-        return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+ 
     public function store(StoreLocationRequest $request)
     {
-        //
         try {
             $row = Location::create($request->all());
-
-            $data = [
-                'message' => 'ok',
-                'data' => $row
-            ];
-            // Sikeres válasz: 201 Created kód ajánlott új erőforrás létrehozásakor
-            return response()->json($data, 201, options: JSON_UNESCAPED_UNICODE);
-        } catch (QueryException $e) {
-            // Ellenőrizzük, hogy ez egy "Duplicate entry for key" hiba-e (MySQL hibakód: 23000 vagy 1062)
-            if ($e->getCode() == 23000 || str_contains($e->getMessage(), 'Duplicate entry')) {
-                $data = [
-                    'message' => 'Insert error: The given name already exists, please choose another one',
-                    'data' => [
-                        'cityName' => $request->input('cityName') // Visszaküldhetjük, mi volt a hibás
-                    ]
-                ];
-                // Kliens hiba, ami jelzi a kérés érvénytelenségét
-                return response()->json($data, 409, options: JSON_UNESCAPED_UNICODE); // 409 Conflict ajánlott
-            }
-            // Ha nem ez a hiba volt, dobjuk tovább az eredeti kivételt, vagy kezeljük másképp
-            throw $e;
-        }
-
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(int $id)
-    {
-        //
-          $row = Location::find($id);
-        if ($row) {
-            # code...
-            $status = 200;
-            $data = [
+ 
+            return response()->json([
                 'message' => 'OK',
                 'data' => $row
-            ];
-        } else {
-            # code...
-            $status = 404;
-            $data = [
-                'message' => "Not found id: $id",
+            ], 201, options: JSON_UNESCAPED_UNICODE);
+ 
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => 'Insert error',
                 'data' => null
-            ];
+            ], 400, options: JSON_UNESCAPED_UNICODE);
         }
-        return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
+ 
+    public function show(int $id)
+    {
+        $row = Location::find($id);
+ 
+        if ($row) {
+            return response()->json([
+                'message' => 'OK',
+                'data' => $row
+            ], 200, options: JSON_UNESCAPED_UNICODE);
+        }
+ 
+        return response()->json([
+            'message' => "Not found id: $id",
+            'data' => null
+        ], 404, options: JSON_UNESCAPED_UNICODE);
+    }
+ 
     public function update(UpdateLocationRequest $request, int $id)
     {
-        //
-         try {
-            $row = Location::find($id);
-
-            if ($row) {
-                # code...
-                $status = 200;
-
-                $row->update($request->all());
-
-                $data = [
-                    'message' => 'OK',
-                    'data' => [
-                        'data' => $row
-                    ]
-                ];
-            } else {
-                # code...
-                $status = 404;
-                $data = [
-                    'message' => "Patch error. Not found id: $id",
-                    'data' => $id
-                ];
-            }
-            return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
-        } catch (QueryException $e) {
-            // Ellenőrizzük, hogy ez egy "Duplicate entry for key" hiba-e (MySQL hibakód: 23000 vagy 1062)
-            if ($e->getCode() == 23000 || str_contains($e->getMessage(), 'Duplicate entry')) {
-                $data = [
-                    'message' => 'Insert error: The given name already exists, please choose another one',
-                    'data' => [
-                        'cityName' => $request->input('cityName') // Visszaküldhetjük, mi volt a hibás
-                    ]
-                ];
-                // Kliens hiba, ami jelzi a kérés érvénytelenségét
-                return response()->json($data, 409, options: JSON_UNESCAPED_UNICODE); // 409 Conflict ajánlott
-            }
-            // Ha nem ez a hiba volt, dobjuk tovább az eredeti kivételt, vagy kezeljük másképp
-            throw $e;
-        }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-          try {
-            // Megkeressük az osztályt az ID alapján
-            $location = Location::find($id);
-
-            if (!$location) {
-                return response()->json([
-                    'message' => 'The class could not be found.',
-                    'data' => null
-                ], 404, [], JSON_UNESCAPED_UNICODE);
-            }
-
-            // Törlés
-            $location->delete();
-
+        $row = Location::find($id);
+ 
+        if ($row) {
+            $row->update($request->all());
+ 
             return response()->json([
-                'message' => 'The deletion was successful.',
-                'data' => null
-            ], 200, [], JSON_UNESCAPED_UNICODE);
-        } catch (QueryException $e) {
-            // Ellenőrizzük, hogy ez egy "Duplicate entry for key" hiba-e (MySQL hibakód: 23000 vagy 1062)
-            if ($e->getCode() == 23000 || str_contains($e->getMessage(), 'Duplicate entry')) {
-                $data = [
-                    'message' => 'The deletion failed. ID: ' . $id,
-                    'data' => null
-                ];
-                // Kliens hiba, ami jelzi a kérés érvénytelenségét
-                return response()->json($data, 409, [], JSON_UNESCAPED_UNICODE); // 409 Conflict ajánlott
-            }
-
-            // Ha nem ez a hiba volt, dobjuk tovább az eredeti kivételt
-            throw $e;
+                'message' => 'OK',
+                'data' => $row
+            ], 200, options: JSON_UNESCAPED_UNICODE);
         }
+ 
+        return response()->json([
+            'message' => "Patch error. Not found id: $id",
+            'data' => null
+        ], 404, options: JSON_UNESCAPED_UNICODE);
     }
-    
+ 
+    public function destroy(int $id)
+    {
+        $row = Location::find($id);
+ 
+        if ($row) {
+            $row->delete();
+ 
+            return response()->json([
+                'message' => 'OK',
+                'data' => ['id' => $id]
+            ], 200, options: JSON_UNESCAPED_UNICODE);
+        }
+ 
+        return response()->json([
+            'message' => "Delete error. Not found id: $id",
+            'data' => null
+        ], 404, options: JSON_UNESCAPED_UNICODE);
+    }
 }
