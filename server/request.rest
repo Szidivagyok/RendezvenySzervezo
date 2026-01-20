@@ -43,9 +43,9 @@ Accept: application/json
 Authorization: Bearer {{token}}
 
 {
-    "name":  "Vásárló2",
-    "email": "vasarlo2@example.com",
-    "password": "123"
+    "name":  "booker2",
+    "email": "booker2@example.com",
+    "password": "456"
 }
 
 ### patch user
@@ -78,8 +78,8 @@ Accept: application/json
 Authorization: Bearer {{token}}
 
 {
-    "name": "vasarlo2",
-    "email": "vasarlo2@example.com"
+    "name": "booker2",
+    "email": "booker2@example.com"
 }
 
 ### A bejelentkezett user egy adatát módosítja. A role tiltott
@@ -114,8 +114,8 @@ Authorization: Bearer {{token}}
 ### teszt
 get {{host}}/api/x
 
-### get products
-get {{host}}/api/products
+### get services
+get {{host}}/api/services
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
