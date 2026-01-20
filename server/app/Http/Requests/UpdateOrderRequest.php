@@ -23,7 +23,7 @@ class UpdateOrderRequest extends FormRequest
     {
         return [
             //
-             'userId' => 'sometimes|integer|exists:users,id',
+            'userId' => 'sometimes|integer|exists:users,id',
             'locationId' => 'sometimes|integer|exists:locations,id',
             'howManyPeople' => 'sometimes|integer|min:1',
             'howManyDays' => 'sometimes|integer|min:1',

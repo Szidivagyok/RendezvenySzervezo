@@ -23,7 +23,7 @@ class UpdateServiceRequest extends FormRequest
     {
         return [
             //
-               'service' => 'sometimes|integer|max:255',
+            'service' => 'sometimes|integer|max:255',
             'price' => 'sometimes|decimal|min:1',
         ];
     }
