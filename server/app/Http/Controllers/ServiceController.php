@@ -133,7 +133,7 @@ class ServiceController extends Controller
                 $data = [
                     'message' => 'Insert error: The given name already exists, please choose another one',
                     'data' => [
-                        'cityName' => $request->input('cityName') // Visszaküldhetjük, mi volt a hibás
+                        'service' => $request->input('service') // Visszaküldhetjük, mi volt a hibás
                     ]
                 ];
                 // Kliens hiba, ami jelzi a kérés érvénytelenségét
