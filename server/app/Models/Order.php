@@ -9,4 +9,17 @@ class Order extends Model
 {
     /** @use HasFactory<\Database\Factories\OrderFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'userId',
+        'locationId',
+        'howManyPeople',
+        'howManyDays',
+        'orderTime'
+    ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
 }
