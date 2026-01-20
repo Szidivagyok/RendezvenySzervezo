@@ -128,7 +128,7 @@
             </Location>
             <Size>
               <Width>223 px</Width>
-              <Height>161 px</Height>
+              <Height>178 px</Height>
             </Size>
             <DbOid>
               <Path>event_organizer.orders</Path>
@@ -154,7 +154,7 @@
               <Port>
                 <Location>
                   <X>207 px</X>
-                  <Y>70 px</Y>
+                  <Y>77.3913043478261 px</Y>
                 </Location>
                 <Anchors>None</Anchors>
                 <Align>Right</Align>
@@ -179,7 +179,7 @@
             <BendPoints>
               <PointD>
                 <X>-260 px</X>
-                <Y>-220 px</Y>
+                <Y>-212.608695652174 px</Y>
               </PointD>
               <PointD>
                 <X>-260 px</X>
@@ -203,7 +203,7 @@
               <Port xsi:type="LinkPort">
                 <Location>
                   <X>-202 px</X>
-                  <Y>-203 px</Y>
+                  <Y>-195.608695652174 px</Y>
                 </Location>
                 <Anchors>None</Anchors>
                 <Align>Right</Align>
@@ -233,7 +233,7 @@
               <Port>
                 <Location>
                   <X>238 px</X>
-                  <Y>53 px</Y>
+                  <Y>58.5962732919255 px</Y>
                 </Location>
                 <Anchors>None</Anchors>
                 <Align>Right</Align>
@@ -258,7 +258,7 @@
             <BendPoints>
               <PointD>
                 <X>-230 px</X>
-                <Y>-237 px</Y>
+                <Y>-231.403726708075 px</Y>
               </PointD>
               <PointD>
                 <X>-230 px</X>
@@ -282,7 +282,7 @@
               <Port xsi:type="LinkPort">
                 <Location>
                   <X>-67 px</X>
-                  <Y>-152.5 px</Y>
+                  <Y>-149.701852928778 px</Y>
                 </Location>
                 <Anchors>None</Anchors>
                 <Align>Right</Align>
@@ -335,7 +335,7 @@
               <Port>
                 <Location>
                   <X>213 px</X>
-                  <Y>35 px</Y>
+                  <Y>38.695652173913 px</Y>
                 </Location>
                 <Anchors>None</Anchors>
                 <Align>Right</Align>
@@ -364,7 +364,7 @@
               </PointD>
               <PointD>
                 <X>-200 px</X>
-                <Y>-255 px</Y>
+                <Y>-251.304347826087 px</Y>
               </PointD>
             </BendPoints>
             <IsManuallyRouted>true</IsManuallyRouted>
@@ -384,7 +384,7 @@
               <Port xsi:type="LinkPort">
                 <Location>
                   <X>40 px</X>
-                  <Y>38.375 px</Y>
+                  <Y>36.5271759033203 px</Y>
                 </Location>
                 <Anchors>None</Anchors>
                 <Align>Left</Align>
@@ -484,8 +484,8 @@
           <ScaleMode>Free</ScaleMode>
           <Scale>1</Scale>
           <Location>
-            <X>-541 px</X>
-            <Y>-326 px</Y>
+            <X>-617 px</X>
+            <Y>-361.5 px</Y>
           </Location>
         </ViewPort>
       </Model>
