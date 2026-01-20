@@ -1,42 +1,32 @@
 <?php
-
+ 
 namespace App\Http\Controllers;
-
+ 
 use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use Illuminate\Database\QueryException;
-
+ 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
         try {
             $rows = Order::all();
-
-            $status = 200;
-            $data = [
+ 
+            return response()->json([
                 'message' => 'OK',
                 'data' => $rows
-            ];
+            ], 200, options: JSON_UNESCAPED_UNICODE);
+ 
         } catch (\Exception $e) {
-            $status = 500;
-            $data = [
+            return response()->json([
                 'message' => "Server error: {$e->getCode()}",
-                'data' => $rows
-            ];
+                'data' => []
+            ], 500, options: JSON_UNESCAPED_UNICODE);
         }
-
-        return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+ 
     public function store(StoreOrderRequest $request)
     {
         try {
@@ -54,13 +44,9 @@ class OrderController extends Controller
             ], 400, options: JSON_UNESCAPED_UNICODE);
         }
     }
-
-    /**
-     * Display the specified resource.
-     */
+ 
     public function show(int $id)
     {
-        //
         $row = Order::find($id);
  
         if ($row) {
@@ -75,14 +61,10 @@ class OrderController extends Controller
             'data' => null
         ], 404, options: JSON_UNESCAPED_UNICODE);
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
+ 
     public function update(UpdateOrderRequest $request, int $id)
     {
-        //
-          $row = Order::find($id);
+        $row = Order::find($id);
  
         if ($row) {
             $row->update($request->all());
@@ -98,23 +80,17 @@ class OrderController extends Controller
             'data' => null
         ], 404, options: JSON_UNESCAPED_UNICODE);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
+ 
+    public function destroy(int $id)
     {
-        //
-        $row = Order::find( $id);
+        $row = Order::find($id);
  
         if ($row) {
             $row->delete();
  
             return response()->json([
                 'message' => 'OK',
-                'data' => [
-                    'id' => $id
-                ]
+                'data' => ['id' => $id]
             ], 200, options: JSON_UNESCAPED_UNICODE);
         }
  
@@ -123,5 +99,4 @@ class OrderController extends Controller
             'data' => null
         ], 404, options: JSON_UNESCAPED_UNICODE);
     }
-    }
-
+}

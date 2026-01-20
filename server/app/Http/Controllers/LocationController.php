@@ -58,7 +58,7 @@ class LocationController extends Controller
                 $data = [
                     'message' => 'Insert error: The given name already exists, please choose another one',
                     'data' => [
-                        'name' => $request->input('name') // Visszaküldhetjük, mi volt a hibás
+                        'cityName' => $request->input('cityName') // Visszaküldhetjük, mi volt a hibás
                     ]
                 ];
                 // Kliens hiba, ami jelzi a kérés érvénytelenségét
