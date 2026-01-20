@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreLocationRequest;
-use App\Http\Requests\UpdateLocationRequest;
+use App\Http\Requests\UpdateServiceRequest;
 use App\Models\Service;
 use App\Http\Requests\StoreServiceRequest;
-use App\Http\Requests\UpdateServiceRequest;
 use Illuminate\Database\QueryException;
 
 class ServiceController extends Controller
@@ -18,56 +16,40 @@ class ServiceController extends Controller
     {
         //
          try {
-            //code...
             $rows = Service::all();
-            // $sql ="SELECT * FROM products";
-            // $rows = DB::select($sql);
-            $status = 200;
-            $data = [
+ 
+            return response()->json([
                 'message' => 'OK',
                 'data' => $rows
-            ];
+            ], 200, options: JSON_UNESCAPED_UNICODE);
+ 
         } catch (\Exception $e) {
-            //throw $th;
-            $status = 500;
-            $data = [
-                'message' => "Server error {$e->getCode()}",
-                'data' => $rows
-            ];
+            return response()->json([
+                'message' => "Server error: {$e->getCode()}",
+                'data' => []
+            ], 500, options: JSON_UNESCAPED_UNICODE);
         }
-
-        return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreLocationRequest $request)
+    public function store(StoreServiceRequest $request)
     {
         //
-        try {
+         try {
             $row = Service::create($request->all());
-
-            $data = [
-                'message' => 'ok',
+ 
+            return response()->json([
+                'message' => 'OK',
                 'data' => $row
-            ];
-            // Sikeres válasz: 201 Created kód ajánlott új erőforrás létrehozásakor
-            return response()->json($data, 201, options: JSON_UNESCAPED_UNICODE);
+            ], 201, options: JSON_UNESCAPED_UNICODE);
+ 
         } catch (QueryException $e) {
-            // Ellenőrizzük, hogy ez egy "Duplicate entry for key" hiba-e (MySQL hibakód: 23000 vagy 1062)
-            if ($e->getCode() == 23000 || str_contains($e->getMessage(), 'Duplicate entry')) {
-                $data = [
-                    'message' => 'Insert error: The given name already exists, please choose another one',
-                    'data' => [
-                        'name' => $request->input('name') // Visszaküldhetjük, mi volt a hibás
-                    ]
-                ];
-                // Kliens hiba, ami jelzi a kérés érvénytelenségét
-                return response()->json($data, 409, options: JSON_UNESCAPED_UNICODE); // 409 Conflict ajánlott
-            }
-            // Ha nem ez a hiba volt, dobjuk tovább az eredeti kivételt, vagy kezeljük másképp
-            throw $e;
+            return response()->json([
+                'message' => 'Insert error',
+                'data' => null
+            ], 400, options: JSON_UNESCAPED_UNICODE);
         }
 
     }
@@ -78,70 +60,42 @@ class ServiceController extends Controller
     public function show(int $id)
     {
         //
-          $row = Service::find($id);
+        $row = Service::find($id);
+ 
         if ($row) {
-            # code...
-            $status = 200;
-            $data = [
+            return response()->json([
                 'message' => 'OK',
                 'data' => $row
-            ];
-        } else {
-            # code...
-            $status = 404;
-            $data = [
-                'message' => "Not found id: $id",
-                'data' => null
-            ];
+            ], 200, options: JSON_UNESCAPED_UNICODE);
         }
-        return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
+ 
+        return response()->json([
+            'message' => "Not found id: $id",
+            'data' => null
+        ], 404, options: JSON_UNESCAPED_UNICODE);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateLocationRequest $request, int $id)
+    public function update(UpdateServiceRequest $request, int $id)
     {
         //
-         try {
-            $row = Service::find($id);
-
-            if ($row) {
-                # code...
-                $status = 200;
-
-                $row->update($request->all());
-
-                $data = [
-                    'message' => 'OK',
-                    'data' => [
-                        'data' => $row
-                    ]
-                ];
-            } else {
-                # code...
-                $status = 404;
-                $data = [
-                    'message' => "Patch error. Not found id: $id",
-                    'data' => $id
-                ];
-            }
-            return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
-        } catch (QueryException $e) {
-            // Ellenőrizzük, hogy ez egy "Duplicate entry for key" hiba-e (MySQL hibakód: 23000 vagy 1062)
-            if ($e->getCode() == 23000 || str_contains($e->getMessage(), 'Duplicate entry')) {
-                $data = [
-                    'message' => 'Insert error: The given name already exists, please choose another one',
-                    'data' => [
-                        'service' => $request->input('service') // Visszaküldhetjük, mi volt a hibás
-                    ]
-                ];
-                // Kliens hiba, ami jelzi a kérés érvénytelenségét
-                return response()->json($data, 409, options: JSON_UNESCAPED_UNICODE); // 409 Conflict ajánlott
-            }
-            // Ha nem ez a hiba volt, dobjuk tovább az eredeti kivételt, vagy kezeljük másképp
-            throw $e;
+          $row = Service::find($id);
+ 
+        if ($row) {
+            $row->update($request->all());
+ 
+            return response()->json([
+                'message' => 'OK',
+                'data' => $row
+            ], 200, options: JSON_UNESCAPED_UNICODE);
         }
+ 
+        return response()->json([
+            'message' => "Patch error. Not found id: $id",
+            'data' => null
+        ], 404, options: JSON_UNESCAPED_UNICODE);
     }
 
     /**
@@ -149,37 +103,20 @@ class ServiceController extends Controller
      */
     public function destroy($id)
     {
-          try {
-            // Megkeressük az osztályt az ID alapján
-            $location = Service::find($id);
-
-            if (!$location) {
-                return response()->json([
-                    'message' => 'The class could not be found.',
-                    'data' => null
-                ], 404, [], JSON_UNESCAPED_UNICODE);
-            }
-
-            // Törlés
-            $location->delete();
-
+          $row = Service::find($id);
+ 
+        if ($row) {
+            $row->delete();
+ 
             return response()->json([
-                'message' => 'The deletion was successful.',
-                'data' => null
-            ], 200, [], JSON_UNESCAPED_UNICODE);
-        } catch (QueryException $e) {
-            // Ellenőrizzük, hogy ez egy "Duplicate entry for key" hiba-e (MySQL hibakód: 23000 vagy 1062)
-            if ($e->getCode() == 23000 || str_contains($e->getMessage(), 'Duplicate entry')) {
-                $data = [
-                    'message' => 'The deletion failed. ID: ' . $id,
-                    'data' => null
-                ];
-                // Kliens hiba, ami jelzi a kérés érvénytelenségét
-                return response()->json($data, 409, [], JSON_UNESCAPED_UNICODE); // 409 Conflict ajánlott
-            }
-
-            // Ha nem ez a hiba volt, dobjuk tovább az eredeti kivételt
-            throw $e;
+                'message' => 'OK',
+                'data' => ['id' => $id]
+            ], 200, options: JSON_UNESCAPED_UNICODE);
+        }
+ 
+        return response()->json([
+            'message' => "Delete error. Not found id: $id",
+            'data' => null
+        ], 404, options: JSON_UNESCAPED_UNICODE);
         }
     }
-}
