@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Order;
+use App\Models\Service;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,6 +20,11 @@ class OrderServiceFactory extends Factory
     {
         return [
             //
+             // random létező orderId kiválasztása
+            'orderId' => Order::inRandomOrder()->first()->id ?? 1,  
+
+            // random létező serviceId kiválasztása
+            'serviceId' => Service::inRandomOrder()->first()->id ?? 1, 
         ];
     }
 }

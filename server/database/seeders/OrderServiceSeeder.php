@@ -14,9 +14,6 @@ class OrderServiceSeeder extends Seeder
     public function run(): void
     {
         //
-        $fileName = 'csv/orderServices.csv';
-        $delimeter = ';';
-        $data = CsvReader::csvToArray($fileName,$delimeter);
-        OrderService::factory()->createMany($data);
+         OrderService::factory()->count(20)->create();
     }
 }
