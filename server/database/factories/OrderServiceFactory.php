@@ -19,12 +19,8 @@ class OrderServiceFactory extends Factory
     public function definition(): array
     {
         return [
-            //
-             // random létező orderId kiválasztása
-            'orderId' => Order::inRandomOrder()->first()->id ?? 1,  
-
-            // random létező serviceId kiválasztása
-            'serviceId' => Service::inRandomOrder()->first()->id ?? 1, 
+           'orderId' => $this->faker->unique()->numberBetween(1, Order::count()),
+            'serviceId' => $this->faker->unique()->numberBetween(1, Service::count()),
         ];
     }
 }
