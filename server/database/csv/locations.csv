@@ -1,6 +1,0 @@
-id;cityName;zipCode;street;houseNumber;locationName;maxCapacity;minCapacity;priceSlashPerson;roomPriceSlashDay
-1;Szolnok;5052;Gőz street;12;restaurant;100;10;12000;24000
-2;Budapest;1007;Faludi street;22;community hall;200;30;17000;36000
-3;Székesfehérvár;8000;Nagy street;17;church;150;20;12000;48000
-4;Szeged;6700; Kis street;40;hotel;150;20;12000;24000
-5;Keszthely;7600;Fekete street;32;castle;180;30;9000;19200
