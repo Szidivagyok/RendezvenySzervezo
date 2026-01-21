@@ -42,7 +42,7 @@ class LocationFactory extends Factory
             ]),
 
             'zipCode' => $this->faker->numberBetween(1000, 9999),
-            'street' => $this->faker->randomElement([
+            'street' => $this->faker->unique()->randomElement([
                 'Gőz utca',
                 'Petőfi Sándor utca',
                 'Kossuth Lajos utca',
@@ -76,8 +76,8 @@ class LocationFactory extends Factory
             'maxCapacity' => $this->faker->numberBetween(50, 200),
             'minCapacity' => $this->faker->numberBetween(10, 49),
 
-            'priceSlashPerson' => $this->faker->numberBetween(12000, 17000),
-            'roomPriceSlashDay' => $this->faker->numberBetween(20000, 150000),
+            'priceSlashPerson' => round($this->faker->numberBetween(12000, 20000), -2), 
+            'roomPriceSlashDay' => round($this->faker->numberBetween(20000, 150000), -3), 
         ];
     }
 }
