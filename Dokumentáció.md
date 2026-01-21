@@ -28,7 +28,4 @@ A szolgáltatás előnyei közé tartozik:
 - segítség a szervezésben
 - rugalmas megoldások.
 
-Szia
-
-Szia
 
