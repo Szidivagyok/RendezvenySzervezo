@@ -19,8 +19,8 @@ class OrderServiceFactory extends Factory
     public function definition(): array
     {
         return [
-           'orderId' => $this->faker->unique()->numberBetween(1, Order::count()),
-            'serviceId' => $this->faker->unique()->numberBetween(1, Service::count()),
+             'orderId' => Order::inRandomOrder()->first()->id,
+            'serviceId' => Service::inRandomOrder()->first()->id,
         ];
     }
 }

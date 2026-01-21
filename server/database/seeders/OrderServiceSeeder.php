@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 use App\Helpers\CsvReader;
+use App\Models\Order;
 use App\Models\OrderService;
+use App\Models\Service;
 use Illuminate\Database\Seeder;
 
 class OrderServiceSeeder extends Seeder
@@ -14,6 +16,22 @@ class OrderServiceSeeder extends Seeder
     public function run(): void
     {
         //
-         OrderService::factory()->count(20)->create();
+           $orders = Order::all();    // létező rendelések
+        $services = Service::all(); // létező szolgáltatások
+ 
+        foreach ($orders as $order) {
+            // Minden orderhez 1-5 random service
+            $count = rand(1, 5);
+            $serviceIds = $services->random($count)->pluck('id')->toArray();
+ 
+            foreach ($serviceIds as $serviceId) {
+                OrderService::create([
+                    'orderId' => $order->id,
+                    'serviceId' => $serviceId,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+    }
+}
     }
 }
