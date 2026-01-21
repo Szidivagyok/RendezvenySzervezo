@@ -18,7 +18,7 @@ class LocationFactory extends Factory
     {
             //
             return [
-            'cityname' => $this->faker->unique()->randomElement([
+            'cityName' => $this->faker->unique()->randomElement([
                 'Budapest',
                 'Debrecen',
                 'Szeged',
@@ -41,16 +41,16 @@ class LocationFactory extends Factory
                 'Siófok',
             ]),
 
-            'zipcode' => $this->faker->numberBetween(1000, 9999),
+            'zipCode' => $this->faker->numberBetween(1000, 9999),
             'street' => $this->faker->streetName(),
-            'housenumber' => $this->faker->numberBetween(1, 200),
-            'locationname' => $this->faker->company(),
+            'houseNumber' => $this->faker->numberBetween(1, 100),
+            'locationName' => $this->faker->company(),
 
-            'maxcapicity' => $this->faker->numberBetween(50, 500),
-            'mincapacity' => $this->faker->numberBetween(10, 49),
+            'maxCapacity' => $this->faker->numberBetween(50, 200),
+            'minCapacity' => $this->faker->numberBetween(10, 49),
 
-            'priceslashperson' => $this->faker->numberBetween(2000, 15000),
-            'roompriceslashday' => $this->faker->numberBetween(20000, 150000),
+            'priceSlashPerson' => $this->faker->numberBetween(12000, 17000),
+            'roomPriceSlashDay' => $this->faker->numberBetween(20000, 150000),
         ];
     }
 }
