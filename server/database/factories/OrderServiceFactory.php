@@ -2,7 +2,8 @@
 
 namespace Database\Factories;
 
-
+use App\Models\Order;
+use App\Models\Service;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,9 +18,24 @@ class OrderServiceFactory extends Factory
      */
     public function definition(): array
     {
+        do {
+            $randomOrderId = Order::inRandomOrder()->first()->id ?? null;
+            $randomServiceId = Service::inRandomOrder()->first()->id ?? null;
+
+
+            // Védelmi mechanizmus: ha nincsenek adatok a forrástáblákban, kilépünk.
+            if (is_null($randomOrderId) || is_null($randomServiceId)) {
+                break;
+            }
+
+            // 2. Egyediség ellenőrzése a Playsports táblában
+            $exists = OrderFactory::where('orderId', $randomOrderId)
+                ->where('serviceId', $randomServiceId)
+                ->exists();
+        } while ($exists);
         return [
-            'orderId' => $this->faker->numberBetween(1, 20),
-            'serviceId' => $this->faker->numberBetween(1, 20),
+            'orderId' => $randomOrderId,
+            'serviceId' => $randomServiceId,
         ];
     }
 }

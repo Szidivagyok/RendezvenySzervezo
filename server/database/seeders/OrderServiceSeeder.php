@@ -16,6 +16,10 @@ class OrderServiceSeeder extends Seeder
     public function run(): void
     {
         //
-         OrderService::factory()->count(20)->create();
+        $numberOfOrders = 30;
+
+    for ($i = 0; $i < $numberOfOrders; $i++) {
+      OrderService::factory()->create();
     }
+}
 }
