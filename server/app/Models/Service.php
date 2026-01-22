@@ -18,4 +18,13 @@ class Service extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function isRepeatable(): bool
+{
+    return in_array($this->service, [
+        'two-course',
+        'three-course',
+        'four-course',
+    ]);
+}
 }

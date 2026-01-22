@@ -22,6 +22,7 @@ class OrderServiceFactory extends Factory
         do {
             $randomOrderId = Order::inRandomOrder()->first()->id ?? null;
             $randomServiceId = Service::inRandomOrder()->first()->id ?? null;
+            $randomService = Service::inRandomOrder()->first();
 
 
             // Védelmi mechanizmus: ha nincsenek adatok a forrástáblákban, kilépünk.
@@ -33,6 +34,12 @@ class OrderServiceFactory extends Factory
             $exists = OrderService::where('orderId', $randomOrderId)
                 ->where('serviceId', $randomServiceId)
                 ->exists();
+
+            if ($randomService->isRepeatable()) {
+            $exists = false;
+            }
+
+
         } while ($exists);
         return [
             'orderId' => $randomOrderId,
