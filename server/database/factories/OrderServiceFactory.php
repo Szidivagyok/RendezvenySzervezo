@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Order;
+use App\Models\OrderService;
 use App\Models\Service;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -29,7 +30,7 @@ class OrderServiceFactory extends Factory
             }
 
             // 2. Egyediség ellenőrzése a Playsports táblában
-            $exists = OrderFactory::where('orderId', $randomOrderId)
+            $exists = OrderService::where('orderId', $randomOrderId)
                 ->where('serviceId', $randomServiceId)
                 ->exists();
         } while ($exists);
