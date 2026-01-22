@@ -2,8 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Order;
-use App\Models\Service;
+
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,8 +18,8 @@ class OrderServiceFactory extends Factory
     public function definition(): array
     {
         return [
-             'orderId' => Order::inRandomOrder()->first()->id,
-            'serviceId' => Service::inRandomOrder()->first()->id,
+            'orderId' => $this->faker->numberBetween(1, 20),
+            'serviceId' => $this->faker->numberBetween(1, 20),
         ];
     }
 }

@@ -9,62 +9,28 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class LocationFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+
+    protected function withFaker()
+    {
+        return \Faker\Factory::create('hu_HU');
+    }
     public function definition(): array
     {
-            //
-            return [
-            'cityName' => $this->faker->unique()->randomElement([
-                'Budapest',
-                'Debrecen',
-                'Szeged',
-                'Miskolc',
-                'Pécs',
-                'Győr',
-                'Nyíregyháza',
-                'Kecskemét',
-                'Székesfehérvár',
-                'Szombathely',
-                'Érd',
-                'Tatabánya',
-                'Sopron',
-                'Veszprém',
-                'Zalaegerszeg',
-                'Eger',
-                'Kaposvár',
-                'Békéscsaba',
-                'Dunaújváros',
-                'Siófok',
-            ]),
 
-            'zipCode' => $this->faker->numberBetween(1000, 9999),
-            'street' => $this->faker->unique()->randomElement([
-                'Gőz utca',
-                'Petőfi Sándor utca',
-                'Kossuth Lajos utca',
-                'Rákóczi Ferenc utca',
-                'Ady Endre utca',
-                'Széchenyi István utca',
-                'Arany János utca',
-                'József Attila utca',
-                'Dózsa György utca',
-                'Béke utca',
-                'Táncsics Mihály utca',
-                'Damjanich utca',
-                'Vörösmarty utca',
-                'Bartók Béla út',
-                'Móricz Zsigmond utca',
-                'Hunyadi utca',
-                'Kazinczy utca',
-                'Deák Ferenc utca',
-                'Fő utca',
-                'Károly körút',
-            ]),
-            'houseNumber' => $this->faker->numberBetween(1, 100),
+        return [
+            // magyar városnév
+            'cityName' => $this->faker->city(),
+
+            // magyar irányítószám
+            'zipCode' => $this->faker->postcode(),
+
+            // magyar utcanév
+            'street' => $this->faker->streetName(),
+
+            // házszám
+            'houseNumber' => $this->faker->numberBetween(1, 200),
+
+            // helyszín neve (pl. cégnév)
             'locationName' => $this->faker->randomElement([
                 'restaurant',
                 'community hall',
@@ -73,11 +39,21 @@ class LocationFactory extends Factory
                 'castle',
             ]),
 
-            'maxCapacity' => $this->faker->numberBetween(50, 200),
-            'minCapacity' => $this->faker->numberBetween(10, 49),
 
-            'priceSlashPerson' => round($this->faker->numberBetween(12000, 20000), -2), 
-            'roomPriceSlashDay' => round($this->faker->numberBetween(20000, 150000), -3), 
+            // kapacitás
+            'maxCapacity' => $this->faker->numberBetween(50, 300),
+            'minCapacity' => $this->faker->numberBetween(10, 100),
+
+            // árak
+            'priceSlashPerson' => round(
+                $this->faker->numberBetween(12000, 25000),
+
+            ),
+
+            'roomPriceSlashDay' => round(
+                $this->faker->numberBetween(20000, 200000),
+
+            ),
         ];
     }
 }

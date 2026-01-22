@@ -14,6 +14,11 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             // role mező hozzáadása: integer, alapértelmezett értéke 3
             $table->integer('role')->default(3)->after('email');
+            $table->string('idNumber', 10)->default(2)->after('role');
+            $table->string('city', 50)->default(null)->after('idNumber');
+            $table->string('street', 70)->default(null)->after('city');
+            $table->string('houseNumber', 10)->default(null)->after('street');
+            $table->string('postCode', 10)->default(null)->after('street');
         });
     }
 

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('locations', function (Blueprint $table) {
             $table->id();
             $table->string('cityName',80);
-            $table->string('zipCode', 4);
+            $table->string('zipCode', 5);
             $table->string('street', 125);
             $table->string('houseNumber', 10);
             $table->string('locationName', 80);

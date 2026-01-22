@@ -16,22 +16,6 @@ class OrderServiceSeeder extends Seeder
     public function run(): void
     {
         //
-           $orders = Order::all();    // létező rendelések
-        $services = Service::all(); // létező szolgáltatások
- 
-        foreach ($orders as $order) {
-            // Minden orderhez 1-5 random service
-            $count = rand(1, 5);
-            $serviceIds = $services->random($count)->pluck('id')->toArray();
- 
-            foreach ($serviceIds as $serviceId) {
-                OrderService::create([
-                    'orderId' => $order->id,
-                    'serviceId' => $serviceId,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-    }
-}
+         OrderService::factory()->count(20)->create();
     }
 }

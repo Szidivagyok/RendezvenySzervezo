@@ -8,12 +8,16 @@ use Illuminate\Database\Seeder;
 
 class OrderSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
-    {
-        //
-      Order::factory()->count(10)->create();
+  /**
+   * Run the database seeds.
+   */
+  public function run(): void
+  {
+    //
+    $numberOfOrders = 50;
+
+    for ($i = 0; $i < $numberOfOrders; $i++) {
+      Order::factory()->create();
     }
+  }
 }

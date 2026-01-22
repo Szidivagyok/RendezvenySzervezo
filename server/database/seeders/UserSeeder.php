@@ -20,12 +20,9 @@ class UserSeeder extends Seeder
             'password' => '123',
             'role' => 1
         ]);
-        User::factory()->create([
-            'name' => 'Booker',
-            'email' => 'booker@example.com',
-            'password' => '456',
-            'role' => 2
-        ]);
+
+        $usersNumber = 20;
+        User::factory()->count($usersNumber)->create();
 
     }
 }
