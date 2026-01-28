@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Requests;
-
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreServiceRequest extends FormRequest
@@ -22,9 +22,15 @@ class StoreServiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
-            'service' => 'required|integer|max:255',
-            'price' => 'required|decimal|min:1',
+            'service' => [
+                'required',
+                'integer',
+                Rule::unique('services')->where(
+                    fn($q)=> $q->where('service', request('service'))
+                  
+                ),
+            ],
+              'price' => ['required', 'integer', 'min:6000'],
         ];
     }
 }
