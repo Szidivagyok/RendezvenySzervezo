@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Requests;
-
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreOrderServiceRequest extends FormRequest
@@ -21,10 +21,17 @@ class StoreOrderServiceRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-            'orderId' => 'required|integer|exists:orders,id',
-            'serviceId' => 'required|integer|exists:services,id',
+         return [
+            'orderId' => [
+                'required',
+                'integer',
+                Rule::unique('orderServices')->where(
+                    fn($q)=> $q->where('orderId', request('orderId'))
+                    ->where('serviceId', request('serviceId'))
+                  
+                ),
+            ],
+
         ];
     }
 }
