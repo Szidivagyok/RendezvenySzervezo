@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Requests;
-
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateLocationRequest extends FormRequest
@@ -21,17 +21,25 @@ class UpdateLocationRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-            'cityName' => 'sometimes|string|max:255',
-            'zipCode' => 'sometimes|string|max:10',
-            'street' => 'sometimes|string|max:255',
-            'houseNumber' => 'sometimes|string|max:10',
-            'locationName' => 'sometimes|string|max:255',
-            'maxCapacity' => 'sometimes|integer|min:1',
-            'minCapacity' => 'sometimes|integer|min:1',
-            'priceSlashPerson' => 'sometimes|decimal|min:0',
-            'roomPriceSlashDay' => 'sometimes|decimal|min:0',
+         return [
+            'zipCode' => [
+                'required',
+                'string',
+                'max:10',
+                Rule::unique('locations')->where(
+                    fn($q) =>
+                    $q->where('zipCode', request('zipCode'))
+                        ->where('street', request('street'))
+                        ->where('houseNumber', request('houseNumber'))
+                        ->where('locationName', request('locationName'))
+                ),
+            ],
+
+            'cityName' => ['required', 'string', 'max:255'],
+            'maxCapacity' => ['required', 'integer', 'min:1'],
+            'minCapacity' => ['required', 'integer', 'min:1'],
+            'priceSlashPerson' => ['required', 'decimal:0', 'min:0'],
+            'roomPriceSlashDay' => ['required', 'decimal:0', 'min:0'],
         ];
     }
 }
