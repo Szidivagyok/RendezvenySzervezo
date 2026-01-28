@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Requests;
-
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreOrderRequest extends FormRequest
@@ -21,13 +21,23 @@ class StoreOrderRequest extends FormRequest
      */
     public function rules(): array
     {
+
+
         return [
-            'userId' => 'required|integer|exists:users,id',
-            'locationId' => 'required|integer|exists:locations,id',
-            'howManyPeople' => 'required|integer|min:1',
-            'howManyDays' => 'required|integer|min:1',
-            'orderTime' => 'required|dateTime'
-            //
+            'userId' => [
+                'required',
+                'integer',
+                Rule::unique('orders')->where(
+                    fn($q)=> $q->where('userId', request('userId'))
+                    ->where('locationId', request('locationId'))
+                    ->where('orderTime', request('orderTime'))
+                ),
+            ],
+
+            'howManyPeople' => ['required', 'integer', 'min:1'],
+            'howManyDays' => ['required', 'integer', 'min:1'],
+
         ];
+
     }
 }

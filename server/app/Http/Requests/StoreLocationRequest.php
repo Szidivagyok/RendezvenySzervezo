@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use Illuminate\Validation\Rule;
 class StoreLocationRequest extends FormRequest
 {
     /**
@@ -21,17 +21,28 @@ class StoreLocationRequest extends FormRequest
      */
     public function rules(): array
     {
+
+
         return [
-            'cityName' => 'required|string|max:255',
-            'zipCode' => 'required|string|max:10',
-            'street' => 'required|string|max:255',
-            'houseNumber' => 'required|string|max:10',
-            'locationName' => 'required|string|max:255',
-            'maxCapacity' => 'required|integer|min:1',
-            'minCapacity' => 'required|integer|min:1',
-            'priceSlashPerson' => 'required|decimal|min:0',
-            'roomPriceSlashDay' => 'required|decimal|min:0',
-            //
+            'zipCode' => [
+                'required',
+                'string',
+                'max:10',
+                Rule::unique('locations')->where(
+                    fn($q) =>
+                    $q->where('zipCode', request('zipCode'))
+                        ->where('street', request('street'))
+                        ->where('houseNumber', request('houseNumber'))
+                        ->where('locationName', request('locationName'))
+                ),
+            ],
+
+            'cityName' => ['required', 'string', 'max:255'],
+            'maxCapacity' => ['required', 'integer', 'min:1'],
+            'minCapacity' => ['required', 'integer', 'min:1'],
+            'priceSlashPerson' => ['required', 'decimal:0', 'min:0'],
+            'roomPriceSlashDay' => ['required', 'decimal:0', 'min:0'],
         ];
+
     }
 }
