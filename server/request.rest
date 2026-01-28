@@ -13,8 +13,8 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "email": "booker@example.com",
-    "password": "456"
+    "email": "admin@example.com",
+    "password": "123"
 }
 
 ###
@@ -115,7 +115,7 @@ Authorization: Bearer {{token}}
 get {{host}}/api/x
 
 ### get services
-get {{host}}/api/services
+get {{host}}/api/orders
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}

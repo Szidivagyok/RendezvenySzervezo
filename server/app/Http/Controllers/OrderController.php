@@ -2,9 +2,11 @@
  
 namespace App\Http\Controllers;
  
-use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use App\Models\Order;
+use App\Http\Requests\StoreOrderRequest as StoreCurrentModelRequest;
+use App\Http\Requests\UpdateOrderRequest as UpdateCurrentModelRequest;
 use Illuminate\Database\QueryException;
  
 class OrderController extends Controller
