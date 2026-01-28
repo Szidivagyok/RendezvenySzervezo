@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
  
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
-use App\Models\Order;
+use App\Models\Order as CurrentModel;
 use App\Http\Requests\StoreOrderRequest as StoreCurrentModelRequest;
 use App\Http\Requests\UpdateOrderRequest as UpdateCurrentModelRequest;
 use Illuminate\Database\QueryException;
 use League\CommonMark\Node\Query\OrExpr;
+
  
 class OrderController extends Controller
 {
@@ -17,7 +18,7 @@ class OrderController extends Controller
     {
         return $this->apiResponse(
             function () {
-                return Order::all();
+                return CurrentModel::all();
                 // $sql = "SELECT * FROM sports";
                 // $rows = DB::select($sql);
                 // return $rows;
@@ -28,7 +29,7 @@ class OrderController extends Controller
     public function show(int $id)
     {
         return $this->apiResponse(function () use ($id) {
-            return Order::findOrFail($id);
+            return CurrentModel::findOrFail($id);
         });
     }
 
@@ -36,7 +37,7 @@ class OrderController extends Controller
     {
         return $this->apiResponse(
             function () use ($request) {
-                return Order::create($request->validated());
+                return CurrentModel::create($request->validated());
             }
         );
     }
@@ -44,7 +45,7 @@ class OrderController extends Controller
     public function update(UpdateCurrentModelRequest $request, int $id)
     {
         return $this->apiResponse(function () use ($request, $id) {
-            $row = Order::findOrFail($id);
+            $row = CurrentModel::findOrFail($id);
             $row->update($request->validated());
             return $row;
         });
@@ -53,7 +54,7 @@ class OrderController extends Controller
     public function destroy($id)
     {
         return $this->apiResponse(function () use ($id) {
-            Order::findOrFail($id)->delete();
+            CurrentModel::findOrFail($id)->delete();
             return ['id' => $id];
         });
 

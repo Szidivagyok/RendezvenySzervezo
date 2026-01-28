@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\OrderService;
+use App\Models\OrderService as CurrentModel;
 use App\Http\Requests\StoreOrderServiceRequest as StoreCurrentModelRequest;
 use App\Http\Requests\UpdateOrderServiceRequest as UpdateCurrentModelRequest;
 use Illuminate\Database\QueryException;
@@ -16,7 +16,7 @@ class OrderServiceController extends Controller
     {
         return $this->apiResponse(
             function () {
-                return OrderService::all();
+                return CurrentModel::all();
                 // $sql = "SELECT * FROM sports";
                 // $rows = DB::select($sql);
                 // return $rows;
@@ -27,7 +27,7 @@ class OrderServiceController extends Controller
     public function show(int $id)
     {
         return $this->apiResponse(function () use ($id) {
-            return OrderService::findOrFail($id);
+            return CurrentModel::findOrFail($id);
         });
     }
 
@@ -35,7 +35,7 @@ class OrderServiceController extends Controller
     {
         return $this->apiResponse(
             function () use ($request) {
-                return OrderService::create($request->validated());
+                return CurrentModel::create($request->validated());
             }
         );
     }
@@ -43,7 +43,7 @@ class OrderServiceController extends Controller
     public function update(UpdateCurrentModelRequest $request, int $id)
     {
         return $this->apiResponse(function () use ($request, $id) {
-            $row = OrderService::findOrFail($id);
+            $row = CurrentModel::findOrFail($id);
             $row->update($request->validated());
             return $row;
         });
@@ -52,7 +52,7 @@ class OrderServiceController extends Controller
     public function destroy($id)
     {
         return $this->apiResponse(function () use ($id) {
-            OrderService::findOrFail($id)->delete();
+            CurrentModel::findOrFail($id)->delete();
             return ['id' => $id];
         });
     }
