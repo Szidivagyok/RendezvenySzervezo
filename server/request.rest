@@ -115,14 +115,14 @@ Authorization: Bearer {{token}}
 get {{host}}/api/x
 
 ### get services
-get {{host}}/api/orders
+get {{host}}/api/orderServices
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 
 ### get product by id
-get {{host}}/api/orders/3
+get {{host}}/api/orderServices/3
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
