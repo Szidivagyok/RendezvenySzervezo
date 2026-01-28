@@ -122,7 +122,7 @@ Authorization: Bearer {{token}}
 
 
 ### get product by id
-get {{host}}/api/services/3
+get {{host}}/api/orders/3
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}

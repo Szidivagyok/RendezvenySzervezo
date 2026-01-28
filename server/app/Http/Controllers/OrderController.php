@@ -8,97 +8,56 @@ use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest as StoreCurrentModelRequest;
 use App\Http\Requests\UpdateOrderRequest as UpdateCurrentModelRequest;
 use Illuminate\Database\QueryException;
+use League\CommonMark\Node\Query\OrExpr;
  
 class OrderController extends Controller
 {
     public function index()
+         
     {
-        try {
-            $rows = Order::all();
- 
-            return response()->json([
-                'message' => 'OK',
-                'data' => $rows
-            ], 200, options: JSON_UNESCAPED_UNICODE);
- 
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => "Server error: {$e->getCode()}",
-                'data' => []
-            ], 500, options: JSON_UNESCAPED_UNICODE);
-        }
+        return $this->apiResponse(
+            function () {
+                return Order::all();
+                // $sql = "SELECT * FROM sports";
+                // $rows = DB::select($sql);
+                // return $rows;
+            }
+        );
     }
- 
-    public function store(StoreOrderRequest $request)
-    {
-        try {
-            $row = Order::create($request->all());
- 
-            return response()->json([
-                'message' => 'OK',
-                'data' => $row
-            ], 201, options: JSON_UNESCAPED_UNICODE);
- 
-        } catch (QueryException $e) {
-            return response()->json([
-                'message' => 'Insert error',
-                'data' => null
-            ], 400, options: JSON_UNESCAPED_UNICODE);
-        }
-    }
- 
+
     public function show(int $id)
     {
-        $row = Order::find($id);
- 
-        if ($row) {
-            return response()->json([
-                'message' => 'OK',
-                'data' => $row
-            ], 200, options: JSON_UNESCAPED_UNICODE);
-        }
- 
-        return response()->json([
-            'message' => "Not found id: $id",
-            'data' => null
-        ], 404, options: JSON_UNESCAPED_UNICODE);
+        return $this->apiResponse(function () use ($id) {
+            return Order::findOrFail($id);
+        });
     }
- 
-    public function update(UpdateOrderRequest $request, int $id)
+
+    public function store(StoreCurrentModelRequest $request)
     {
-        $row = Order::find($id);
- 
-        if ($row) {
-            $row->update($request->all());
- 
-            return response()->json([
-                'message' => 'OK',
-                'data' => $row
-            ], 200, options: JSON_UNESCAPED_UNICODE);
-        }
- 
-        return response()->json([
-            'message' => "Patch error. Not found id: $id",
-            'data' => null
-        ], 404, options: JSON_UNESCAPED_UNICODE);
+        return $this->apiResponse(
+            function () use ($request) {
+                return Order::create($request->validated());
+            }
+        );
     }
- 
-    public function destroy(int $id)
+
+    public function update(UpdateCurrentModelRequest $request, int $id)
     {
-        $row = Order::find($id);
- 
-        if ($row) {
-            $row->delete();
- 
-            return response()->json([
-                'message' => 'OK',
-                'data' => ['id' => $id]
-            ], 200, options: JSON_UNESCAPED_UNICODE);
-        }
- 
-        return response()->json([
-            'message' => "Delete error. Not found id: $id",
-            'data' => null
-        ], 404, options: JSON_UNESCAPED_UNICODE);
+        return $this->apiResponse(function () use ($request, $id) {
+            $row = Order::findOrFail($id);
+            $row->update($request->validated());
+            return $row;
+        });
     }
+
+    public function destroy($id)
+    {
+        return $this->apiResponse(function () use ($id) {
+            Order::findOrFail($id)->delete();
+            return ['id' => $id];
+        });
+
+       
+    }
+
 }
