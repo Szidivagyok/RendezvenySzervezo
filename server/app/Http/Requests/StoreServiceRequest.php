@@ -11,7 +11,7 @@ class StoreServiceRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,13 +24,13 @@ class StoreServiceRequest extends FormRequest
         return [
             'service' => [
                 'required',
-                'integer',
-                Rule::unique('services')->where(
+                'string',
+                Rule::unique('services' )->where(
                     fn($q)=> $q->where('service', request('service'))
                   
                 ),
             ],
-              'price' => ['required', 'integer', 'min:6000'],
+              'price' => ['required', 'numeric', 'min:6000'],
         ];
     }
 }

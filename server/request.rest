@@ -134,29 +134,24 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "category": "Bogyós",
-    "name": "f3333xx",
-    "description": "Kézzel termelt egészség",
-    "picture": "https:\/\/hur.webmania.cc\/img\/malna.jpg",
-    "price": 8000,
-    "stock": 22
+    "service":"alma",
+    "price":6000
 }
 
 ### delete product by id
-delete {{host}}/api/services/2
+delete {{host}}/api/services/10
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 
 ### update products
-PATCH {{host}}/api/services/1
+PATCH {{host}}/api/services/3
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 
 {
-    "price": 1002,
-    "stock": "eee"
+    "price": 7000
 }
