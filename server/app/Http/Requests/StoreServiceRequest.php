@@ -22,15 +22,9 @@ class StoreServiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'service' => [
-                'required',
-                'string',
-                Rule::unique('services' )->where(
-                    fn($q)=> $q->where('service', request('service'))
-                  
-                ),
-            ],
-              'price' => ['required', 'numeric', 'min:6000'],
+            'service' => 'required|string|unique:services,service',
+            'price' => 'required|numeric|min:6000',
         ];
+
     }
 }

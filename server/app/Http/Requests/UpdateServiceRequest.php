@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateServiceRequest extends FormRequest
 {
@@ -22,9 +23,13 @@ class UpdateServiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
-            'service' => 'sometimes|integer|max:255',
-            'price' => 'sometimes|numeric|min:1',
-        ];
+        'service' => [
+            'sometimes',
+            'string',
+            'max:255',
+            Rule::unique('services', 'service')->ignore($this->route('id')),
+        ],
+        'price' => 'sometimes|numeric|min:1',
+    ];
     }
 }

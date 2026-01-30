@@ -5,7 +5,7 @@
 @host = {{protocol}}{{hostname}}:{{port}}
 ### @token = 12|ibiwTdr77o8ppToh1tBxIkckBNb8ECjIjLgaweTaa757cdef
 
-
+### --- login
 ### login
 # @name login
 POST {{host}}/api/users/login
@@ -25,7 +25,7 @@ POST  {{host}}/api/users/logout
 Accept: application/json
 Authorization: Bearer {{token}}
 
-
+### --- users
 ### get users
 GET  {{host}}/api/users
 Accept: application/json
@@ -114,8 +114,45 @@ Authorization: Bearer {{token}}
 ### teszt
 get {{host}}/api/x
 
+### --- services
 ### get services
 get {{host}}/api/services
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### post products
+POST  {{host}}/api/services
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "service":"dj2",
+    "price":6000
+}
+
+### delete product by id
+delete {{host}}/api/services/9
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+### update products
+PATCH {{host}}/api/services/1
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "service":"dj",
+    "price": 8000
+}
+
+### --- orderServices
+### get services
+get {{host}}/api/orderServices
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -128,30 +165,13 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### post products
-POST  {{host}}/api/services
+POST  {{host}}/api/orderservices
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "service":"alma",
-    "price":6000
+    "orderId": 29,
+    "serviceId": 8
 }
 
-### delete product by id
-delete {{host}}/api/services/10
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
-
-### update products
-PATCH {{host}}/api/services/3
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
-
-{
-    "price": 7000
-}
