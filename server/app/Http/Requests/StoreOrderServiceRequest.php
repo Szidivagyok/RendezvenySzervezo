@@ -21,17 +21,17 @@ class StoreOrderServiceRequest extends FormRequest
      */
     public function rules(): array
     {
-         return [
-            'orderId' => [
+        return [
+            'orderId' => ['required', 'integer'],
+            'serviceId' => [
                 'required',
                 'integer',
-                Rule::unique('orderServices')->where(
-                    fn($q)=> $q->where('orderId', request('orderId'))
-                    ->where('serviceId', request('serviceId'))
-                  
+                Rule::unique('order_services')->where(
+                    fn($q) => $q
+                        ->where('orderId', request('orderId'))
+                        ->where('serviceId', request('serviceId'))
                 ),
             ],
-
         ];
     }
 }

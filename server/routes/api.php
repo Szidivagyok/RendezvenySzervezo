@@ -75,7 +75,7 @@ Route::delete('orders/{id}', [OrderController::class, 'destroy'])
 
 Route::get('orderServices', [OrderServiceController::class, 'index']);
 Route::get('orderServices/{id}', [OrderServiceController::class, 'show']);
-Route::post('orderservices', [OrderServiceController::class, 'store'])
+Route::post('orderServices', [OrderServiceController::class, 'store'])
     ->middleware(['auth:sanctum', 'ability:orderServices:post']);
 Route::patch('orderServices/{id}', [OrderServiceController::class, 'update'])
     ->middleware(['auth:sanctum','ability:orderServices:patch']);

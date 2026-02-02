@@ -159,19 +159,43 @@ Authorization: Bearer {{token}}
 
 
 ### get product by id
-get {{host}}/api/orderServices/3
+get {{host}}/api/orderServices/28
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### post products
-POST  {{host}}/api/orderservices
+POST  {{host}}/api/orderServices
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "orderId": 29,
-    "serviceId": 8
+    "orderId": 21,
+    "serviceId": 4
 }
+
+### delete product by id
+delete {{host}}/api/orderServices/31
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### post products
+PATCH {{host}}/api/orderServices/27
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "orderId": 21,
+    "serviceId": 4
+}
+
+### Order
+get {{host}}/api/orders
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
 

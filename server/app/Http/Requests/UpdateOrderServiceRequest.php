@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateOrderServiceRequest extends FormRequest
 {
@@ -21,10 +22,22 @@ class UpdateOrderServiceRequest extends FormRequest
      */
     public function rules(): array
     {
+        
+        $id=$this->route('id');
+
         return [
-            //
-            'orderId' => 'sometimes|integer|exists:orders,id',
-            'serviceId' => 'sometimes|integer|exists:services,id',
+            'orderId' => ['required', 'integer'],
+            'serviceId' => [
+                'required',
+                'integer',
+                Rule::unique('order_services', 'serviceId')
+                    ->ignore($id, 'id')
+                    ->where(
+                        fn($q) => $q
+                            ->where('orderId', request('orderId'))
+                            ->where('serviceId', request('serviceId'))
+                    ),
+            ],
         ];
     }
 }

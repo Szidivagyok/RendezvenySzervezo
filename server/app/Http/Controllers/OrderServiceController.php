@@ -33,6 +33,7 @@ class OrderServiceController extends Controller
 
     public function store(StoreCurrentModelRequest $request)
     {
+        
         return $this->apiResponse(
             function () use ($request) {
                 return CurrentModel::create($request->validated());
