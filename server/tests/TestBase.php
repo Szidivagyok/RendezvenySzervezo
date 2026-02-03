@@ -3,7 +3,8 @@
 namespace Tests;
  
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-  class TestBase extends TestCase
+ 
+ class TestBase extends TestCase
 {
     use DatabaseTransactions;
  
@@ -11,35 +12,21 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
         string $email = 'admin@example.com',
         string $password = '123'
     ) {
-        $uri = '/api/users/login';
- 
-        $headers = [
-            'Accept' => 'application/json',
-            'Content-Type' => 'application/json',
-        ];
- 
-        $data = [
+        return $this->postJson('/api/users/login', [
             'email' => $email,
             'password' => $password,
-        ];
- 
-        return $this
-            ->withHeaders($headers)
-            ->postJson($uri, $data);
+        ], [
+            'Accept' => 'application/json',
+        ]);
     }
  
     protected function logout(string $token)
     {
-        $uri = '/api/users/logout';
- 
-        $headers = [
-            'Accept' => 'application/json',
-            'Authorization' => "Bearer {$token}",
-        ];
- 
-        return $this
-            ->withHeaders($headers)
-            ->postJson($uri);
+        return $this->postJson(
+            '/api/users/logout',
+            [],
+            $this->authHeaders($token)
+        );
     }
  
     protected function myGetToken($response): string
@@ -49,37 +36,28 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
  
     protected function myGet(string $uri, string $token)
     {
-        return $this
-            ->withHeaders($this->authHeaders($token))
-            ->getJson($uri);
+        return $this->getJson($uri, $this->authHeaders($token));
     }
  
     protected function myPost(string $uri, array $data, string $token)
     {
-        return $this
-            ->withHeaders($this->authHeaders($token))
-            ->postJson($uri, $data);
+        return $this->postJson($uri, $data, $this->authHeaders($token));
     }
  
     protected function myPatch(string $uri, array $data, string $token)
     {
-        return $this
-            ->withHeaders($this->authHeaders($token))
-            ->patchJson($uri, $data);
+        return $this->patchJson($uri, $data, $this->authHeaders($token));
     }
  
     protected function myDelete(string $uri, string $token)
     {
-        return $this
-            ->withHeaders($this->authHeaders($token))
-            ->deleteJson($uri);
+        return $this->deleteJson($uri, [], $this->authHeaders($token));
     }
  
     protected function authHeaders(string $token): array
     {
         return [
             'Accept' => 'application/json',
-            'Content-Type' => 'application/json',
             'Authorization' => 'Bearer ' . $token,
         ];
     }

@@ -240,6 +240,7 @@ Authorization: Bearer {{token}}
   "roomPriceSlashDay": 20000
 }
 
+### --- orders
 ### get orders
 get {{host}}/api/orders
 Accept: application/json
@@ -257,7 +258,7 @@ Authorization: Bearer {{token}}
     "locationId": 14,
     "howManyPeople": 5,
     "howManyDays": 2,
-    "orderTime": "2026-11-04 08:56:04"
+    "orderTime": "2026-11-12 08:56:04"
 }
 
 ###patch 
