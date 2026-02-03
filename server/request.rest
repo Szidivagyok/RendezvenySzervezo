@@ -241,7 +241,7 @@ Authorization: Bearer {{token}}
 }
 
 ### get orders
-get {{host}}/api/orders/54
+get {{host}}/api/orders/50
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -261,7 +261,7 @@ Authorization: Bearer {{token}}
 }
 
 ###patch 
-PATCH  {{host}}/api/orders/54
+PATCH  {{host}}/api/orders/50
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
