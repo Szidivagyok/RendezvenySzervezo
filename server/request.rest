@@ -241,7 +241,7 @@ Authorization: Bearer {{token}}
 }
 
 ### get orders
-get {{host}}/api/orders
+get {{host}}/api/orders/54
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -254,9 +254,22 @@ Authorization: Bearer {{token}}
 
 {
     "userId": 20,
-    "locationId": 10,
-    "howManyPeople": null,
-    "howManyDays": null,
-    "orderTime": "2026-11-02 08:56:02"
+    "locationId": 14,
+    "howManyPeople": 5,
+    "howManyDays": 2,
+    "orderTime": "2026-11-04 08:56:04"
+}
 
+###patch 
+PATCH  {{host}}/api/orders/53
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "userId": 20,
+    "locationId": 14,
+    "howManyPeople": 5,
+    "howManyDays": 2,
+    "orderTime": "2026-11-04 08:56:04"
 }
