@@ -22,27 +22,29 @@ class StoreLocationRequest extends FormRequest
     public function rules(): array
     {
 
-
         return [
-            'zipCode' => [
-                'required',
-                'string',
-                'max:10',
-                Rule::unique('locations')->where(
-                    fn($q) =>
-                    $q->where('zipCode', request('zipCode'))
+        'zipCode' => [
+            'required',
+            'string',
+            'max:10',
+            Rule::unique('locations')
+                ->where(
+                    fn ($q) => $q
                         ->where('street', request('street'))
                         ->where('houseNumber', request('houseNumber'))
                         ->where('locationName', request('locationName'))
                 ),
-            ],
+        ],
 
-            'cityName' => ['required', 'string', 'max:255'],
-            'maxCapacity' => ['required', 'integer', 'min:1'],
-            'minCapacity' => ['required', 'integer', 'min:1'],
-            'priceSlashPerson' => ['required', 'decimal:0', 'min:0'],
-            'roomPriceSlashDay' => ['required', 'decimal:0', 'min:0'],
-        ];
+        'cityName' => ['required', 'string', 'max:255'],
+        'street' => ['required', 'string', 'max:255'],
+        'houseNumber' => ['required', 'string', 'max:50'],
+        'locationName' => ['required', 'string', 'max:255'],
 
+        'maxCapacity' => ['required', 'integer', 'min:1'],
+        'minCapacity' => ['required', 'integer', 'min:1'],
+        'priceSlashPerson' => ['required', 'decimal:0', 'min:0'],
+        'roomPriceSlashDay' => ['required', 'decimal:0', 'min:0'],
+    ];
     }
 }

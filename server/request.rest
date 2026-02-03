@@ -192,10 +192,71 @@ Authorization: Bearer {{token}}
     "serviceId": 4
 }
 
-### Order
+### location
+get {{host}}/api/locations
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### post products
+POST  {{host}}/api/locations
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "zipCode": "1234",
+  "cityName": "Kiskacsa",
+  "street": "Fő utca",
+  "houseNumber": "12",
+  "locationName": "Teszt hely",
+  "maxCapacity": 10,
+  "minCapacity": 5,
+  "priceSlashPerson": 3000,
+  "roomPriceSlashDay": 20000
+}
+
+### delete location by id
+delete {{host}}/api/locations/21
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### post locations
+PATCH {{host}}/api/locations/1
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+"zipCode": "1234",
+  "cityName": "Kiskacsa",
+  "street": "Fő utca",
+  "houseNumber": "12",
+  "locationName": "Teszt hely",
+  "maxCapacity": 10,
+  "minCapacity": 5,
+  "priceSlashPerson": 3000,
+  "roomPriceSlashDay": 20000
+}
+
+### get orders
 get {{host}}/api/orders
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
+### post orders
+POST  {{host}}/api/orders
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
 
+{
+    "userId": 20,
+    "locationId": 10,
+    "howManyPeople": null,
+    "howManyDays": null,
+    "orderTime": "2026-11-02 08:56:02"
+
+}

@@ -21,25 +21,30 @@ class UpdateLocationRequest extends FormRequest
      */
     public function rules(): array
     {
-         return [
-            'zipCode' => [
-                'required',
-                'string',
-                'max:10',
-                Rule::unique('locations')->where(
-                    fn($q) =>
-                    $q->where('zipCode', request('zipCode'))
+         
+    $id = $this->route('id'); // vagy 'location', attól függ mi a route paraméter neve
+
+    return [
+        'zipCode' => [
+            'required',
+            'string',
+            'max:10',
+            Rule::unique('locations')
+                ->ignore($id, 'id')
+                ->where(
+                    fn ($q) => $q
+                        ->where('zipCode', request('zipCode'))
                         ->where('street', request('street'))
                         ->where('houseNumber', request('houseNumber'))
                         ->where('locationName', request('locationName'))
                 ),
-            ],
+        ],
 
-            'cityName' => ['required', 'string', 'max:255'],
-            'maxCapacity' => ['required', 'integer', 'min:1'],
-            'minCapacity' => ['required', 'integer', 'min:1'],
-            'priceSlashPerson' => ['required', 'decimal:0', 'min:0'],
-            'roomPriceSlashDay' => ['required', 'decimal:0', 'min:0'],
-        ];
+        'cityName' => ['required', 'string', 'max:255'],
+        'maxCapacity' => ['required', 'integer', 'min:1'],
+        'minCapacity' => ['required', 'integer', 'min:1'],
+        'priceSlashPerson' => ['required', 'decimal:0', 'min:0'],
+        'roomPriceSlashDay' => ['required', 'decimal:0', 'min:0'],
+    ];
     }
 }
