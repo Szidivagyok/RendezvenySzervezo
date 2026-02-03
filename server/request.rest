@@ -13,7 +13,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "email": "admin@example.com",
+    "email": "megrendelo1@gmail.com",
     "password": "123"
 }
 
@@ -241,7 +241,7 @@ Authorization: Bearer {{token}}
 }
 
 ### get orders
-get {{host}}/api/orders/50
+get {{host}}/api/orders
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
