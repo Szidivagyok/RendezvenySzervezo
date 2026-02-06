@@ -33,5 +33,19 @@ class StoreOrderServiceRequest extends FormRequest
                 ),
             ],
         ];
+
+        
     }
+    public function messages(): array
+{
+    return [
+        'orderId.required' => 'A rendelés azonosítója kötelező.',
+        'orderId.integer'  => 'A rendelés azonosítója csak szám lehet.',
+
+        'serviceId.required' => 'A szolgáltatás azonosítója kötelező.',
+        'serviceId.integer'  => 'A szolgáltatás azonosítója csak szám lehet.',
+        'serviceId.unique'   => 'Ez a szolgáltatás már hozzá van rendelve ehhez a rendeléshez!',
+    ];
+}
+
 }
