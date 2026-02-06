@@ -1,0 +1,276 @@
+### változók
+@protocol = http://
+@hostname = localhost
+@port = 8000
+@host = {{protocol}}{{hostname}}:{{port}}
+### @token = 12|ibiwTdr77o8ppToh1tBxIkckBNb8ECjIjLgaweTaa757cdef
+
+### --- login
+### login
+# @name login
+POST {{host}}/api/users/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "megrendelo1@gmail.com",
+    "password": "123"
+}
+
+###
+@token = {{login.response.body.data.token}}
+
+### logout user
+POST  {{host}}/api/users/logout
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### --- users
+### get users
+GET  {{host}}/api/users
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### get user by id
+GET  {{host}}/api/users/1
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### post user
+POST {{host}}/api/users 
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name":  "booker2",
+    "email": "booker2@example.com",
+    "password": "456"
+}
+
+### patch user
+PATCH {{host}}/api/users/2
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "No Boss"
+}
+
+### delete user
+DELETE {{host}}/api/users/2
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+
+### User csak önmagát törölheti
+DELETE {{host}}/api/usersme
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### A bejelentkezett user a jelszavát módosítja
+PATCH {{host}}/api/usersme
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "booker2",
+    "email": "booker2@example.com"
+}
+
+### A bejelentkezett user egy adatát módosítja. A role tiltott
+PATCH {{host}}/api/usersme
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+{
+     "name": "admin1"
+}
+
+### A bejelnkezett felhasználó jelszó cseréje
+PATCH {{host}}/api/usersmeupdatepassword
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+{
+    "oldpassword": "ronaldo",
+    "newpassword": "123",
+    "newpassword_confirmation": "123"
+}
+
+### A bejelentkezett user önmagát lekérheti
+GET  {{host}}/api/usersme
+Accept: application/json
+Authorization: Bearer {{token}}
+
+
+
+### teszt
+get {{host}}/api/x
+
+### --- services
+### get services
+get {{host}}/api/services
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### post products
+POST  {{host}}/api/services
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "service":"dj2",
+    "price":6000
+}
+
+### delete product by id
+delete {{host}}/api/services/9
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+### update products
+PATCH {{host}}/api/services/1
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "service":"dj",
+    "price": 8000
+}
+
+### --- orderServices
+### get services
+get {{host}}/api/orderServices
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+### get product by id
+get {{host}}/api/orderServices/28
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### post products
+POST  {{host}}/api/orderServices
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "orderId": 21,
+    "serviceId": 4
+}
+
+### delete product by id
+delete {{host}}/api/orderServices/31
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### post products
+PATCH {{host}}/api/orderServices/27
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "orderId": 21,
+    "serviceId": 4
+}
+
+### location
+get {{host}}/api/locations
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### post products
+POST  {{host}}/api/locations
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "zipCode": "1234",
+  "cityName": "Kiskacsa",
+  "street": "Fő utca",
+  "houseNumber": "12",
+  "locationName": "Teszt hely",
+  "maxCapacity": 10,
+  "minCapacity": 5,
+  "priceSlashPerson": 3000,
+  "roomPriceSlashDay": 20000
+}
+
+### delete location by id
+delete {{host}}/api/locations/21
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### post locations
+PATCH {{host}}/api/locations/1
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+"zipCode": "1234",
+  "cityName": "Kiskacsa",
+  "street": "Fő utca",
+  "houseNumber": "12",
+  "locationName": "Teszt hely",
+  "maxCapacity": 10,
+  "minCapacity": 5,
+  "priceSlashPerson": 3000,
+  "roomPriceSlashDay": 20000
+}
+
+### --- orders
+### get orders
+get {{host}}/api/orders
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### post orders
+POST  {{host}}/api/orders
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "userId": 20,
+    "locationId": 14,
+    "howManyPeople": 5,
+    "howManyDays": 2,
+    "orderTime": "2026-11-12 08:56:04"
+}
+
+###patch 
+PATCH  {{host}}/api/orders/50
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "userId": 20,
+    "locationId": 14,
+    "howManyPeople": 5,
+    "howManyDays": 2,
+    "orderTime": "2026-11-04 08:56:04"
+}
