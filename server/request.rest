@@ -13,7 +13,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "email": "megrendelo1@gmail.com",
+    "email": "admin@example.com",
     "password": "123"
 }
 
@@ -121,6 +121,12 @@ Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
+### get services by id
+get {{host}}/api/services
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
 ### post products
 POST  {{host}}/api/services
 Accept: application/json
@@ -146,7 +152,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "service":"dj",
+    "service":2,
     "price": 8000
 }
 
@@ -188,11 +194,17 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "orderId": 21,
+    "orderId": "e",
     "serviceId": 4
 }
 
 ### location
+get {{host}}/api/locations
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### location by id
 get {{host}}/api/locations
 Accept: application/json
 Content-Type: application/json
@@ -222,7 +234,7 @@ Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-### post locations
+### update locations
 PATCH {{host}}/api/locations/1
 Accept: application/json
 Content-Type: application/json
@@ -230,7 +242,7 @@ Authorization: Bearer {{token}}
 
 {
 "zipCode": "1234",
-  "cityName": "Kiskacsa",
+  "cityName": 3,
   "street": "Fő utca",
   "houseNumber": "12",
   "locationName": "Teszt hely",
@@ -246,6 +258,13 @@ get {{host}}/api/orders
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
+
+### get orders by id
+get {{host}}/api/orders
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
 
 ### post orders
 POST  {{host}}/api/orders
@@ -274,3 +293,9 @@ Authorization: Bearer {{token}}
     "howManyDays": 2,
     "orderTime": "2026-11-04 08:56:04"
 }
+
+### delete orders by id
+delete {{host}}/api/orders/21
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
