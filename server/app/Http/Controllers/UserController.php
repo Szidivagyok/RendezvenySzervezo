@@ -69,7 +69,14 @@ class UserController extends Controller
                     'usersme:get',
                     'orders:post',
                     'orders:patch',
-                    'orders:delete'
+                    'orders:delete',
+                    'orders:update',
+                    'orderServices:post',
+                    'orderServices:patch',
+                    'orderServices:delete',
+                    'orderServices:update',
+                    'services:get',
+                    'locations:get',
                 ];
                 break;
         }
