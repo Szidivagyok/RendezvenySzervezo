@@ -26,12 +26,11 @@ class UpdateOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'userId' => ['sometimes', 'required', 'integer'],
-            'locationId' => ['sometimes', 'required', 'integer', 'exists:locations,id'],
-            'orderTime' => ['sometimes', 'required', 'date'],
 
-            'howManyPeople' => ['sometimes', 'nullable', 'integer', 'min:1'],
-            'howManyDays' => ['sometimes', 'required', 'integer', 'min:1'],
+            'locationId' => 'sometimes|required|integer|exists:locations,id',
+            'orderTime' => 'sometimes|required|date',
+            'howManyPeople' => 'sometimes|nullable|integer|min:1',
+            'howManyDays' => 'sometimes|required|integer|min:1',
         ];
     }
 
@@ -44,14 +43,14 @@ class UpdateOrderRequest extends FormRequest
             $orderId = $this->route('id');
 
             $current = DB::table('orders')->where('id', $orderId)->first();
-            if (! $current) {
+            if (!$current) {
                 return;
             }
 
             // 🔑 1️⃣ ELŐBB: effektív értékek (PATCH miatt)
-            $userId      = $this->userId      ?? $current->userId;
-            $locationId  = $this->locationId  ?? $current->locationId;
-            $orderTime   = $this->orderTime   ?? $current->orderTime;
+            $userId = $this->userId ?? $current->userId;
+            $locationId = $this->locationId ?? $current->locationId;
+            $orderTime = $this->orderTime ?? $current->orderTime;
             $howManyDays = $this->howManyDays ?? $current->howManyDays;
 
             // 🔑 2️⃣ ha idő szempontból SEMMI nem változott → ENGEDJÜK
@@ -63,14 +62,14 @@ class UpdateOrderRequest extends FormRequest
             ) {
                 return;
             }
-            $userId      = $this->userId      ?? $current->userId;
-            $locationId  = $this->locationId  ?? $current->locationId;
-            $orderTime   = $this->orderTime   ?? $current->orderTime;
+            $userId = $this->userId ?? $current->userId;
+            $locationId = $this->locationId ?? $current->locationId;
+            $orderTime = $this->orderTime ?? $current->orderTime;
             $howManyDays = $this->howManyDays ?? $current->howManyDays;
 
             // dátum-alapú logika
             $start = Carbon::parse($orderTime)->startOfDay();
-            $end   = $start->copy()->addDays($howManyDays);
+            $end = $start->copy()->addDays($howManyDays);
 
             $conflict = DB::table('orders')
                 ->where('id', '!=', $orderId) // 🔑 ÖNMAGÁT KIZÁRJUK
