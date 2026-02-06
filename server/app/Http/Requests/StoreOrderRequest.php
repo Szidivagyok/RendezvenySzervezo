@@ -23,15 +23,27 @@ class StoreOrderRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-   public function rules(): array
+    public function rules(): array
     {
         return [
-            'userId' => ['required', 'integer'],
-            'locationId' => ['required', 'integer', 'exists:locations,id'],
-            'orderTime' => ['required', 'date'],
+            'userId.required' => 'A felhasználó azonosítója kötelező.',
+            'userId.integer' => 'A felhasználó azonosítója csak szám lehet.',
 
-            'howManyPeople' => ['nullable', 'integer', 'min:1'],
-            'howManyDays' => ['required', 'integer', 'min:1'],
+            'locationId.required' => 'A helyszín azonosítója kötelező.',
+            'locationId.integer' => 'A helyszín azonosítója csak szám lehet.',
+            'locationId.exists' => 'A megadott helyszín nem létezik.',
+
+            'orderTime.required' => 'A foglalás időpontja kötelező.',
+            'orderTime.date' => 'A foglalás időpontja nem megfelelő dátum formátum.',
+
+            'userId.unique' => 'Erre az időpontra már létezik foglalás ezen a helyszínen.',
+
+            'howManyPeople.integer' => 'A résztvevők száma csak egész szám lehet.',
+            'howManyPeople.min' => 'A résztvevők száma minimum 1 lehet.',
+
+            'howManyDays.required' => 'A napok száma kötelező.',
+            'howManyDays.integer' => 'A napok száma csak egész szám lehet.',
+            'howManyDays.min' => 'A napok száma minimum 1 lehet.',
         ];
     }
 
@@ -40,17 +52,17 @@ class StoreOrderRequest extends FormRequest
         $validator->after(function ($validator) {
 
             $start = Carbon::parse($this->orderTime);
-            $end   = $start->copy()->addDays($this->howManyDays);
+            $end = $start->copy()->addDays($this->howManyDays);
 
             $conflict = DB::table('orders')
                 ->where('userId', $this->userId)
                 ->where('locationId', $this->locationId)
                 ->where(function ($q) use ($start, $end) {
                     $q->where('orderTime', '<', $end)
-                      ->whereRaw(
-                          'DATE_ADD(orderTime, INTERVAL howManyDays DAY) > ?',
-                          [$start]
-                      );
+                        ->whereRaw(
+                            'DATE_ADD(orderTime, INTERVAL howManyDays DAY) > ?',
+                            [$start]
+                        );
                 })
                 ->exists();
 
