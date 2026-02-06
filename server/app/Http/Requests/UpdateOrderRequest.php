@@ -27,10 +27,23 @@ class UpdateOrderRequest extends FormRequest
     {
         return [
 
-            'locationId' => 'sometimes|required|integer|exists:locations,id',
-            'orderTime' => 'sometimes|required|date',
-            'howManyPeople' => 'sometimes|nullable|integer|min:1',
-            'howManyDays' => 'sometimes|required|integer|min:1',
+            'userId.required' => 'A felhasználó azonosítója kötelező.',
+            'userId.integer' => 'A felhasználó azonosítója csak szám lehet.',
+            'userId.unique' => 'Erre az időpontra már létezik foglalás ezen a helyszínen.',
+
+            'locationId.required' => 'A helyszín azonosítója kötelező.',
+            'locationId.integer' => 'A helyszín azonosítója csak szám lehet.',
+            'locationId.exists' => 'A megadott helyszín nem létezik.',
+
+            'orderTime.required' => 'A foglalás időpontja kötelező.',
+            'orderTime.date' => 'A foglalás időpontja nem megfelelő dátum formátum.',
+
+            'howManyPeople.integer' => 'A résztvevők száma csak egész szám lehet.',
+            'howManyPeople.min' => 'A résztvevők száma minimum 1 lehet.',
+
+            'howManyDays.required' => 'A napok száma kötelező.',
+            'howManyDays.integer' => 'A napok száma csak egész szám lehet.',
+            'howManyDays.min' => 'A napok száma minimum 1 lehet.',
         ];
     }
 
