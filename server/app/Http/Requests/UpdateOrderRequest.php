@@ -26,12 +26,24 @@ class UpdateOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'userId' => ['sometimes', 'required', 'integer'],
-            'locationId' => ['sometimes', 'required', 'integer', 'exists:locations,id'],
-            'orderTime' => ['sometimes', 'required', 'date'],
+            'userId.required' => 'A felhasználó azonosítója kötelező.',
+            'userId.integer' => 'A felhasználó azonosítója csak szám lehet.',
 
-            'howManyPeople' => ['sometimes', 'nullable', 'integer', 'min:1'],
-            'howManyDays' => ['sometimes', 'required', 'integer', 'min:1'],
+            'locationId.required' => 'A helyszín azonosítója kötelező.',
+            'locationId.integer' => 'A helyszín azonosítója csak szám lehet.',
+            'locationId.exists' => 'A megadott helyszín nem létezik.',
+
+            'orderTime.required' => 'A foglalás időpontja kötelező.',
+            'orderTime.date' => 'A foglalás időpontja nem megfelelő dátum formátum.',
+
+            'userId.unique' => 'Erre az időpontra már létezik foglalás ezen a helyszínen.',
+
+            'howManyPeople.integer' => 'A résztvevők száma csak egész szám lehet.',
+            'howManyPeople.min' => 'A résztvevők száma minimum 1 lehet.',
+
+            'howManyDays.required' => 'A napok száma kötelező.',
+            'howManyDays.integer' => 'A napok száma csak egész szám lehet.',
+            'howManyDays.min' => 'A napok száma minimum 1 lehet.',
         ];
     }
 
@@ -44,14 +56,14 @@ class UpdateOrderRequest extends FormRequest
             $orderId = $this->route('id');
 
             $current = DB::table('orders')->where('id', $orderId)->first();
-            if (! $current) {
+            if (!$current) {
                 return;
             }
 
             // 🔑 1️⃣ ELŐBB: effektív értékek (PATCH miatt)
-            $userId      = $this->userId      ?? $current->userId;
-            $locationId  = $this->locationId  ?? $current->locationId;
-            $orderTime   = $this->orderTime   ?? $current->orderTime;
+            $userId = $this->userId ?? $current->userId;
+            $locationId = $this->locationId ?? $current->locationId;
+            $orderTime = $this->orderTime ?? $current->orderTime;
             $howManyDays = $this->howManyDays ?? $current->howManyDays;
 
             // 🔑 2️⃣ ha idő szempontból SEMMI nem változott → ENGEDJÜK
@@ -63,14 +75,14 @@ class UpdateOrderRequest extends FormRequest
             ) {
                 return;
             }
-            $userId      = $this->userId      ?? $current->userId;
-            $locationId  = $this->locationId  ?? $current->locationId;
-            $orderTime   = $this->orderTime   ?? $current->orderTime;
+            $userId = $this->userId ?? $current->userId;
+            $locationId = $this->locationId ?? $current->locationId;
+            $orderTime = $this->orderTime ?? $current->orderTime;
             $howManyDays = $this->howManyDays ?? $current->howManyDays;
 
             // dátum-alapú logika
             $start = Carbon::parse($orderTime)->startOfDay();
-            $end   = $start->copy()->addDays($howManyDays);
+            $end = $start->copy()->addDays($howManyDays);
 
             $conflict = DB::table('orders')
                 ->where('id', '!=', $orderId) // 🔑 ÖNMAGÁT KIZÁRJUK
