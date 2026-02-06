@@ -32,4 +32,17 @@ class UpdateServiceRequest extends FormRequest
         'price' => 'sometimes|numeric|min:1',
     ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'service.string' => 'A szolgáltatás neve csak szöveg lehet.',
+            'service.max'    => 'A szolgáltatás neve maximum 255 karakter lehet.',
+            'service.unique' => 'Ez a szolgáltatás már létezik.',
+
+            'price.numeric' => 'Az ár csak szám lehet.',
+            'price.min'     => 'Az ár minimum 1 Ft lehet.',
+        ];
+    }
+
 }
