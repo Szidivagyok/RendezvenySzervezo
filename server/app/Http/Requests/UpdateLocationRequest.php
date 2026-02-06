@@ -39,6 +39,15 @@ class UpdateLocationRequest extends FormRequest
                             ->where('locationName', request('locationName'))
                     ),
             ],
+        ];
+
+
+    }
+
+
+    public function messages(): array
+    {
+        return [
 
             'cityName.required' => 'A város megadása kötelező.',
             'cityName.string' => 'A város neve csak szöveg lehet.',
