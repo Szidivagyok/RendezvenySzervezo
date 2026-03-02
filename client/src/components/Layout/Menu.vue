@@ -182,7 +182,31 @@ export default {
 </script>
 
 <style scoped>
-/* 1. A sima .active ÉS a router által adott osztály is legyen sárga */
+html, body, #app {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+div#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.navbar + * {
+  flex: 1;
+}
+
+/* Szaggatott vonal eltüntetése */
+button:focus,
+a:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Navbar és dropdown stílusok */
 .nav-link.active,
 .nav-link.router-link-exact-active {
   color: #ffff00 !important;
@@ -190,20 +214,15 @@ export default {
   border-bottom: 2px solid yellow;
 }
 
-/* 2. Az "Adatok" gomb sárgítása, ha az alatta lévő listában van aktív elem */
-/* Azt mondjuk: "Színezd a .nav-item-et, ha van benne aktív router-link" */
 .nav-item:has(.dropdown-item.router-link-active) .nav-link.dropdown-toggle {
   color: #ffff00 !important;
   font-weight: bold;
   border-bottom: 2px solid yellow;
 }
 
-/* 3. A lenyíló menüben a konkrét aktív elem (pl. Sportok) kijelölése */
 .dropdown-item.router-link-active {
-  /* background-color: #ffff00 !important; */
-  /* color: #000 !important; */
-  background-color: transparent !important; /* Levesszük a teli hátteret */
-  color: #ffff00 !important; /* Csak a szöveg lesz sárga */
+  background-color: transparent !important;
+  color: #ffff00 !important;
   font-weight: bold;
 }
 
@@ -215,10 +234,33 @@ export default {
 
 .navbar {
   position: relative;
-  z-index: 1060 !important; /* A Bootstrap modalok 1050-nél kezdődnek */
+  z-index: 1060 !important;
 }
 
 .dropdown-menu {
   z-index: 1060 !important;
 }
+
+.navbar,
+.collapse,
+.container-fluid {
+  border: none !important;
+}
+html, body, #app {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+ 
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* teljes magasság */
+}
+ 
+main {
+  flex: 1; /* a tartalom kitölti a maradék helyet */
+}
+
 </style>

@@ -41,5 +41,31 @@ export default {
 </script>
 
 <style>
+/* Eltünteti minden border-t és outline-t a teljes app konténerben */
+.my-container,
+.my-container * {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
 
+/* Speciálisan a navbar linkekre és gombokra is */
+.navbar,
+.navbar a,
+.navbar button,
+.navbar .dropdown-menu,
+.navbar .dropdown-item {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Fókusz esetén se legyen vonal */
+.navbar a:focus,
+.navbar button:focus,
+.navbar .dropdown-item:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
 </style>
+
