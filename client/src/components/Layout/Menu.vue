@@ -1,7 +1,7 @@
 <template>
   <div>
-    <nav class="navbar navbar-expand-md bg-primary" data-bs-theme="dark">
-      <div class="container-fluid">
+    <nav class="navbar navbar-expand-md navbar-pastel-pink" data-bs-theme="light">
+      <div class="container-fluid ">
         <!-- <a class="navbar-brand" href="#">Navbar</a> -->
         <button
           class="navbar-toggler"
@@ -209,20 +209,20 @@ a:focus {
 /* Navbar és dropdown stílusok */
 .nav-link.active,
 .nav-link.router-link-exact-active {
-  color: #ffff00 !important;
+  color: #8533e4 !important;
   font-weight: bold;
-  border-bottom: 2px solid yellow;
+  border-bottom: 2px solid #8533e4;
 }
 
 .nav-item:has(.dropdown-item.router-link-active) .nav-link.dropdown-toggle {
-  color: #ffff00 !important;
+  color: #8533e4 !important;
   font-weight: bold;
-  border-bottom: 2px solid yellow;
+  border-bottom: 2px solid #8533e4;
 }
 
 .dropdown-item.router-link-active {
   background-color: transparent !important;
-  color: #ffff00 !important;
+  color: #8533e4 !important;
   font-weight: bold;
 }
 
