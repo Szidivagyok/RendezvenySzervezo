@@ -33,13 +33,37 @@ const router = createRouter({
       },
     },
     {
+      path: "/userprofil",
+      name: "userprofil",
+      component: () => import("@/views/UserProfileView.vue"),
+      beforeEnter: [checkIfNotLogged],
+      meta: {
+        title: (route) => "Profil",
+        breadcrumb: "Profil",
+        roles: [1, 2],
+      },
+    },
+
+    {
+      path: "/rendeles",
+      name: "rendeles",
+      component: () => import("@/views/OrdersView.vue"),
+      beforeEnter: [checkIfNotLogged],
+      meta: {
+        title: (route) => "Rendelés",
+        breadcrumb: "Rendelés",
+        roles: [1, 2],
+      },
+    },
+
+    {
       path: "/adatok",
       name: "adatok",
       component: () => import("@/views/EmptyWrapperView.vue"),
       meta: {
         breadcrumb: "Adatok",
         disabled: true,
-        roles: [1, 2],
+        roles: [1],
       },
       children: [
         {
@@ -62,39 +86,6 @@ const router = createRouter({
             title: (route) => "Helyszínek",
             breadcrumb: "Helyszínek",
             roles: [1],
-          },
-        },
-        {
-          path: "rendeles",
-          name: "rendeles",
-          component: () => import("@/views/OrdersView.vue"),
-          beforeEnter: [checkIfNotLogged],
-          meta: {
-            title: (route) => "Rendelés",
-            breadcrumb: "Rendelés",
-            roles: [1, 2],
-          },
-        },
-         {
-          path: "userprofil",
-          name: "userprofil",
-          component: () => import("@/views/UserProfileView.vue"),
-          beforeEnter: [checkIfNotLogged],
-          meta: {
-            title: (route) => "Profil",
-            breadcrumb: "Profil",
-            roles: [1, 2],
-          },
-        },
-        {
-          path: "plaingsport",
-          name: "plaingsport",
-          component: () => import("@/views/PlayngSportView.vue"),
-          beforeEnter: [checkIfNotLogged],
-          meta: {
-            title: (route) => "Sportolás",
-            breadcrumb: "Sportolás",
-            roles: [1, 2],
           },
         },
         {
@@ -142,14 +133,14 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
- 
+
   document.title = "Iskola - " + to.meta.title(to);
   //mehetsz tovább az oldalra
 
   // Megkeressük az összes meta.roles beállítást az útvonal láncban
   // (A to.matched azért jó, mert ha a szülő védett, az egész ág védett lesz)
   const requiredRoles = to.meta.roles;
-  
+
   const userStore = useUserLoginLogoutStore();
   // Használjuk a már megismert logikát
   if (userStore.canAccess(requiredRoles)) {

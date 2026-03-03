@@ -1,7 +1,10 @@
 <template>
   <div>
-    <nav class="navbar navbar-expand-md navbar-pastel-pink" data-bs-theme="light">
-      <div class="container-fluid ">
+    <nav
+      class="navbar navbar-expand-md navbar-pastel-pink"
+      data-bs-theme="light"
+    >
+      <div class="container-fluid">
         <!-- <a class="navbar-brand" href="#">Navbar</a> -->
         <button
           class="navbar-toggler"
@@ -21,6 +24,11 @@
             </li>
             <li class="nav-item">
               <RouterLink class="nav-link" to="/about">Rólunk</RouterLink>
+            </li>
+            <li v-if="hasMenuAccess('/rendeles')">
+              <RouterLink class="nav-link" to="/rendeles"
+                >Rendelés</RouterLink
+              >
             </li>
             <li class="nav-item dropdown" v-if="hasMenuAccess('/adatok')">
               <a
@@ -42,23 +50,7 @@
                   <RouterLink class="dropdown-item" to="/adatok/helyszinek"
                     >Helyszínek</RouterLink
                   >
-                </li>
-                <li v-if="hasMenuAccess('/adatok/rendeles')">
-                  <RouterLink class="dropdown-item" to="/adatok/rendeles"
-                    >Rendelés</RouterLink
-                  >
-                </li>
-                <li v-if="hasMenuAccess('/adatok/userporfil')">
-                  <RouterLink class="dropdown-item" to="/adatok/userprofil"
-                    >Profil</RouterLink
-                  >
-                </li>
-                <li><hr class="dropdown-divider" /></li>
-                <li v-if="hasMenuAccess('/adatok/plaingsport')">
-                  <RouterLink class="dropdown-item" to="/adatok/plaingsport"
-                    >Sportolás</RouterLink
-                  >
-                </li>
+                </li>               
                 <li><hr class="dropdown-divider" /></li>
                 <li v-if="hasMenuAccess('/adatok/users')">
                   <RouterLink class="dropdown-item" to="/adatok/users"
@@ -149,14 +141,14 @@ export default {
   },
   computed: {
     ...mapState(useSearchStore, ["searchWord"]),
-    ...mapState(useUserLoginLogoutStore, ['isLoggedIn','userNameWithRole'])
+    ...mapState(useUserLoginLogoutStore, ["isLoggedIn", "userNameWithRole"]),
   },
   methods: {
     ...mapActions(useSearchStore, ["resetSearchWord", "setSearchWord"]),
     onClickSearchButton() {
       this.setSearchWord(this.searchWordInput);
     },
-    ...mapActions(useUserLoginLogoutStore, ['logout']),
+    ...mapActions(useUserLoginLogoutStore, ["logout"]),
     hasMenuAccess(targetPath) {
       //A jogosultsági szintnek megfelelően engedélyezi, vagy tiltja a menüt
       const userStore = useUserLoginLogoutStore();
@@ -173,21 +165,22 @@ export default {
         return userStore.canAccess(requiredRoles);
       });
     },
-    async onClickLogut(){
+    async onClickLogut() {
       try {
         await this.logout();
-        this.$router.push('/');
+        this.$router.push("/");
       } catch (error) {
-        console.log('Kijelentkezési hiba!');
+        console.log("Kijelentkezési hiba!");
       }
-
     },
   },
 };
 </script>
 
 <style scoped>
-html, body, #app {
+html,
+body,
+#app {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -251,21 +244,22 @@ a:focus {
 .container-fluid {
   border: none !important;
 }
-html, body, #app {
+html,
+body,
+#app {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
 }
- 
+
 #app {
   display: flex;
   flex-direction: column;
   min-height: 100vh; /* teljes magasság */
 }
- 
+
 main {
   flex: 1; /* a tartalom kitölti a maradék helyet */
 }
-
 </style>
