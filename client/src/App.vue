@@ -40,7 +40,7 @@ export default {
 };
 </script>
 
-<style>
+<!-- <style>
 /* Eltünteti minden border-t és outline-t a teljes app konténerben */
 .my-container,
 .my-container * {
@@ -67,5 +67,5 @@ export default {
   outline: none !important;
   box-shadow: none !important;
 }
-</style>
+</style> -->
 
