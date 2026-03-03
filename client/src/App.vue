@@ -8,7 +8,7 @@
     <Breadcrumb class="my-border"/>
 
     <!-- Ide töltődnek be az oldalak -->
-    <RouterView class="my-border my-content-height"/>
+    <RouterView  class="my-border"/>
 
 
     <Footer  class="my-border"

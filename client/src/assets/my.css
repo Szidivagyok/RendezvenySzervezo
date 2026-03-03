@@ -24,4 +24,22 @@
   background-color: #ffc0cb !important; 
 
 }
- 
+
+ .hero-video-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  height: 40vh; /* kisebb magasság (40% a viewportból) */
+  min-height: 250px;
+  max-height: 450px;
+}
+
+.hero-video {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  width: 100%;
+  height: auto;
+  transform: translate(-50%, -50%);
+  object-fit: cover; /* telíti, de nem torzítja a videót */
+}
