@@ -29,4 +29,49 @@ A szolgáltatás előnyei közé tartozik:
 - rugalmas megoldások.
 
 
-szia
+
+# A program szerkezete
+## Jogkörök
+- Admin
+  - User kezelés (users)
+  - Törzsadat kezelés
+    - services tábla karbantartás (services)
+    - helyszínek tábla karbantartás (locations)
+- Felhasználó
+  - Userhez fűződő feladatok
+    - Login, logout
+    - Profilkezelés
+    - Regisztrálás
+  - Rendelés: (orders)
+    - Helyszínkiválasztás
+    - Iőpont, létszám adatok megadása 
+  - A rendeléshez kiválasztja a szolgáltatásokat (orderServices)
+- Vendég
+  - Tájékozódás:
+    - Főldal
+    - Rólunk
+
+## Weboldalak
+- Login, 
+  - /login
+  - LoginView
+- Regisztráció
+  - /registration
+  - RegistrationView
+- logout (nem oldal)
+- profil
+  - /userprofil
+  - UserProfileView
+- User kezelés
+  - /adatok/users
+  - UsersView
+- Törzsadatok
+  - Szolgáltatások
+    - /adatok/szolgaltatasok
+    - ServicesView
+  - Helyszínek
+    - /adatok/helyszinek
+    - LocationsView
+  - Rendelés
+    - /rendeles
+    - OrdersView
