@@ -48,6 +48,11 @@
                     >Rendelés</RouterLink
                   >
                 </li>
+                <li v-if="hasMenuAccess('/adatok/userporfil')">
+                  <RouterLink class="dropdown-item" to="/adatok/userprofil"
+                    >Profil</RouterLink
+                  >
+                </li>
                 <li><hr class="dropdown-divider" /></li>
                 <li v-if="hasMenuAccess('/adatok/plaingsport')">
                   <RouterLink class="dropdown-item" to="/adatok/plaingsport"

@@ -75,6 +75,17 @@ const router = createRouter({
             roles: [1, 2],
           },
         },
+         {
+          path: "userprofil",
+          name: "userprofil",
+          component: () => import("@/views/UserProfileView.vue"),
+          beforeEnter: [checkIfNotLogged],
+          meta: {
+            title: (route) => "Profil",
+            breadcrumb: "Profil",
+            roles: [1, 2],
+          },
+        },
         {
           path: "plaingsport",
           name: "plaingsport",
