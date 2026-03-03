@@ -33,19 +33,19 @@
                 Adatok
               </a>
               <ul class="dropdown-menu">
-                <li v-if="hasMenuAccess('/adatok/sport')">
-                  <RouterLink class="dropdown-item" to="/adatok/sport"
-                    >Sportok</RouterLink
+                <li v-if="hasMenuAccess('/adatok/szolgaltatasok')">
+                  <RouterLink class="dropdown-item" to="/adatok/szolgaltatasok"
+                    >Szolgáltatások</RouterLink
                   >
                 </li>
-                <li v-if="hasMenuAccess('/adatok/schoolclass')">
-                  <RouterLink class="dropdown-item" to="/adatok/schoolclass"
-                    >Osztályok</RouterLink
+                <li v-if="hasMenuAccess('/adatok/helyszinek')">
+                  <RouterLink class="dropdown-item" to="/adatok/helyszinek"
+                    >Helyszínek</RouterLink
                   >
                 </li>
-                <li v-if="hasMenuAccess('/adatok/student')">
-                  <RouterLink class="dropdown-item" to="/adatok/student"
-                    >Tanulók</RouterLink
+                <li v-if="hasMenuAccess('/adatok/rendeles')">
+                  <RouterLink class="dropdown-item" to="/adatok/rendeles"
+                    >Rendelés</RouterLink
                   >
                 </li>
                 <li><hr class="dropdown-divider" /></li>
@@ -81,7 +81,7 @@
               </div>
             </li>
           </ul>
-          <form class="d-flex" role="search">
+          <!-- <form class="d-flex" role="search">
             <input
               id="search"
               class="form-control me-2"
@@ -97,7 +97,7 @@
                 class="bi bi-search fs-4 my-pointer"
               ></i>
             </label>
-          </form>
+          </form> -->
         </div>
       </div>
     </nav>
