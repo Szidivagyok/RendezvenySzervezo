@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StorePictureRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class StorePictureRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,23 @@ class StorePictureRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+
+            'pictureName' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('pictures')
+                    ->where(
+                        fn($q) => $q
+                            ->where('serviceId', request('serviceId'))
+                    ),
+            ],
+
+            'serviceId' => [
+                'required',
+                'integer',
+                'exists:services,id',
+            ],
         ];
     }
 }

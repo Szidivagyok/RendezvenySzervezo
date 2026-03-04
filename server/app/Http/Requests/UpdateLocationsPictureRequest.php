@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateLocationsPictureRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class UpdateLocationsPictureRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +22,25 @@ class UpdateLocationsPictureRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('id'); // route paraméter neve
+
         return [
-            //
+
+            'locationId' => [
+                'required',
+                'integer',
+            ],
+
+            'pictureId' => [
+                'required',
+                'integer',
+                Rule::unique('locations_pictures')
+                    ->ignore($id, 'id')
+                    ->where(
+                        fn($q) => $q
+                            ->where('locationId', request('locationId'))
+                    ),
+            ],
         ];
     }
 }

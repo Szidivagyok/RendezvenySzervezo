@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreLocationsPictureRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class StoreLocationsPictureRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,20 @@ class StoreLocationsPictureRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'locationId' => [
+                'required',
+                'integer',
+            ],
+            'pictureId' => [
+                'required',
+                'integer',
+                Rule::unique('locations_pictures')
+                    ->where(
+                        fn($q) =>
+                        $q->where('locationId', request('locationId'))
+                    ),
+            ],
         ];
     }
+
 }

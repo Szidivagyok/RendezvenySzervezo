@@ -299,3 +299,134 @@ delete {{host}}/api/orders/21
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
+
+
+### --- pictures
+### get pictures
+get {{host}}/api/pictures
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+### get pictures by id
+get {{host}}/api/pictures/2
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### post pictures
+POST  {{host}}/api/pictures
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "pictureName": "location_1-100.jpg",
+    "serviceId": 1
+}
+
+### delete pictures by id
+delete {{host}}/api/pictures/61
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### post pictures
+PATCH {{host}}/api/pictures/27
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "pictureName": "location_1-100.jpg",
+    "serviceId": 1
+}
+
+
+
+### --- locations_pictures
+### get locations_pictures
+get {{host}}/api/locations_pictures
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+### get locations_pictures by id
+get {{host}}/api/locations_pictures/28
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### post locations_pictures
+POST  {{host}}/api/locations_pictures
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "pictureId": 20,
+    "locationId": 1
+
+}
+
+### delete locations_pictures by id
+delete {{host}}/api/locations_pictures/64
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### post locations_pictures
+PATCH {{host}}/api/locations_pictures/2
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "pictureId": 2,
+    "locationId": 1
+
+}
+
+
+### --- service_types
+### get service_types
+get {{host}}/api/service_types
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+### get service_types by id
+get {{host}}/api/service_types/3
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### post service_types
+POST  {{host}}/api/service_types
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "serviceTypeName": "helyszínn"
+}
+
+### delete service_types by id
+delete {{host}}/api/service_types/4
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### post service_types
+PATCH {{host}}/api/service_types/27
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+   "serviceTypeName": "helyszín",
+}
+

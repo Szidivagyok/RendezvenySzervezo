@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateServiceTypeRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class UpdateServiceTypeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +22,17 @@ class UpdateServiceTypeRequest extends FormRequest
      */
     public function rules(): array
     {
+         $id = $this->route('id');
+
         return [
-            //
+
+            'serviceTypeName' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('service_types', 'serviceTypeName')
+                    ->ignore($id, 'id'),
+            ],
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdatePictureRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class UpdatePictureRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +22,26 @@ class UpdatePictureRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('id');
+
         return [
-            //
+
+            'pictureName' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('pictures')
+                    ->ignore($id, 'id')
+                    ->where(
+                        fn($q) => $q
+                            ->where('serviceId', request('serviceId'))
+                    ),
+            ],
+
+            'serviceId' => [
+                'required',
+                'integer',
+            ],
         ];
     }
 }

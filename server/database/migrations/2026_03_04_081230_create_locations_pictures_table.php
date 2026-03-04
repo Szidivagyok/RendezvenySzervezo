@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('locations_pictures', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('locationId')->constrained('locations')->onDelete('restrict');
-            $table->foreignId('pictureId')->constrained('pictures')->onDelete('restrict');
+            $table->foreignId('locationId')->constrained('locations')->onDelete('cascade');
+            $table->foreignId('pictureId')->constrained('pictures')->onDelete('cascade');
             $table->unique(['locationId', 'pictureId']);
             $table->timestamps();
         });

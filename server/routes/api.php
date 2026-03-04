@@ -1,11 +1,15 @@
 <?php
 
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\LocationsPictureController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderServiceController;
+use App\Http\Controllers\PictureController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\ServiceTypeController;
 use App\Http\Controllers\UserController;
+use App\Models\LocationsPicture;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -90,4 +94,31 @@ Route::patch('services/{id}', [ServiceController::class, 'update'])
     ->middleware(['auth:sanctum','ability:services:patch']);
 Route::delete('services/{id}', [ServiceController::class, 'destroy'])
     ->middleware(['auth:sanctum', 'ability:services:delete']);
+
+Route::get('locations_pictures', [LocationsPictureController::class, 'index']);
+Route::get('locations_pictures/{id}', [LocationsPictureController::class, 'show']);
+Route::post('locations_pictures', [LocationsPictureController::class, 'store'])
+    ->middleware(['auth:sanctum', 'ability:locations_pictures:post']);
+Route::patch('locations_pictures/{id}', [LocationsPictureController::class, 'update'])
+    ->middleware(['auth:sanctum','ability:locations_pictures:patch']);
+Route::delete('locations_pictures/{id}', [LocationsPictureController::class, 'destroy'])
+    ->middleware(['auth:sanctum', 'ability:locations_pictures:delete']);
+
+Route::get('pictures', [PictureController::class, 'index']);
+Route::get('pictures/{id}', [PictureController::class, 'show']);
+Route::post('pictures', [PictureController::class, 'store'])
+    ->middleware(['auth:sanctum', 'ability:pictures:post']);
+Route::patch('pictures/{id}', [PictureController::class, 'update'])
+    ->middleware(['auth:sanctum','ability:ictures:patch']);
+Route::delete('pictures/{id}', [PictureController::class, 'destroy'])
+    ->middleware(['auth:sanctum', 'ability:pictures:delete']);
+
+Route::get('service_types', [ServiceTypeController::class, 'index']);
+Route::get('service_types/{id}', [ServiceTypeController::class, 'show']);
+Route::post('service_types', [ServiceTypeController::class, 'store'])
+    ->middleware(['auth:sanctum', 'ability:service_types:post']);
+Route::patch('service_types/{id}', [ServiceTypeController::class, 'update'])
+    ->middleware(['auth:sanctum','ability:ictures:patch']);
+Route::delete('service_types/{id}', [ServiceTypeController::class, 'destroy'])
+    ->middleware(['auth:sanctum', 'ability:service_types:delete']);
 //endregion
