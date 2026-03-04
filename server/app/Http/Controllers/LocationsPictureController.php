@@ -2,49 +2,69 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\LocationsPicture;
-use App\Http\Requests\StoreLocationsPictureRequest;
-use App\Http\Requests\UpdateLocationsPictureRequest;
+use App\Models\LocationsPicture as CurrentModel;
+use App\Http\Requests\StoreLocationsPictureRequest as StoreCurrentModelRequest;
+use App\Http\Requests\UpdateLocationsPictureRequest as UpdateCurrentModelRequest;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class LocationsPictureController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return $this->apiResponse(
+            function () {
+                return CurrentModel::all();
+            }
+        );
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreLocationsPictureRequest $request)
+    public function store(StoreCurrentModelRequest $request)
     {
-        //
+        return $this->apiResponse(
+            function () use ($request) {
+                return CurrentModel::create($request->validated());
+            }
+        );
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(LocationsPicture $locationsPicture)
+    public function show(int $id)
     {
-        //
+        return $this->apiResponse(function () use ($id) {
+            return CurrentModel::findOrFail($id);
+        });
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateLocationsPictureRequest $request, LocationsPicture $locationsPicture)
+    public function update(UpdateCurrentModelRequest $request, int $id)
     {
-        //
+        return $this->apiResponse(function () use ($request, $id) {
+            $row = CurrentModel::findOrFail($id);
+            $row->update($request->validated());
+            return $row;
+        });
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(LocationsPicture $locationsPicture)
+
+    public function destroy(int $id)
     {
-        //
+        return $this->apiResponse(function () use ($id) {
+            CurrentModel::findOrFail($id)->delete();
+            return ['id' => $id];
+        });
     }
 }
