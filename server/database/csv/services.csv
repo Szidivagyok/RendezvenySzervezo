@@ -2,9 +2,9 @@ id;service;serviceTypeId;price
 1;helyszín;1;0
 2;élő zene;3;70000
 3;dj;3;50000
-4;két fogásos;2;6000
-5;három fogásos;2;10000
-6;négy fogásos;2;15000
-7;szimpla;3;100000
-8;közepes;3;150000
-9;dekoratív;3;200000
+4;két fogásos menü;2;6000
+5;három fogásos menü;2;10000
+6;négy fogásos menü;2;15000
+7;egyszerű dekoráció;3;100000
+8;közepes dekoráció;3;150000
+9;dekoratív dekoráció;3;200000

@@ -12,6 +12,13 @@
         A böngésződ nem támogatja a videó lejátszást.
       </video>
     </div>
+      <div v-if="loading" class="text-center p-2">Adatok betöltése...</div>
+    <div v-else class="d-flex flex-wrap justify-content-center gap-3 p-3 bg-light border-bottom">
+      <span v-for="location in items" :key="location.id" class="badge bg-primary">
+        {{ location.locationName }} ({{ location.cityName }})
+      </span>
+    </div>
+
     <h1>Home</h1>
     <!-- <video autoplay muted loop playsinline width="100%" height="80%">
       <source src="/media.mp4" type="video/mp4" />
@@ -40,10 +47,38 @@
       ></textarea>
     </div>
   </div>
+
 </template>
 
 <script>
-export default {};
+import { useLocationStore } from '@/stores/locationStore';
+import {mapState, mapActions} from 'pinia';
+export default { 
+name: "HomeView",
+components: {
+  
+},
+computed: {
+//módosít
+    ...mapState(useLocationStore, [
+      "item",
+      "items",
+      "loading",
+    ]),
+
+
+},
+methods: {
+ ...mapActions(useLocationStore, [
+      "getAll",
+    ]),
+
+},
+async created() {
+    await this.getAll();
+    console.log("Megérkeztek a helyszínek:", this.items);
+  }
+};
 </script>
 
 <style scoped>
