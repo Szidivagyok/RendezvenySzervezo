@@ -262,4 +262,6 @@ body,
 main {
   flex: 1; /* a tartalom kitölti a maradék helyet */
 }
+
+
 </style>
