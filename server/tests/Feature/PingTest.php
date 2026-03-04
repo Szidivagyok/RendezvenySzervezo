@@ -56,7 +56,6 @@ class PingTest extends TestBase
         "orderId" => 1,
         "serviceId" => 1
     ];
-
     public static function tablesGetDataProvider(): array
     {
         return [
@@ -65,12 +64,23 @@ class PingTest extends TestBase
             'get services admin: 200' => ['services', 'admin@example.com', '123', 200],
             'get orders admin: 200' => ['orders', 'admin@example.com', '123', 200],
             'get order_services admin: 200' => ['order_services', 'admin@example.com', '123', 200],
+            'get locations_pictures admin: 200' => ['locations_pictures', 'admin@example.com', '123', 200],
+            'get pictures admin: 200' => ['pictures', 'admin@example.com', '123', 200],
+            'get service_types admin: 200' => ['service_types', 'admin@example.com', '123', 200],
+
+
+
 
             'get users user: 403' => ['users', 'megrendelo@example.com', '123', 403],
             'get locations user: 200' => ['locations', 'megrendelo@example.com', '123', 200],
             'get services user: 200' => ['services', 'megrendelo@example.com', '123', 200],
             'get orders user: 200' => ['orders', 'megrendelo@example.com', '123', 200],
             'get order_services user: 200' => ['order_services', 'megrendelo@example.com', '123', 200],
+            'get locations_pictures user: 200' => ['locations_pictures', 'megrendelo@example.com', '123', 200],
+            'get pictures user: 200' => ['pictures', 'megrendelo@example.com', '123', 200],
+            'get service_types user: 200' => ['service_types', 'megrendelo@example.com', '123', 200],
+
+
         ];
     }
 
@@ -82,12 +92,20 @@ class PingTest extends TestBase
             'post-delete services admin' => ['services', 'admin@example.com', '123', true, true, self::$dataService],
             'post-delete orders admin' => ['orders', 'admin@example.com', '123', true, true, self::$dataOrder],
             'post-delete order_services admin' => ['order_services', 'admin@example.com', '123', true, true, self::$dataOrderService],
+            'post-delete locations_pictures admin' => ['locations_pictures', 'admin@example.com', '123', true, true, self::$dataOrderService],
+            'post-delete pictures admin' => ['pictures', 'admin@example.com', '123', true, true, self::$dataOrderService],
+            'post-delete service_types admin' => ['service_types', 'admin@example.com', '123', true, true, self::$dataOrderService],
+
 
             'post-delete users user' => ['users', 'megrendelo@example.com', '123', false, false, self::$dataUser],
             'post-delete locations user' => ['locations', 'megrendelo@example.com', '123', false, false, self::$dataLocation],
             'post-delete services user' => ['services', 'megrendelo@example.com', '123', false, false, self::$dataService],
             'post-delete orders user' => ['orders', 'megrendelo@example.com', '123', true, false, self::$dataOrder],
             'post-delete order_services user' => ['order_services', 'megrendelo@example.com', '123', false, false, self::$dataOrderService],
+            'post-delete locations_pictures user' => ['locations_pictures', 'megrendelo@example.com', '123', false, false, self::$dataOrderService],
+            'post-delete pictures user' => ['pictures', 'megrendelo@example.com', '123', false, false, self::$dataOrderService],
+            'post-delete service_types user' => ['service_types', 'megrendelo@example.com', '123', false, false, self::$dataOrderService],
+
         ];
     }
 
