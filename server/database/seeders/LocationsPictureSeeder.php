@@ -15,7 +15,7 @@ class LocationsPictureSeeder extends Seeder
     public function run(): void
     {
         //
-        $pictures = Picture::all();
+       $pictures = Picture::where('serviceId', 1)->get(); 
 
         foreach ($pictures as $picture) {
             // Kinyerjük a locationId-t a fájlnévből (pl: "location_5.1.jpg" -> 5)
