@@ -19,16 +19,20 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         //Mielőtt seedelünk, minden táblát töröljünk le.
+        DB::statement('DELETE FROM locations_pictures');
+        DB::statement('DELETE FROM pictures');
         DB::statement('DELETE FROM order_services');
         DB::statement('DELETE FROM orders');
-        DB::statement('DELETE FROM services');
         DB::statement('DELETE FROM locations');
+        DB::statement('DELETE FROM services');
+        DB::statement('DELETE FROM service_types');
         DB::statement('DELETE FROM users');
 
 
 
         //Ami Seeder osztály itt fel van sorolva, annak lefut a run() metódusa
         $this->call([
+           ServiceTypeSeeder::class,
             UserSeeder::class,
             ServiceSeeder::class,
             LocationSeeder::class,
