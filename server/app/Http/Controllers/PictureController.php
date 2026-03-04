@@ -2,49 +2,69 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Picture;
-use App\Http\Requests\StorePictureRequest;
-use App\Http\Requests\UpdatePictureRequest;
+use App\Models\Picture as CurrentModel;
+use App\Http\Requests\StorePictureRequest as StoreCurrentModelRequest;
+use App\Http\Requests\UpdatePictureRequest as UpdateCurrentModelRequest;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class PictureController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return $this->apiResponse(
+            function () {
+                return CurrentModel::all();
+            }
+        );
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePictureRequest $request)
+    public function store(StoreCurrentModelRequest $request)
     {
-        //
+        return $this->apiResponse(
+            function () use ($request) {
+                return CurrentModel::create($request->validated());
+            }
+        );
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Picture $picture)
+    public function show(int $id)
     {
-        //
+        return $this->apiResponse(function () use ($id) {
+            return CurrentModel::findOrFail($id);
+        });
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePictureRequest $request, Picture $picture)
+    public function update(UpdateCurrentModelRequest $request, int $id)
     {
-        //
+        return $this->apiResponse(function () use ($request, $id) {
+            $row = CurrentModel::findOrFail($id);
+            $row->update($request->validated());
+            return $row;
+        });
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Picture $picture)
+
+    public function destroy(int $id)
     {
-        //
+        return $this->apiResponse(function () use ($id) {
+            CurrentModel::findOrFail($id)->delete();
+            return ['id' => $id];
+        });
     }
 }

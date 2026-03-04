@@ -9,4 +9,14 @@ class LocationsPicture extends Model
 {
     /** @use HasFactory<\Database\Factories\LocationsPictureFactory> */
     use HasFactory;
+
+       protected $fillable = [
+        'pictureId',
+        'locationId',
+    ];
+
+     protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
 }

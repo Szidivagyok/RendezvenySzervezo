@@ -2,49 +2,69 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ServiceType;
-use App\Http\Requests\StoreServiceTypeRequest;
-use App\Http\Requests\UpdateServiceTypeRequest;
+use App\Models\ServiceType as CurrentModel;
+use App\Http\Requests\StoreServiceTypeRequest as StoreCurrentModelRequest;
+use App\Http\Requests\UpdateServiceTypeRequest as UpdateCurrentModelRequest;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ServiceTypeController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return $this->apiResponse(
+            function () {
+                return CurrentModel::all();
+            }
+        );
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreServiceTypeRequest $request)
+    public function store(StoreCurrentModelRequest $request)
     {
-        //
+        return $this->apiResponse(
+            function () use ($request) {
+                return CurrentModel::create($request->validated());
+            }
+        );
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(ServiceType $serviceType)
+    public function show(int $id)
     {
-        //
+        return $this->apiResponse(function () use ($id) {
+            return CurrentModel::findOrFail($id);
+        });
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateServiceTypeRequest $request, ServiceType $serviceType)
+    public function update(UpdateCurrentModelRequest $request, int $id)
     {
-        //
+        return $this->apiResponse(function () use ($request, $id) {
+            $row = CurrentModel::findOrFail($id);
+            $row->update($request->validated());
+            return $row;
+        });
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ServiceType $serviceType)
+
+    public function destroy(int $id)
     {
-        //
+        return $this->apiResponse(function () use ($id) {
+            CurrentModel::findOrFail($id)->delete();
+            return ['id' => $id];
+        });
     }
 }
