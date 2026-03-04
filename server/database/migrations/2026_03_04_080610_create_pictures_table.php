@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('pictures', function (Blueprint $table) {
             $table->id();
-            $table->string('service', 150)->unique();
+            $table->string('pictureName', 150)->unique();
             $table->foreignId('serviceId')->constrained('services')->onDelete('restrict');
             $table->timestamps();
         });

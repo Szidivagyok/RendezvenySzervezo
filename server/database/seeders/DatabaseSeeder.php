@@ -38,6 +38,8 @@ class DatabaseSeeder extends Seeder
             LocationSeeder::class,
             OrderSeeder::class,
             OrderServiceSeeder::class,
+            PictureSeeder::class,
+            LocationsPictureSeeder::class,
             
         ]);
     }
