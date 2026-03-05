@@ -48,10 +48,12 @@ class PictureController extends Controller
    public function locationpictures(int $id)
 {
     return $this->apiResponse(function () use ($id) {
-        // Itt a második function után is kell a 'use ($id)'!
         return Picture::whereHas('locations', function ($query) use ($id) {
             $query->where('locations.id', $id);
-        })->select('pictureName')->get();
+        })
+        // Itt hozzáadtuk az 'id'-t a select-hez
+        ->select('id', 'pictureName') 
+        ->get();
     });
 }
 

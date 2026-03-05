@@ -12,11 +12,11 @@
     <section v-for="item in items" :key="item.id" :id="`${item.id}`" class="section">
       <h2>{{ item.serviceTypeName }} <i class="bi bi-file-person-fill"></i></h2>
       <div class="row">
-        <div class="col-3">
+        <div class="col-lg-4 col-xxl-3">
            <!-- helyszinek -->
             <div v-if="item.id == 1">
               <ul class="list-group">
-                <li  class="list-group-item" v-for="location in locationItems" :key="location.id"
+                <li  class="list-group-item my-pointer" v-for="location in locationItems" :key="location.id"
                 @click="selectedPictureId = location.id"
                 >
                   {{ location.cityName }}
@@ -27,10 +27,10 @@
               </ul>
             </div>
         </div>
-        <div class="col-9">
+        <div class="col-lg-8 col-xxl-9">
           <div  v-if="item.id != 1">
             <img
-            src="/kepek/locations_1_1.jpg"
+            src="/kepek/location_1_1.jpg"
             class="rounded img-fluid mb-3"
             alt="Rólunk kép"
             />
@@ -38,7 +38,7 @@
 
           </div>
 
-           <Carousel v-if="item.id == 1"
+           <Carousel
            :images="pictureItems"
            />
         </div>
@@ -70,6 +70,7 @@ export default {
   },
   watch: {
     async selectedPictureId(value) {
+        console.log("hiba", value);
         await this.getLocationpicturesById(value);
     }
 
@@ -77,12 +78,12 @@ export default {
   computed: {
     ...mapState(useServiceTypeStore, ['items']),
     ...mapState(useLocationStore, {locationItems: 'items'}),
-     ...mapState(useLocationStore, {pictureItems: 'items'}),
+     ...mapState(usePictureStore, {pictureItems: 'items'}),
   },
   methods: {
     ...mapActions(useServiceTypeStore, ['getAll']),
     ...mapActions(useLocationStore, {locationGetAll: 'getAll'}),
-     ...mapActions(usePictureStore, {pictureGetAll: 'getLocationpicturesById'}),
+     ...mapActions(usePictureStore, ['getLocationpicturesById']),
     scrollTo(id) {
       const el = document.getElementById(id);
       if (el) {

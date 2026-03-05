@@ -114,7 +114,7 @@ export const usePictureStore = defineStore("pictures", {
       //   const toast = useToastStore();
       try {
         const response = await service.getLocationpicturesById(id);
-        this.item = response.data;
+        this.items = response.data;
       } catch (err) {
         this.error = err;
         throw err;

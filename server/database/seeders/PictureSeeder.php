@@ -22,7 +22,7 @@ class PictureSeeder extends Seeder
             // Helyszínenként 3 kép generálása
             for ($i = 1; $i <= 3; $i++) {
                 Picture::create([
-                    'PictureName' => "location_{$locId}.{$i}.jpg",
+                    'PictureName' => "location_{$locId}_{$i}.jpg",
                     'serviceId'   => 1
                 ]);
             }

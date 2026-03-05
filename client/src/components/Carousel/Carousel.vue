@@ -7,7 +7,7 @@
         :class="['carousel-item', { active: index === 0 }]"
       >
         <img
-          :src="image.src"
+          :src="`/kepek/${image.pictureName}`"
           class="d-block w-100 carousel-img"
           
         />
@@ -77,7 +77,8 @@ export default {
 
 <style scoped>
 .carousel-img {
-  max-height: 500px; /* Beállíthatod, milyen magas legyen maximum */
+  max-height: 600px;
+  max-width: 1400px; /* Beállíthatod, milyen magas legyen maximum */
   object-fit: cover; /* Ez biztosítja, hogy ne torzuljanak a képek */
 }
 
