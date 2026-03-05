@@ -41,5 +41,16 @@ export default {
 </script>
 
 <style>
+#app {
+  background-color: #fce4ec; /* Halványabb babarózsaszín */
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Ha azt akarod, hogy a teljes böngészőablak olyan legyen */
+body {
+  background-color: #fce4ec !important;
+  margin: 0;
+}
 </style>
 

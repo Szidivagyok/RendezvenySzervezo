@@ -43,3 +43,10 @@
   transform: translate(-50%, -50%);
   object-fit: cover; /* telíti, de nem torzítja a videót */
 }
+
+body {
+    background-color: #fff0f5; /* Ez a "LavenderBlush", egy nagyon halvány rózsaszín */
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
