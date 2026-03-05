@@ -1,4 +1,5 @@
 <template>
+  
   <div class="container-fluid my-container my-border mt-2">
     <!-- Head -->
     <Header/>
@@ -19,6 +20,7 @@
 </template>
 
 <script>
+
 import Menu from './components/Layout/Menu.vue';
 import Header from './components/Layout/Header.vue';
 import Footer from './components/Layout/Footer.vue';
@@ -41,6 +43,7 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Twinkle+Star&display=swap');
 #app {
   background-color: #fce4ec; /* Halványabb babarózsaszín */
   min-height: 100vh;
@@ -52,5 +55,7 @@ body {
   background-color: #fce4ec !important;
   margin: 0;
 }
+
+
 </style>
 

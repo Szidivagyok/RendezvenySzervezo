@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Picture as CurrentModel;
 use App\Http\Requests\StorePictureRequest as StoreCurrentModelRequest;
 use App\Http\Requests\UpdatePictureRequest as UpdateCurrentModelRequest;
+use App\Models\Picture;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class PictureController extends Controller
@@ -43,6 +44,16 @@ class PictureController extends Controller
             return CurrentModel::findOrFail($id);
         });
     }
+
+   public function locationpictures(int $id)
+{
+    return $this->apiResponse(function () use ($id) {
+        // Itt a második function után is kell a 'use ($id)'!
+        return Picture::whereHas('locations', function ($query) use ($id) {
+            $query->where('locations.id', $id);
+        })->select('pictureName')->get();
+    });
+}
 
     /**
      * Update the specified resource in storage.

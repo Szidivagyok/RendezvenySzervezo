@@ -13,6 +13,10 @@ export default {
     return await apiClient.get(url);
   },
 
+  async getLocationpicturesById(id) {
+    const url = `locationpictures/${id}`
+    return await apiClient.get(url);
+  },
   // POST: Új rekord posztolás
   async create(data) {
     delete data.id; //id kulcsot kiveszi az objektumból

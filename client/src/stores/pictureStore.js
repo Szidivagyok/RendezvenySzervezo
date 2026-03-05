@@ -108,6 +108,22 @@ export const usePictureStore = defineStore("pictures", {
       }
     },
 
+     async getLocationpicturesById(id) {
+      this.loading = true;
+      this.error = null;
+      //   const toast = useToastStore();
+      try {
+        const response = await service.getLocationpicturesById(id);
+        this.item = response.data;
+      } catch (err) {
+        this.error = err;
+        throw err;
+      } finally {
+        this.loading = false;
+      }
+    },
+
+
     // CREATE - Új elem hozzáadása
     async create(data) {
       this.loading = true;

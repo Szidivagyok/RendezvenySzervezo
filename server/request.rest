@@ -197,7 +197,7 @@ Authorization: Bearer {{token}}
     "orderId": "e",
     "serviceId": 4
 }
-
+### --- locations
 ### location
 get {{host}}/api/locations
 Accept: application/json
@@ -311,6 +311,12 @@ Authorization: Bearer {{token}}
 
 ### get pictures by id
 get {{host}}/api/pictures/2
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### get pictures by id
+get {{host}}/api/locationpictures/3
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}

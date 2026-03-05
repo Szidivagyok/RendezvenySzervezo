@@ -1,38 +1,19 @@
 import { defineStore } from "pinia";
 // import { useToastStore } from "@/stores/toastStore";
 import { useSearchStore } from "./searchStore";
-import service from "@/api/locationService";
+import service from "@/api/servicetypeService";
 
 // const toast = useToastStore();
 
 //változtatás
 class Item {
-  constructor(
-    id = 0,
-    cityName = "",
-    zipCode = "",
-    street = "",
-    houseNumber = "",
-    locationName = "",
-    maxCapacity = 0,
-    minCapacity = 0,
-    priceSlashPerson = 0,
-    roomPriceSlashDay = 0,
-  ) {
+  constructor(id = 0, serviceTypeName = "") {
     this.id = id;
-    this.cityName = cityName;
-    this.zipCode = zipCode;
-    this.street = street;
-    this.houseNumber = houseNumber;
-    this.locationName = locationName;
-    this.maxCapacity = maxCapacity;
-    this.minCapacity = minCapacity;
-    this.priceSlashPerson = priceSlashPerson;
-    this.roomPriceSlashDay = roomPriceSlashDay;
+    this.serviceTypeName = serviceTypeName;
   }
 }
 
-export const useLocationStore = defineStore("locations", {
+export const useServiceTypeStore = defineStore("service_types", {
   state: () => ({
     item: new Item(),
     items: [new Item()],
@@ -40,6 +21,7 @@ export const useLocationStore = defineStore("locations", {
     error: null,
     sortColumn: "id",
     sortDirection: "asc",
+    searchStore: useSearchStore(),
   }),
   getters: {
     getItemsLength() {
@@ -50,8 +32,11 @@ export const useLocationStore = defineStore("locations", {
     clearItem() {
       this.item = new Item();
     },
+    // READ - Összes adat lekérése
+
     //Ha a direction meg van aadva, akkor ez lesz a sorrend
     //Ha nincs megadva, akkor ellentettjére vált
+
     async getAll() {
       //   const toast = useToastStore();
       this.loading = true;
@@ -91,13 +76,12 @@ export const useLocationStore = defineStore("locations", {
       try {
         const newItem = await service.create(data);
         const response = await service.getAll();
-
         this.items = response.data;
         // toast.messages.push("Sikeresen létrehozva!");
         // toast.show("Success");
         return true;
       } catch (err) {
-        this.error = err.response.data.errors.cityName[0];
+        this.error = err.response.data.errors.serviceTypeName[0];
         throw err;
         return false;
       } finally {
