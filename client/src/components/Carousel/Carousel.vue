@@ -16,9 +16,9 @@
           class="d-block w-100 carousel-img"
           :alt="image.alt"
         /> -->
-        <div class="carousel-caption d-none d-md-block">
+        <!-- <div class="carousel-caption d-none d-md-block">
           <h5 class="twinkle-font">{{ image.pictureName}}</h5>
-        </div>
+        </div> -->
       </div>
     </div>
 
