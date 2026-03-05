@@ -32,11 +32,11 @@ class LocationFactory extends Factory
 
             // helyszín neve (pl. cégnév)
             'locationName' => $this->faker->randomElement([
-                'restaurant',
-                'community hall',
-                'church',
-                'hotel',
-                'castle',
+                'étterem',
+                'rendezvény ház',
+                'templom',
+                'szálloda',
+                'kastély',
             ]),
 
 
