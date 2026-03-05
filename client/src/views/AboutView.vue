@@ -15,9 +15,13 @@
     </nav>
 
     <section v-for="item in items" :key="item.id" :id="`${item.id}`" class="section">
-      <h2 class="twinkle-header">
-        {{ item.serviceTypeName }} <i class="bi bi-stars"></i>
-      </h2>
+   <h2 class="twinkle-header">
+  {{ item.serviceTypeName }} 
+  <i :class="[
+    'bi', 
+    item.id == 1 ? 'bi-houses-fill' : (item.id == 2 ? 'bi-egg-fried' : 'bi-ticket')
+  ]"></i>
+</h2>
 
       <div class="row">
         <div class="col-lg-4 col-xxl-3">
