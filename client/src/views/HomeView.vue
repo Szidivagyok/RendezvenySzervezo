@@ -60,7 +60,7 @@ export default {
 .twinkle-title {
   font-family: 'Twinkle Star', cursive;
   font-size: 3.5rem;
-  color: #880e4f;
+  color: #8533e4;
   margin-bottom: 2rem;
 }
 
