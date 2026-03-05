@@ -9,35 +9,12 @@
 
     <Carousel />
 
-    <div v-if="loading" class="text-center p-2">Adatok betöltése...</div>
-    <div v-else class="d-flex flex-wrap justify-content-center gap-3 p-3 bg-light-pink border-bottom">
-      <span v-for="location in items" :key="location.id" class="badge bg-malyva">
-        {{ location.locationName }} ({{ location.cityName }})
-      </span>
-    </div>
+   
 
     <div class="container mt-5">
-      <h1 class="twinkle-title text-center">Üdvözlünk a Home oldalon</h1>
+      <h1 class="twinkle-title text-center">Üdvözlünk az oldalon</h1>
 
-      <div class="card p-4 shadow-sm mb-5">
-        <div class="mb-3">
-          <label for="exampleFormControlInput1" class="form-label">Email address</label>
-          <input
-            type="email"
-            class="form-control"
-            id="exampleFormControlInput1"
-            placeholder="name@example.com"
-          />
-        </div>
-        <div class="mb-3">
-          <label for="exampleFormControlTextarea1" class="form-label">Üzenet</label>
-          <textarea
-            class="form-control"
-            id="exampleFormControlTextarea1"
-            rows="3"
-          ></textarea>
-        </div>
-      </div>
+     
     </div>
   </div>
 </template>

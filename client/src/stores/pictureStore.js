@@ -34,48 +34,9 @@ export const usePictureStore = defineStore("pictures", {
       this.item = new Item();
     },
     // READ - Összes adat lekérése
-    async getAllAbc() {
-      //   const toast = useToastStore();
-      this.loading = true;
-      this.error = null;
-      try {
-        const response = await service.getAllAbc();
-        this.items = response.data;
-      } catch (err) {
-        this.error = err;
-        throw err;
-      } finally {
-        this.loading = false;
-      }
-    },
     //Ha a direction meg van aadva, akkor ez lesz a sorrend
     //Ha nincs megadva, akkor ellentettjére vált
-    async getAllSortSearch(column = "id", direction = null) {
-      //   const toast = useToastStore();
-      this.loading = true;
-      this.error = null;
-      this.sortColumn = column;
-      if (!direction) {
-        direction =
-          this.sortColumn === column && this.sortDirection === "asc"
-            ? "desc"
-            : "asc";
-      }
-      this.sortDirection = direction;
-      try {
-        const response = await service.getAllSortSearch(
-          this.sortColumn,
-          this.sortDirection,
-          this.searchStore.searchWord,
-        );
-        this.items = response.data;
-      } catch (err) {
-        this.error = err;
-        throw err;
-      } finally {
-        this.loading = false;
-      }
-    },
+
     async getAll() {
       //   const toast = useToastStore();
       this.loading = true;
