@@ -3,15 +3,14 @@
     <!-- Navigációs menü -->
     <nav class="menu">
       <ul>
-        <li><a href="#etelek" @click.prevent="scrollTo('etelek')">Ételeink</a></li>
+        <li><a href="#etelek" @click.prevent="scrollTo('etelek')">Rólunk</a></li>
         <li><a href="#helyszinek" @click.prevent="scrollTo('helyszinek')">Helyszíneink</a></li>
-        <li><a href="#szolgaltatasok" @click.prevent="scrollTo('szolgaltatasok')">Szolgáltatásaink</a></li>
       </ul>
     </nav>
 
     <!-- Részletek az oldalban -->
     <section id="etelek" class="section">
-      <h2>Ételeink  <i class="bi bi-fork-knife"></i></h2>
+      <h2>Rólunk <i class="bi bi-file-person-fill"></i></h2>
      <img src="/kepek/kep1.jpg" class="rounded" alt="kepek">
       <p>Itt találhatók a finom ételeink...</p>
     </section>
@@ -19,11 +18,6 @@
     <section id="helyszinek" class="section">
       <h2>Helyszíneink<i class="bi bi-houses-fill"></i></h2>
       <p>Itt találhatók a helyszíneink...</p>
-    </section>
-
-    <section id="szolgaltatasok" class="section">
-      <h2>Szolgáltatásaink <i class="bi bi-ticket-perforated-fill"></i> </h2>
-      <p>Itt találhatók a szolgáltatásaink...</p>
     </section>
   </div>
 </template>

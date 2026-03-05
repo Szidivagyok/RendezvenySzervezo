@@ -48,7 +48,7 @@
                 </li>
                 <li v-if="hasMenuAccess('/adatok/helyszinek')">
                   <RouterLink class="dropdown-item" to="/adatok/helyszinek"
-                    >Helyszínek</RouterLink
+                    >Ételeink</RouterLink
                   >
                 </li>               
                 <li><hr class="dropdown-divider" /></li>
