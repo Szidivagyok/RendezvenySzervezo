@@ -84,7 +84,7 @@
             </div>
           </div>
 
-          <div class="col-lg-6 d-flex flex-column">
+          <div class="col-lg-6 d-flex flex-column h-10">
             <div class="title-spacer mb-5 d-none d-lg-block"></div>
             
             <div class="map-frame shadow-lg flex-grow-1">
