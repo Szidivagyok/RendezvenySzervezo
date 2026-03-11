@@ -9,7 +9,7 @@
         <img
           :src="`/kepek/${image.pictureName}`"
           class="d-block w-100 carousel-img"
-          
+         
         />
         <!-- <img
           :src="image.src"
@@ -21,7 +21,7 @@
         </div> -->
       </div>
     </div>
-
+ 
     <button
       class="carousel-control-prev"
       type="button"
@@ -42,12 +42,12 @@
     </button>
   </div>
 </template>
-
+ 
 <script>
 export default {
   name: "Carousel",
   props: {
-    images: { type: Array, 
+    images: { type: Array,
       default: [
         {
           pictureName: "https://picsum.photos/id/10/1200/400",
@@ -67,26 +67,26 @@ export default {
       ],
     },
   },
-
+ 
   data() {
     return {};
   },
   // Definiáljuk, milyen adatokat vár a komponens (ha később máshonnan jönnének a képek)
 };
 </script>
-
+ 
 <style scoped>
 .carousel-img {
   max-height: 600px;
   max-width: 1400px; /* Beállíthatod, milyen magas legyen maximum */
   object-fit: cover; /* Ez biztosítja, hogy ne torzuljanak a képek */
 }
-
+ 
 .twinkle-font {
   font-family: "Twinkle Star", cursive;
   font-size: 3rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
-
-
+ 
+ 
 </style>

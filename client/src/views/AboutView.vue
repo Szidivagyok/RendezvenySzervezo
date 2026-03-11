@@ -3,14 +3,14 @@
     <nav class="menu">
       <ul>
         <li v-for="item in items" :key="item.id">
-          <a :href="`#${item.id}`" class="nav-link-style" @click.prevent="scrollTo(item.id)">
+          <a :href="`#${item.id}`" class="nav-link-style" @click.prevent="scrollTo(`${item.id}`)">
             {{ item.serviceTypeName }}
           </a>
         </li>
       </ul>
     </nav>
 
-    <section v-for="item in items" :key="item.id" :id="item.id" class="section">
+    <section v-for="item in items" :key="item.id" :id="`${item.id}`" class="section">
       <h2 class="twinkle-header">
         {{ item.serviceTypeName }}
         <i :class="['bi', item.id == 1 ? 'bi-houses-fill' : (item.id == 2 ? 'bi-egg-fried' : 'bi-ticket')]"></i>
@@ -22,16 +22,16 @@
             <ul class="list-group">
               <template v-if="item.id == 1">
                 <li class="list-group-item my-pointer" v-for="loc in locationItems" :key="loc.id"
-                  :class="{ 'active-location': selectedId === loc.id }"
-                  @click="selectItem(loc.id, 'location')">
+                  :class="{ 'active-location': selectedState[item.id]?.id === loc.id }"
+                  @click="selectItem(item.id, loc.id, 'location')">
                   <i class="bi bi-geo-alt-fill me-2"></i> {{ loc.cityName }}, {{ loc.locationName }}
                 </li>
               </template>
-              <template v-else-if="item.id == 2">
-                <li class="list-group-item my-pointer" v-for="serv in getServicesByType(item.id)" :key="serv.id"
-                  :class="{ 'active-location': selectedId === serv.id }"
-                  @click="selectItem(serv.id, 'service')">
-                  <i class="bi bi-egg-fried me-2"></i> {{ serv.service }}
+              <template v-else>
+                <li class="list-group-item my-pointer" v-for="serv in getServicesByTypeId(item.id)" :key="serv.id"
+                  :class="{ 'active-location': selectedState[item.id]?.id === serv.id }"
+                  @click="selectItem(item.id, serv.id, 'service')">
+                  <i class="bi bi-egg-fried me-2"></i> {{ serv.service }} 
                 </li>
               </template>
             </ul>
@@ -40,7 +40,7 @@
 
         <div class="col-lg-8 col-xl-9">
           <div class="carousel-wrapper shadow">
-            <Carousel :images="pictureItems" />
+            <Carousel :images="sectionImages[item.id] || []" :key="item.id + '-' + (selectedState[item.id]?.id || 0)" />
           </div>
         </div>
       </div>
@@ -60,15 +60,14 @@ export default {
   components: { Carousel },
   data() {
     return {
-      selectedId: null,
-      selectedType: 'location' // 'location' vagy 'service'
+      selectedState: {}, // Melyik ID van kiválasztva szekciónként: { 1: {id: 5, type: 'location'} }
+      sectionImages: {}   // Képek szekciónként: { 1: [...], 2: [...] }
     }
   },
   computed: {
     ...mapState(useServiceTypeStore, ['items']),
     ...mapState(useLocationStore, { locationItems: 'items' }),
     ...mapState(useServiceStore, { serviceItems: 'items' }),
-    ...mapState(usePictureStore, { pictureItems: 'items' }),
   },
   methods: {
     ...mapActions(useServiceTypeStore, ['getAll']),
@@ -76,30 +75,35 @@ export default {
     ...mapActions(useServiceStore, { serviceGetAll: 'getAll' }),
     ...mapActions(usePictureStore, ['getLocationpicturesById', 'getPicturesByServiceId']),
 
-    getServicesByType(typeId) {
+    getServicesByTypeId(typeId) {
       return this.serviceItems.filter(s => s.serviceTypeId == typeId);
     },
-    async selectItem(id, type) {
-      this.selectedId = id;
-      this.selectedType = type;
-      if (type === 'location') await this.getLocationpicturesById(id);
-      else await this.getPicturesByServiceId(id);
+
+    async selectItem(sectionId, itemId, type) {
+      // 1. Frissítjük a kiválasztott állapotot az adott szekcióhoz
+      this.selectedState = { ...this.selectedState, [sectionId]: { id: itemId, type: type } };
+
+      // 2. Lekérjük a képeket közvetlenül a store-ból
+      const pictureStore = usePictureStore();
+      if (type === 'location') await pictureStore.getLocationpicturesById(itemId);
+      else await pictureStore.getPicturesByServiceId(itemId);
+
+      // 3. Mentjük a képeket csak ennek a szekciónak
+      this.sectionImages = { ...this.sectionImages, [sectionId]: [...pictureStore.items] };
     },
+    
     scrollTo(id) {
       document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     }
   },
   async mounted() {
     await Promise.all([this.getAll(), this.locationGetAll(), this.serviceGetAll()]);
-    if (this.locationItems?.length > 0) {
-      this.selectItem(this.locationItems[0].id, 'location');
-    }
   }
 };
 </script>
 
 <style scoped>
-/* A korábbi stílusok változatlanok maradtak a konzisztencia érdekében */
+@import url('https://fonts.googleapis.com/css2?family=Twinkle+Star&display=swap');
 .page-wrapper { background-color: #fffafc; }
 .menu { position: fixed; top: 0; left: 0; right: 0; background: linear-gradient(90deg, #fce7f3 0%, #f3e8ff 100%); padding: 1rem; box-shadow: 0 4px 15px rgba(168, 85, 247, 0.15); z-index: 1000; border-bottom: 2px solid #f5d0fe; }
 .menu ul { display: flex; gap: 2.5rem; list-style: none; margin: 0; padding: 0; justify-content: center; }
