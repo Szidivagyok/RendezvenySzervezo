@@ -12,9 +12,9 @@
     <RouterView  class="my-border"/>
 
 
-    <Footer  class="my-border"
+    <!-- <Footer  class="my-border"
       :content="footerContent"
-    />
+    /> -->
     <ToastContanier/>
   </div>
 </template>
@@ -34,11 +34,11 @@ export default {
     Breadcrumb,
     ToastContanier,
   },
-  data() {
-    return {
-      footerContent: "Ez egy másik lábléc szöveg",
-    }
-  }
+  // data() {
+  //   return {
+  //     // footerContent: "Ez egy másik lábléc szöveg",
+  //   }
+  // }
 };
 </script>
 
