@@ -48,9 +48,34 @@
                 </li>
                 <li v-if="hasMenuAccess('/adatok/helyszinek')">
                   <RouterLink class="dropdown-item" to="/adatok/helyszinek"
-                    >Ételeink</RouterLink
+                    >Helyszínek</RouterLink
                   >
-                </li>               
+                </li>   
+                <li v-if="hasMenuAccess('/adatok/szolgaltatasok')">
+                  <RouterLink class="dropdown-item" to="/adatok/szolgaltatasok"
+                    >Rendelések</RouterLink
+                  >
+                </li>    
+                <li v-if="hasMenuAccess('/adatok/szolgaltatasok')">
+                  <RouterLink class="dropdown-item" to="/adatok/szolgaltatasok"
+                    >Rendelés szolgáltatások</RouterLink
+                  >
+                </li>
+                <li v-if="hasMenuAccess('/adatok/szolgaltatasok')">
+                  <RouterLink class="dropdown-item" to="/adatok/szolgaltatasok"
+                    >Helyszín képek</RouterLink
+                  >
+                </li>   
+                <li v-if="hasMenuAccess('/adatok/szolgaltatasok')">
+                  <RouterLink class="dropdown-item" to="/adatok/szolgaltatasok"
+                    >Képek</RouterLink
+                  >
+                </li>   
+                <li v-if="hasMenuAccess('/adatok/szolgaltatasok')">
+                  <RouterLink class="dropdown-item" to="/adatok/szolgaltatasok"
+                    >Szolgáltatások típusok</RouterLink
+                  >
+                </li>  
                 <li><hr class="dropdown-divider" /></li>
                 <li v-if="hasMenuAccess('/adatok/users')">
                   <RouterLink class="dropdown-item" to="/adatok/users"
