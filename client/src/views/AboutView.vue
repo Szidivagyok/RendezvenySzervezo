@@ -40,7 +40,11 @@
 
         <div class="col-lg-8 col-xl-9">
           <div class="carousel-wrapper shadow">
-            <Carousel :images="sectionImages[item.id] || []" :key="item.id + '-' + (selectedState[item.id]?.id || 0)" />
+          <Carousel 
+  :images="sectionImages[item.id] || []" 
+  :carouselId="'carousel-' + item.id" 
+  :key="item.id + '-' + (selectedState[item.id]?.id || 0)" 
+/>
           </div>
         </div>
       </div>
