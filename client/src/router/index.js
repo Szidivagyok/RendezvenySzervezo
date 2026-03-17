@@ -55,7 +55,28 @@ const router = createRouter({
         roles: [1, 2],
       },
     },
-
+  {
+      path: "/rendelesszolgaltatasok",
+      name: "rendelesszolgaltatasok",
+      component: () => import("@/views/OrdersView.vue"),
+      beforeEnter: [checkIfNotLogged],
+      meta: {
+        title: (route) => "Rendelés szolgáltatások",
+        breadcrumb: "Rendelés szolgáltatások",
+        roles: [1, 2],
+      },
+    },
+     {
+      path: "/helyszinkepek",
+      name: "helyszinkepek",
+      component: () => import("@/views/OrdersView.vue"),
+      beforeEnter: [checkIfNotLogged],
+      meta: {
+        title: (route) => "Helyszín képek",
+        breadcrumb: "Helyszín képek",
+        roles: [1, 2],
+      },
+    },
     {
       path: "/adatok",
       name: "adatok",
