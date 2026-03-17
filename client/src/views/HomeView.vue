@@ -107,8 +107,34 @@
         </div>
       </section>
     </div>
+    <section class="text-center py-5">
+  <div class="container">
+    <h2 class="twinkle-title mb-3 fs-2">Megtalálhatóak vagyunk a közösségi médiában</h2>
+    <p class="mb-4">
+      Kövess minket Instagramon, Facebookon és TikTokon is, hogy ne maradj le a legújabb esküvői inspirációkról!
+    </p>
+
+    <div class="d-flex justify-content-center gap-4 fs-3">
+      <a href="https://instagram.com" target="_blank" class="color-purple">
+        <i class="bi bi-instagram"></i>
+      </a>
+
+      <a href="https://facebook.com" target="_blank" class="color-purple">
+        <i class="bi bi-facebook"></i>
+      </a>
+
+      <a href="https://tiktok.com" target="_blank" class="color-purple">
+        <i class="bi bi-tiktok"></i>
+      </a>
+    </div>
   </div>
+</section>
+
+  </div>
+
 </template>
+
+
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Twinkle+Star&display=swap");
