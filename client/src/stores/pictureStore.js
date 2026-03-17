@@ -2,9 +2,9 @@ import { defineStore } from "pinia";
 // import { useToastStore } from "@/stores/toastStore";
 import { useSearchStore } from "./searchStore";
 import service from "@/api/pictureService";
-
+ 
 // const toast = useToastStore();
-
+ 
 //változtatás
 class Item {
   constructor(id = 0, pictureName = "", serviceId = "") {
@@ -13,7 +13,7 @@ class Item {
     this.serviceId = serviceId;
   }
 }
-
+ 
 export const usePictureStore = defineStore("pictures", {
   state: () => ({
     item: new Item(),
@@ -36,7 +36,7 @@ export const usePictureStore = defineStore("pictures", {
     // READ - Összes adat lekérése
     //Ha a direction meg van aadva, akkor ez lesz a sorrend
     //Ha nincs megadva, akkor ellentettjére vált
-
+ 
     async getAll() {
       //   const toast = useToastStore();
       this.loading = true;
@@ -52,7 +52,7 @@ export const usePictureStore = defineStore("pictures", {
         this.loading = false;
       }
     },
-
+ 
     // READ - Egy adat lekérése
     async getById(id) {
       this.loading = true;
@@ -68,7 +68,7 @@ export const usePictureStore = defineStore("pictures", {
         this.loading = false;
       }
     },
-
+ 
      async getLocationpicturesById(id) {
       this.loading = true;
       this.error = null;
@@ -83,8 +83,22 @@ export const usePictureStore = defineStore("pictures", {
         this.loading = false;
       }
     },
-
-
+    
+ async getPicturesByServiceId(id) {
+  this.loading = true;
+  this.error = null;
+  try {
+    // A service fájlon keresztül hívjuk meg az API-t
+    const response = await service.getPicturesByServiceId(id);
+    this.items = response.data;
+  } catch (err) {
+    this.error = err;
+    this.items = [];
+  } finally {
+    this.loading = false;
+  }
+},
+ 
     // CREATE - Új elem hozzáadása
     async create(data) {
       this.loading = true;
@@ -108,7 +122,7 @@ export const usePictureStore = defineStore("pictures", {
         this.loading = false;
       }
     },
-
+ 
     // 3. UPDATE - Módosítás (Helyi frissítéssel, újraolvasás nélkül)
     async update(id, updateData) {
       this.loading = true;
@@ -133,7 +147,7 @@ export const usePictureStore = defineStore("pictures", {
         this.loading = false;
       }
     },
-
+ 
     // 4. DELETE - Törlés
     async delete(id) {
       this.loading = true;
