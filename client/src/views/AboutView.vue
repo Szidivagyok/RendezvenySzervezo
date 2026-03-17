@@ -79,26 +79,49 @@ export default {
       return this.serviceItems.filter(s => s.serviceTypeId == typeId);
     },
 
-    async selectItem(sectionId, itemId, type) {
-      // 1. Frissítjük a kiválasztott állapotot az adott szekcióhoz
-      this.selectedState = { ...this.selectedState, [sectionId]: { id: itemId, type: type } };
+  async selectItem(sectionId, itemId, type) {
+  // 1. Megjegyezzük, melyik szekcióban melyik ID az aktív
+  this.selectedState = { ...this.selectedState, [sectionId]: { id: itemId, type: type } };
 
-      // 2. Lekérjük a képeket közvetlenül a store-ból
-      const pictureStore = usePictureStore();
-      if (type === 'location') await pictureStore.getLocationpicturesById(itemId);
-      else await pictureStore.getPicturesByServiceId(itemId);
+  const pictureStore = usePictureStore();
+  
+  // 2. Szétválasztjuk: helyszínhez a régi, ételhez az új API kell
+  if (type === 'location') {
+    await pictureStore.getLocationpicturesById(itemId);
+  } else {
+    await pictureStore.getPicturesByServiceId(itemId);
+  }
 
-      // 3. Mentjük a képeket csak ennek a szekciónak
-      this.sectionImages = { ...this.sectionImages, [sectionId]: [...pictureStore.items] };
-    },
+  // 3. Mentjük a képeket a szekció saját "fiókjába"
+  this.sectionImages = { ...this.sectionImages, [sectionId]: [...pictureStore.items] };
+},
     
     scrollTo(id) {
       document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     }
   },
   async mounted() {
-    await Promise.all([this.getAll(), this.locationGetAll(), this.serviceGetAll()]);
+  await Promise.all([this.getAll(), this.locationGetAll(), this.serviceGetAll()]);
+
+  // Alapértelmezett képek betöltése mind a 3 szekcióhoz az oldalnyitáskor:
+  
+  // 1. Helyszínek (ID 1)
+  if (this.locationItems.length > 0) {
+    await this.selectItem(1, this.locationItems[0].id, 'location');
   }
+
+  // 2. Ételek (ID 2)
+  const firstFood = this.getServicesByTypeId(2)[0];
+  if (firstFood) {
+    await this.selectItem(2, firstFood.id, 'service');
+  }
+
+  // 3. Szolgáltatások (ID 3)
+  const firstService = this.getServicesByTypeId(3)[0];
+  if (firstService) {
+    await this.selectItem(3, firstService.id, 'service');
+  }
+}
 };
 </script>
 

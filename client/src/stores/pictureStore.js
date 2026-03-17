@@ -84,16 +84,20 @@ export const usePictureStore = defineStore("pictures", {
       }
     },
     
-    async getPicturesByServiceId(id) {
-    try {
-      // Itt a Laravel végpontot hívjuk
-      const response = await axios.get(`/api/servicepictures/${id}`);
-      this.items = response.data;
-    } catch (err) {
-      console.error("Hiba az ételek képeinek lekérésekor:", err);
-      this.items = [];
-    }
-  },
+ async getPicturesByServiceId(id) {
+  this.loading = true;
+  this.error = null;
+  try {
+    // A service fájlon keresztül hívjuk meg az API-t
+    const response = await service.getPicturesByServiceId(id);
+    this.items = response.data;
+  } catch (err) {
+    this.error = err;
+    this.items = [];
+  } finally {
+    this.loading = false;
+  }
+},
  
     // CREATE - Új elem hozzáadása
     async create(data) {

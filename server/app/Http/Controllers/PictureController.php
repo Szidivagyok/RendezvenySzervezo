@@ -56,6 +56,14 @@ class PictureController extends Controller
         ->get();
     });
 }
+public function servicepictures(int $id)
+{
+    return $this->apiResponse(function () use ($id) {
+        return Picture::where('serviceId', $id)
+            ->select('id', 'pictureName') 
+            ->get();
+    });
+}
 
     /**
      * Update the specified resource in storage.

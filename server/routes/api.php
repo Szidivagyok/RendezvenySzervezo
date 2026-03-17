@@ -107,6 +107,7 @@ Route::delete('locations_pictures/{id}', [LocationsPictureController::class, 'de
 Route::get('pictures', [PictureController::class, 'index']);
 Route::get('pictures/{id}', [PictureController::class, 'show']);
 Route::get('locationpictures/{id}', [PictureController::class, 'locationpictures']);
+Route::get('servicepictures/{id}', [PictureController::class, 'servicepictures']);
 Route::post('pictures', [PictureController::class, 'store'])
     ->middleware(['auth:sanctum', 'ability:pictures:post']);
 Route::patch('pictures/{id}', [PictureController::class, 'update'])
