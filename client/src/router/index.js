@@ -45,39 +45,6 @@ const router = createRouter({
     },
 
     {
-      path: "/rendeles",
-      name: "rendeles",
-      component: () => import("@/views/OrdersView.vue"),
-      beforeEnter: [checkIfNotLogged],
-      meta: {
-        title: (route) => "Rendelés",
-        breadcrumb: "Rendelés",
-        roles: [1],
-      },
-    },
-  {
-      path: "/rendelesszolgaltatasok",
-      name: "rendelesszolgaltatasok",
-      component: () => import("@/views/OrdersView.vue"),
-      beforeEnter: [checkIfNotLogged],
-      meta: {
-        title: (route) => "Rendelés szolgáltatások",
-        breadcrumb: "Rendelés szolgáltatások",
-        roles: [1, 2],
-      },
-    },
-     {
-      path: "/helyszinkepek",
-      name: "helyszinkepek",
-      component: () => import("@/views/LocationPicturesView.vue"),
-      beforeEnter: [checkIfNotLogged],
-      meta: {
-        title: (route) => "Helyszín képek",
-        breadcrumb: "Helyszín képek",
-        roles: [1, 2],
-      },
-    },
-    {
       path: "/adatok",
       name: "adatok",
       component: () => import("@/views/EmptyWrapperView.vue"),
@@ -99,6 +66,40 @@ const router = createRouter({
           },
         },
         {
+          path: "helyszinkepek",
+          name: "helyszinkepek",
+          component: () => import("@/views/LocationPicturesView.vue"),
+          beforeEnter: [checkIfNotLogged],
+          meta: {
+            title: (route) => "Helyszín képek",
+            breadcrumb: "Helyszín képek",
+            roles: [1, 2],
+          },
+        },
+        {
+          path: "rendeles",
+          name: "rendeles",
+          component: () => import("@/views/OrderView.vue"),
+          beforeEnter: [checkIfNotLogged],
+          meta: {
+            title: (route) => "Rendelés",
+            breadcrumb: "Rendelés",
+            roles: [1],
+          },
+        },
+        {
+          path: "rendelesszolgaltatasok",
+          name: "rendelesszolgaltatasok",
+          component: () => import("@/views/OrderServicesView.vue"),
+          beforeEnter: [checkIfNotLogged],
+          meta: {
+            title: (route) => "Rendelés szolgáltatások",
+            breadcrumb: "Rendelés szolgáltatások",
+            roles: [1, 2],
+          },
+        },
+
+        {
           path: "helyszinek",
           name: "helyszinek",
           component: () => import("@/views/LocationsView.vue"),
@@ -109,10 +110,10 @@ const router = createRouter({
             roles: [1],
           },
         },
-         {
+        {
           path: "kepek",
           name: "kepek",
-          component: () => import("@/views/LocationsView.vue"),
+          component: () => import("@/views/PicturesView.vue"),
           beforeEnter: [checkIfNotLogged],
           meta: {
             title: (route) => "Képek",
@@ -120,8 +121,19 @@ const router = createRouter({
             roles: [1],
           },
         },
+         {
+          path: "szolgaltatasoktipusok",
+          name: "szolgaltatasoktipusok",
+          component: () => import("@/views/ServiceTypesView.vue"),
+          beforeEnter: [checkIfNotLogged],
+          meta: {
+            title: (route) => "Szolgáltatások típusok",
+            breadcrumb: "Szolgáltatások típusok",
+            roles: [1, 2],
+          },
+        },
         {
-          path: "users",
+          path: "/users",
           name: "users",
           component: () => import("@/views/UsersView.vue"),
           beforeEnter: [checkIfNotLogged],

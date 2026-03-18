@@ -71,8 +71,8 @@
                     >Képek</RouterLink
                   >
                 </li>   
-                <li v-if="hasMenuAccess('/adatok/szolgaltatasok')">
-                  <RouterLink class="dropdown-item" to="/adatok/szolgaltatasok"
+                <li v-if="hasMenuAccess('/adatok/szolgaltatasoktipusok')">
+                  <RouterLink class="dropdown-item" to="/adatok/szolgaltatasoktipusok"
                     >Szolgáltatások típusok</RouterLink
                   >
                 </li>  
