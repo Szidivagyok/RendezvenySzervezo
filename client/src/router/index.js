@@ -52,7 +52,7 @@ const router = createRouter({
       meta: {
         title: (route) => "Rendelés",
         breadcrumb: "Rendelés",
-        roles: [1, 2],
+        roles: [1],
       },
     },
   {
@@ -69,7 +69,7 @@ const router = createRouter({
      {
       path: "/helyszinkepek",
       name: "helyszinkepek",
-      component: () => import("@/views/OrdersView.vue"),
+      component: () => import("@/views/LocationPicturesView.vue"),
       beforeEnter: [checkIfNotLogged],
       meta: {
         title: (route) => "Helyszín képek",
@@ -106,6 +106,17 @@ const router = createRouter({
           meta: {
             title: (route) => "Helyszínek",
             breadcrumb: "Helyszínek",
+            roles: [1],
+          },
+        },
+         {
+          path: "kepek",
+          name: "kepek",
+          component: () => import("@/views/LocationsView.vue"),
+          beforeEnter: [checkIfNotLogged],
+          meta: {
+            title: (route) => "Képek",
+            breadcrumb: "Képek",
             roles: [1],
           },
         },

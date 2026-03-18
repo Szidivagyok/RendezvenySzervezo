@@ -51,23 +51,23 @@
                     >Helyszínek</RouterLink
                   >
                 </li>   
-                <li v-if="hasMenuAccess('/adatok/szolgaltatasok')">
-                  <RouterLink class="dropdown-item" to="/adatok/szolgaltatasok"
-                    >Rendelések</RouterLink
+                <li v-if="hasMenuAccess('/adatok/rendeles')">
+                  <RouterLink class="dropdown-item" to="/adatok/rendeles"
+                    >Rendelés</RouterLink
                   >
                 </li>    
-                <li v-if="hasMenuAccess('/adatok/szolgaltatasok')">
-                  <RouterLink class="dropdown-item" to="/adatok/szolgaltatasok"
+                <li v-if="hasMenuAccess('/adatok/rendelesszolgaltatasok')">
+                  <RouterLink class="dropdown-item" to="/adatok/rendelesszolgaltatasok"
                     >Rendelés szolgáltatások</RouterLink
                   >
                 </li>
-                <li v-if="hasMenuAccess('/adatok/szolgaltatasok')">
-                  <RouterLink class="dropdown-item" to="/adatok/szolgaltatasok"
+                <li v-if="hasMenuAccess('/adatok/helyszinkepek')">
+                  <RouterLink class="dropdown-item" to="/adatok/helyszinkepek"
                     >Helyszín képek</RouterLink
                   >
                 </li>   
-                <li v-if="hasMenuAccess('/adatok/szolgaltatasok')">
-                  <RouterLink class="dropdown-item" to="/adatok/szolgaltatasok"
+                <li v-if="hasMenuAccess('/adatok/kepek')">
+                  <RouterLink class="dropdown-item" to="/adatok/kepek"
                     >Képek</RouterLink
                   >
                 </li>   
