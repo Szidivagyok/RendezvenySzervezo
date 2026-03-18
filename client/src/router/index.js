@@ -77,9 +77,9 @@ const router = createRouter({
           },
         },
         {
-          path: "rendeles",
+          path: "/rendeles",
           name: "rendeles",
-          component: () => import("@/views/OrderView.vue"),
+          component: () => import("@/views/OrdersView.vue"),
           beforeEnter: [checkIfNotLogged],
           meta: {
             title: (route) => "Rendelés",
