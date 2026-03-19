@@ -26,6 +26,7 @@
       @sort="sortHandler"
       v-if="items.length > 0"
     />
+    
 
     <div v-else class="m-auto text-center">Nincs találat</div>
 

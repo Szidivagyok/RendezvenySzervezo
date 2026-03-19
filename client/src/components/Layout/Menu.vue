@@ -51,9 +51,11 @@
                     >Helyszínek</RouterLink
                   >
                 </li>   
-               <li class="nav-item" v-if="isLoggedIn && (Number(role) === 1 || Number(role) === 2)">
-  <RouterLink class="nav-link" to="/rendeles">Rendelés</RouterLink>
-</li>    
+              <li v-if="hasMenuAccess('/adatok/rendeles')">
+                  <RouterLink class="dropdown-item" to="/adatok/rendeles"
+                    >Rendelés</RouterLink
+                  >
+                </li>
                 <li v-if="hasMenuAccess('/adatok/rendelesszolgaltatasok')">
                   <RouterLink class="dropdown-item" to="/adatok/rendelesszolgaltatasok"
                     >Rendelés szolgáltatások</RouterLink

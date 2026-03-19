@@ -11,45 +11,43 @@
 
           <!-- BODY -->
           <div class="modal-body">
+            <!-- SZOLGÁLTATÁS TÍPUSOK -->
             <div class="mb-3">
               <label class="form-label">Szolgáltatás</label>
+              <select v-model="localItem.serviceTypeId" class="form-select">
+                <option value="" disabled>Válassz típust</option>
+                <option v-for="type in service_types" :key="type.id" :value="type.id">
+                  {{ type.serviceTypeName }}
+                </option>
+              </select>
+            </div>
 
-              <select v-model="localItem.name" class="form-select">
+            <!-- KONKRÉT SZOLGÁLTATÁS / VÁROS -->
+            <div class="mb-3">
+              <label class="form-label">Szolgáltatás típusok</label>
+              <select
+                v-model="localItem.serviceId"
+                class="form-select"
+                :disabled="!localItem.serviceTypeId"
+              >
                 <option value="" disabled>Válassz szolgáltatást</option>
-
                 <option
-                  v-for="(name, index) in serviceNames"
-                  :key="index"
-                  :value="name"
+                  v-for="service in filteredServices"
+                  :key="service.id"
+                  :value="service.id"
                 >
-                  {{ name }}
+                  {{ service.name }}
                 </option>
               </select>
 
-              <div v-if="errors.name" class="text-danger mt-1">
-                <div v-for="(err, i) in errors.name" :key="i">
+              <div v-if="errors.serviceId" class="text-danger mt-1">
+                <div v-for="(err, i) in errors.serviceId" :key="i">
                   {{ err }}
                 </div>
               </div>
             </div>
 
-            <!-- SERVICE TYPE -->
-            <div class="mb-3">
-              <label class="form-label">Típus ID</label>
-              <input
-                type="number"
-                class="form-control"
-                v-model="localItem.serviceTypeId"
-              />
-
-              <div v-if="errors.serviceTypeId" class="text-danger mt-1">
-                <div v-for="(err, i) in errors.serviceTypeId" :key="i">
-                  {{ err }}
-                </div>
-              </div>
-            </div>
-
-            <!-- PRICE -->
+            <!-- ÁR -->
             <div class="mb-3">
               <label class="form-label">Ár (Ft)</label>
               <input
@@ -94,24 +92,54 @@ export default {
 
       localItem: {
         id: null,
-        name: "",
         serviceTypeId: null,
+        serviceId: null,
         price: null,
       },
 
       errors: {},
-      serviceNames: [
-        "helyszín",
-        "élő zene",
-        "dj",
-        "két fogásos menü",
-        "három fogásos menü",
-        "négy fogásos menü",
-        "egyszerű dekoráció",
-        "közepes dekoráció",
-        "dekoratív dekoráció",
+
+      // service típusok
+      service_types: [
+        { id: 1, serviceTypeName: "helyszín" },
+        { id: 2, serviceTypeName: "étel" },
+        { id: 3, serviceTypeName: "szolgáltatás" },
       ],
+
+      // szolgáltatások a típusokhoz
+      services: [
+        { id: 1, serviceTypeId: 2, name: "két fogásos menü" },
+        { id: 2, serviceTypeId: 2, name: "három fogásos menü" },
+        { id: 3, serviceTypeId: 2, name: "négy fogásos menü" },
+        { id: 4, serviceTypeId: 3, name: "élő zene" },
+        { id: 5, serviceTypeId: 3, name: "dj" },
+        { id: 6, serviceTypeId: 3, name: "egyszerű dekoráció" },
+        { id: 7, serviceTypeId: 3, name: "közepes dekoráció" },
+        { id: 8, serviceTypeId: 3, name: "dekoratív dekoráció" },
+      ],
+
+      // városok a helyszínhez
+      cities: ["Budapest", "Szolnok", "Szeged", "Keszthely", "Székesfehérvár"],
     };
+  },
+
+  computed: {
+    filteredServices() {
+      if (!this.localItem.serviceTypeId) return [];
+
+      // helyszínhez random városok
+      if (this.localItem.serviceTypeId === 1) {
+        return this.cities
+          .sort(() => 0.5 - Math.random())
+          .slice(0, 5) // pl. 5 random város
+          .map((city, index) => ({ id: index + 1, name: city }));
+      }
+
+      // egyéb típusokhoz a szolgáltatások
+      return this.services.filter(
+        (s) => s.serviceTypeId === this.localItem.serviceTypeId
+      );
+    },
   },
 
   watch: {
@@ -121,8 +149,8 @@ export default {
         if (newVal) {
           this.localItem = {
             id: newVal.id ?? null,
-            name: newVal.name ?? "",
             serviceTypeId: newVal.serviceTypeId ?? null,
+            serviceId: newVal.serviceId ?? null,
             price: newVal.price ?? null,
           };
         }
@@ -147,9 +175,7 @@ export default {
       this.$emit("yesEventForm", {
         item: this.localItem,
         done: (success) => {
-          if (success) {
-            this.hide();
-          }
+          if (success) this.hide();
         },
       });
     },
@@ -160,3 +186,15 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.modal-dialog {
+  margin-top: 100px; /* desktop: szünet a navbar és a modál között */
+}
+
+@media (max-width: 576px) {
+  .modal-dialog {
+    margin-top: 50px; /* mobilon kisebb szünet */
+  }
+}
+</style>
