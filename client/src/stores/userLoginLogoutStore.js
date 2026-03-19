@@ -7,6 +7,7 @@ export const useUserLoginLogoutStore = defineStore("userLoginLogout", {
   //Ezek a változók
   state: () => ({
     item: JSON.parse(localStorage.getItem("user_data")) || null,
+    myOrders: [],
     loading: false,
     error: null,
     rolNames: ["Admin", "Megrendelő"],
@@ -44,12 +45,14 @@ export const useUserLoginLogoutStore = defineStore("userLoginLogout", {
   },
   //csinál vele valamit
   actions: {
-    canAccess(requiredRoles) {
-      // Itt a 'this' kulcsszóval éred el a state-et
-      if (!requiredRoles || requiredRoles.length === 0) return true;
-      if (!this.isLoggedIn) return false;
-      return requiredRoles.includes(this.role);
-    },
+ canAccess(requiredRoles) {
+  if (!requiredRoles || requiredRoles.length === 0) return true;
+  if (!this.item || !this.isLoggedIn) return false;
+
+  const userRole = Number(this.item.role);
+  // Itt a .map(Number) biztosítja, hogy a [1, 2] tömb elemei is biztosan számok legyenek
+  return requiredRoles.map(Number).includes(userRole);
+},
     async login(data) {
       try {
         this.loading = true;
@@ -107,5 +110,16 @@ export const useUserLoginLogoutStore = defineStore("userLoginLogout", {
         this.loading = false;
       }
     },
+    async fetchMyOrders() {
+  try {
+    this.loading = true;
+    const response = await service.getMyOrders();
+    this.myOrders = response.data; // Elmentjük a listát
+  } catch (err) {
+    console.error("Hiba a rendelések lekérésekor:", err);
+  } finally {
+    this.loading = false;
+  }
+},
   },
 });

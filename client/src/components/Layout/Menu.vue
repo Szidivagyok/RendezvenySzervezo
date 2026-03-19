@@ -51,11 +51,9 @@
                     >Helyszínek</RouterLink
                   >
                 </li>   
-                <li v-if="hasMenuAccess('/adatok/rendeles')">
-                  <RouterLink class="dropdown-item" to="/adatok/rendeles"
-                    >Rendelés</RouterLink
-                  >
-                </li>    
+               <li class="nav-item" v-if="isLoggedIn && (Number(role) === 1 || Number(role) === 2)">
+  <RouterLink class="nav-link" to="/rendeles">Rendelés</RouterLink>
+</li>    
                 <li v-if="hasMenuAccess('/adatok/rendelesszolgaltatasok')">
                   <RouterLink class="dropdown-item" to="/adatok/rendelesszolgaltatasok"
                     >Rendelés szolgáltatások</RouterLink
@@ -164,10 +162,11 @@ export default {
       this.searchWordInput = value;
     },
   },
-  computed: {
-    ...mapState(useSearchStore, ["searchWord"]),
-    ...mapState(useUserLoginLogoutStore, ["isLoggedIn", "userNameWithRole"]),
-  },
+ computed: {
+  ...mapState(useSearchStore, ["searchWord"]),
+  // Itt add hozzá a 'role'-t is!
+  ...mapState(useUserLoginLogoutStore, ["isLoggedIn", "role", "userNameWithRole"]),
+},
   methods: {
     ...mapActions(useSearchStore, ["resetSearchWord", "setSearchWord"]),
     onClickSearchButton() {

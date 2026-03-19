@@ -14,4 +14,7 @@ export default {
   getMeRefresh() {
     return apiClient.get(`/usersme`);
   },
+  getMyOrders() {
+  return apiClient.get("/my-orders"); // Feltételezve, hogy a backend-en ez az endpoint
+},
 };

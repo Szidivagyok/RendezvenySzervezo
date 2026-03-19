@@ -25,7 +25,6 @@
 
             <section class="mb-4">
               <h4 class="section-title"><i class="bi bi-gear-fill"></i> Alap szolgáltatások</h4>
-              
               <div class="mb-3">
                 <label class="form-label">Helyszín</label>
                 <select v-model="form.location" class="form-select" required>
@@ -95,11 +94,10 @@
       <div class="col-lg-5">
         <div class="summary-card p-4 shadow sticky-top" style="top: 100px;">
           <h4 class="twinkle-header text-center mb-4">Összegzés</h4>
-          
           <div v-if="form.location" class="summary-details">
             <div class="summary-item d-flex justify-content-between">
               <span>Helyszín alapdíj:</span>
-              <strong>{{ Number(form.location.roomPriceSlashDay).toLocaleString() }} Ft</strong>
+              <strong>{{ Number(form.location.roomPriceSlashDay || 0).toLocaleString() }} Ft</strong>
             </div>
             <div class="summary-item d-flex justify-content-between">
               <span>Helyszín főre ({{ form.guests }} fő):</span>
@@ -136,6 +134,8 @@
 import { mapState, mapActions } from 'pinia';
 import { useLocationStore } from '@/stores/locationStore';
 import { useServiceStore } from '@/stores/serviceStore';
+import { useOrderStore } from '@/stores/orderStore';
+import { useUserLoginLogoutStore } from '@/stores/userLoginLogoutStore';
 
 export default {
   data() {
@@ -145,7 +145,7 @@ export default {
         email: '',
         location: null,
         food: null,
-        selectedExtras: [], // Itt tároljuk a több kiválasztott extrát
+        selectedExtras: [],
         date: '',
         guests: 1
       },
@@ -155,51 +155,47 @@ export default {
   computed: {
     ...mapState(useLocationStore, { locationItems: 'items' }),
     ...mapState(useServiceStore, { allServices: 'items' }),
+    ...mapState(useUserLoginLogoutStore, { userItem: 'item' }), 
     
     foodItems() { return this.allServices.filter(s => s.serviceTypeId === 2); },
     serviceItems() { return this.allServices.filter(s => s.serviceTypeId === 3); },
 
     locationGuestTotal() {
       if (!this.form.location) return 0;
-      return Number(this.form.location.priceSlashPerson || 0) * Number(this.form.guests);
+      return Number(this.form.location.priceSlashPerson || 0) * this.form.guests;
     },
     foodTotal() {
       if (!this.form.food) return 0;
-      return Number(this.form.food.price || 0) * Number(this.form.guests);
+      return Number(this.form.food.price || 0) * this.form.guests;
     },
     extrasTotal() {
       return this.form.selectedExtras.reduce((sum, item) => sum + Number(item.price || 0), 0);
     },
-    rawTotalCost() {
-      const roomBase = this.form.location ? Number(this.form.location.roomPriceSlashDay) : 0;
-      return Number(roomBase) + this.locationGuestTotal + this.foodTotal + this.extrasTotal;
-    },
     roundedTotalCost() {
-      return Math.round(this.rawTotalCost / 100) * 100;
+      const roomBase = this.form.location ? Number(this.form.location.roomPriceSlashDay || 0) : 0;
+      const total = roomBase + this.locationGuestTotal + this.foodTotal + this.extrasTotal;
+      return Math.round(total / 100) * 100;
     }
   },
   methods: {
-    ...mapActions(useLocationStore, ['getAll']),
+    ...mapActions(useLocationStore, { locationGetAll: 'getAll' }),
     ...mapActions(useServiceStore, { serviceGetAll: 'getAll' }),
+    ...mapActions(useOrderStore, { orderStoreAction: 'create' }),
 
     isSelected(service) {
       return this.form.selectedExtras.some(s => s.id === service.id);
     },
 
+    // MEGTARTVA: Az eredeti logikád (kategória szűrés)
     toggleExtra(service) {
-      // Logika a kategória szerinti korlátozáshoz
-      // Meghatározzuk a kategóriát a név alapján (egyszerűbb, mint az adatbázis átírása)
       let category = '';
       if (service.service.toLowerCase().includes('dekoráció')) category = 'dekor';
       if (service.service.toLowerCase().includes('zene') || service.service.toLowerCase().includes('dj')) category = 'zene';
 
       const index = this.form.selectedExtras.findIndex(s => s.id === service.id);
-
       if (index > -1) {
-        // Ha már benne van, kivesszük
         this.form.selectedExtras.splice(index, 1);
       } else {
-        // Ha nincs benne, először kivesszük az azonos kategóriájúakat (exkluzivitás)
         if (category) {
           this.form.selectedExtras = this.form.selectedExtras.filter(s => {
             const sName = s.service.toLowerCase();
@@ -212,19 +208,41 @@ export default {
       }
     },
     
-    submitOrder() {
-      alert(`Köszönjük, ${this.form.name}! A foglalás elküldve. Végösszeg: ${this.roundedTotalCost} Ft`);
+    async submitOrder() {
+      if (!this.userItem || !this.userItem.id) {
+        alert("A foglaláshoz be kell jelentkezned!");
+        return;
+      }
+
+      try {
+        // JAVÍTVA: Pontos mezőnevek a szervernek (OrderStore Item osztály alapján)
+        const payload = {
+          userId: this.userItem.id,
+          locationId: this.form.location.id,
+          howManyPeople: this.form.guests,
+          howManyDays: 1, 
+          orderTime: this.form.date
+        };
+
+        await this.orderStoreAction(payload);
+        
+        alert("Sikeres foglalás!");
+        this.$router.push('/userprofil');
+      } catch (error) {
+        console.error("Hiba a mentés során:", error);
+        alert("Szerver hiba történt a mentéskor (500).");
+      }
     }
   },
   async mounted() {
-    await Promise.all([this.getAll(), this.serviceGetAll()]);
+    await Promise.all([this.locationGetAll(), this.serviceGetAll()]);
   }
 }
 </script>
 
 <style scoped>
 .order-container { min-height: 100vh; background-color: #fffafc; }
-.twinkle-header { font-family: 'Twinkle Star', cursive; font-size: 3rem; background: linear-gradient(45deg, #a855f7, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.twinkle-header { font-family: 'Twinkle Star', cursive; font-size: 3rem; background: linear-gradient(45deg, #a855f7, #ec4899); -webkit-background-clip: text; -webkit-fill-color: transparent; }
 .glass-card { background: rgba(255, 255, 255, 0.9); border-radius: 20px; border: 1px solid #f5d0fe; }
 .summary-card { background: white; border-radius: 20px; border: 2px solid #f3e8ff; padding: 25px; }
 .section-title { color: #a855f7; font-weight: 600; margin-bottom: 1.2rem; }
@@ -232,5 +250,4 @@ export default {
 .selected-bg { background-color: #f3e8ff; border-left: 4px solid #a855f7; }
 .btn-order { background: linear-gradient(90deg, #a855f7, #ec4899); color: white; border: none; border-radius: 10px; font-weight: bold; font-size: 1.2rem; transition: all 0.3s; }
 .price-tag { font-size: 2.2rem; color: #a855f7; font-weight: bold; }
-.summary-item { font-size: 1.05rem; margin-bottom: 8px; }
 </style>

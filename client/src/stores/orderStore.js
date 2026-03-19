@@ -1,13 +1,10 @@
 import { defineStore } from "pinia";
-// import { useToastStore } from "@/stores/toastStore";
 import { useSearchStore } from "./searchStore";
 import service from "@/api/orderService";
 
-// const toast = useToastStore();
-
-//változtatás
+// Az Item osztály segít abban, hogy mindig legyen egy tiszta alapobjektumunk
 class Item {
-  constructor(id = 0, userId = "", locationId = "", howManyPeople = 0, howManyDays = 0, orderTime = 0) {
+  constructor(id = 0, userId = null, locationId = null, howManyPeople = 1, howManyDays = 1, orderTime = "") {
     this.id = id;
     this.userId = userId;
     this.locationId = locationId;
@@ -19,87 +16,79 @@ class Item {
 
 export const useOrderStore = defineStore("orders", {
   state: () => ({
-    item: new Item(),
-    items: [new Item()],
-    loading: false,
-    error: null,
-    sortColumn: "id",
+    item: new Item(),       // Az éppen szerkesztett vagy frissen leadott rendelés
+    items: [],              // Az összes rendelés listája
+    loading: false,         // Betöltés jelző (spinnerhez)
+    error: null,            // Hibaüzenetek tárolása
+    sortColumn: "id",       // Alapértelmezett rendezés
     sortDirection: "asc",
-    searchStore: useSearchStore(),
+    searchStore: useSearchStore(), // Keresési kulcsszavak elérése
   }),
-   getters:{
-    getItemsLength(){
-      return this.items.length;
+
+  getters: {
+    // Visszaadja a listában lévő elemek számát
+    getItemsLength(state) {
+      return state.items.length;
+    },
+    // Segéd-getter: visszaadja csak az aktuális user rendeléseit
+    // (Használata: store.getMyOrders(userId))
+    getMyOrders: (state) => (userId) => {
+      return state.items.filter(order => order.userId === userId);
     }
   },
+
   actions: {
+    // Alaphelyzetbe állítja az aktuális itemet
     clearItem() {
       this.item = new Item();
     },
-    // READ - Összes adat lekérése
-    async getAllAbc() {
-      //   const toast = useToastStore();
-      this.loading = true;
-      this.error = null;
-      try {
-        const response = await service.getAllAbc();
-        this.items = response.data;
-      } catch (err) {
-        this.error = err;
-        throw err;
-      } finally {
-        this.loading = false;
-      }
-    },
-    //Ha a direction meg van aadva, akkor ez lesz a sorrend
-    //Ha nincs megadva, akkor ellentettjére vált
-    async getAllSortSearch(column = "id", direction = null) {
-      //   const toast = useToastStore();
-      this.loading = true;
-      this.error = null;
-      this.sortColumn = column;
-      if (!direction) {
-        direction =
-          this.sortColumn === column && this.sortDirection === "asc"
-            ? "desc"
-            : "asc";
-      }
-      this.sortDirection = direction;
-      try {
-        const response = await service.getAllSortSearch(
-          this.sortColumn,
-          this.sortDirection,
-          this.searchStore.searchWord,
-        );
-        this.items = response.data;
-      } catch (err) {
-        this.error = err;
-        throw err;
-      } finally {
-        this.loading = false;
-      }
-    },
+
+    // 1. ÖSSZES LEKÉRÉSE (Egyszerű listázáshoz)
     async getAll() {
-      //   const toast = useToastStore();
       this.loading = true;
       this.error = null;
       try {
         const response = await service.getAll();
-        // this.searchStore.reset();
         this.items = response.data;
       } catch (err) {
-        this.error = err;
+        this.error = err.response?.data?.message || "Hiba a letöltés során.";
         throw err;
       } finally {
         this.loading = false;
       }
     },
 
-    // READ - Egy adat lekérése
+    // 2. RENDEZETT ÉS KERESETT LEKÉRÉS (Admin táblázathoz)
+    async getAllSortSearch(column = "id", direction = null) {
+      this.loading = true;
+      this.error = null;
+      this.sortColumn = column;
+      
+      // Ha nincs irány megadva, váltogatja az asc/desc között
+      if (!direction) {
+        direction = this.sortColumn === column && this.sortDirection === "asc" ? "desc" : "asc";
+      }
+      this.sortDirection = direction;
+
+      try {
+        const response = await service.getAllSortSearch(
+          this.sortColumn,
+          this.sortDirection,
+          this.searchStore.searchWord
+        );
+        this.items = response.data;
+      } catch (err) {
+        this.error = err.response?.data?.message || "Szerver hiba a kereséskor.";
+        throw err;
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    // 3. EGY RENDELÉS LEKÉRÉSE ID ALAPJÁN
     async getById(id) {
       this.loading = true;
       this.error = null;
-      //   const toast = useToastStore();
       try {
         const response = await service.getById(id);
         this.item = response.data;
@@ -111,77 +100,53 @@ export const useOrderStore = defineStore("orders", {
       }
     },
 
-    // CREATE - Új elem hozzáadása
-   async create(data) {
+    // 4. LÉTREHOZÁS (Ezt hívjuk meg az OrdersView-ban a gombnyomásra!)
+    async create(data) {
       this.loading = true;
       this.error = null;
       try {
-        await service.create(data);
-        // Létrehozás után frissítjük a listát a jelenlegi rendezés szerint
-        const response = await service.getAllSortSearch(
-          this.sortColumn,
-          this.sortDirection,
-          this.searchStore.searchWord,
-        );
-        this.items = response.data;
-        return true;
+        const response = await service.create(data);
+        // Frissítjük a helyi listát is, hogy azonnal látszódjon a profilban
+        await this.getAll(); 
+        return response.data;
       } catch (err) {
-        // Általános hibaüzenet kezelés a Laravel validációs hibáihoz
-        this.error = err.response?.data?.message || "Hiba történt a mentés során.";
+        this.error = err.response?.data?.errors || "Sikertelen mentés.";
         throw err;
       } finally {
         this.loading = false;
       }
     },
 
-    // 3. UPDATE - Módosítás (Helyi frissítéssel, újraolvasás nélkül)
+    // 5. MÓDOSÍTÁS
     async update(id, updateData) {
       this.loading = true;
       this.error = null;
       try {
-        const updatedItem = await service.update(id, updateData);
-        // const response = await service.getAll();
-        const response = await service.getAllSortSearch(
-          this.sortColumn,
-          this.sortDirection,
-          this.searchStore.searchWord,
-        );
-        this.items = response.data;
-        // toast.messages.push(`Sikeresen módosítva`);
-        // toast.show("Success");
+        await service.update(id, updateData);
+        await this.getAllSortSearch(this.sortColumn, this.sortDirection);
         return true;
       } catch (err) {
         this.error = err;
         throw err;
-        return false;
       } finally {
         this.loading = false;
       }
     },
 
-    // 4. DELETE - Törlés
+    // 6. TÖRLÉS
     async delete(id) {
       this.loading = true;
       this.error = null;
       try {
         await service.delete(id);
-        //const response = await service.getAll();
-        const response = await service.getAllSortSearch(
-          this.sortColumn,
-          this.sortDirection,
-          this.searchStore.searchWord,
-        );
-        this.items = response.data;
-        // toast.messages.push(`Sikeresen törölve`);
-        // toast.show("Success");
+        await this.getAllSortSearch(this.sortColumn, this.sortDirection);
         return true;
       } catch (err) {
         this.error = err;
         throw err;
-        return false;
       } finally {
         this.loading = false;
       }
-    },
+    }
   },
 });

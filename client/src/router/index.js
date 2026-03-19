@@ -4,13 +4,15 @@ import { useUserLoginLogoutStore } from "@/stores/userLoginLogoutStore";
 import { useToastStore } from "@/stores/toastStore";
 
 //Azt nézi meg, hogy be van-e valaki jelentkezve
-function checkIfNotLogged() {
-  const storeAuth = useUserLoginLogoutStore();
-  if (!storeAuth.isLoggedIn) {
-    return "/login";
+const checkIfNotLogged = (to, from, next) => {
+  const store = useUserLoginLogoutStore();
+  // Ha be van jelentkezve (bárki, aki nem vendég), mehet!
+  if (store.isLoggedIn) {
+    next();
+  } else {
+    next("/login"); // Ha nincs belépve, irány a login
   }
-}
-
+};
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -43,6 +45,17 @@ const router = createRouter({
         roles: [1, 2],
       },
     },
+      {
+          path: "/rendeles",
+          name: "rendeles",
+          component: () => import("@/views/OrdersView.vue"),
+          beforeEnter: [checkIfNotLogged],
+          meta: {
+            title: (route) => "Rendelés",
+            breadcrumb: "Rendelés",
+            roles: [1, 2],
+          },
+        },
 
     {
       path: "/adatok",
@@ -51,7 +64,7 @@ const router = createRouter({
       meta: {
         breadcrumb: "Adatok",
         disabled: true,
-        roles: [1],
+        roles: [1,],
       },
       children: [
         {
@@ -76,17 +89,7 @@ const router = createRouter({
             roles: [1, 2],
           },
         },
-        {
-          path: "/rendeles",
-          name: "rendeles",
-          component: () => import("@/views/OrdersView.vue"),
-          beforeEnter: [checkIfNotLogged],
-          meta: {
-            title: (route) => "Rendelés",
-            breadcrumb: "Rendelés",
-            roles: [1],
-          },
-        },
+      
         {
           path: "rendelesszolgaltatasok",
           name: "rendelesszolgaltatasok",
