@@ -177,7 +177,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "orderId": 21,
+    "orderId": 31,
     "serviceId": 4
 }
 
@@ -295,7 +295,7 @@ Authorization: Bearer {{token}}
 }
 
 ### delete orders by id
-delete {{host}}/api/orders/21
+delete {{host}}/api/orders/50
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}

@@ -13,12 +13,19 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            // Kié a rendelés? (Ez már megvolt)
             $table->foreignId('userId')->constrained('users')->onDelete('restrict');
             $table->foreignId('locationId')->constrained('locations')->onDelete('restrict');
             $table->integer('howManyPeople')->nullable();
             $table->integer('howManyDays')->nullable();
             $table->dateTime('orderTime')->nullable();
-            $table->unique(columns: ['userId', 'locationId', 'orderTime']);
+
+            // --- ÚJ MEZŐ A SZŰRÉSHEZ ---
+            // Ez jelöli, ha a rendszer rakta be (0 = felhasználó látja, 1 = elrejtve a felhasználótól)
+            $table->boolean('is_system')->default(false);
+            // ----------------------------
+
+            $table->unique(['userId', 'locationId', 'orderTime']);
             $table->timestamps();
         });
     }
