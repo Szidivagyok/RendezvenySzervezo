@@ -1,27 +1,29 @@
 import apiClient from './axiosClient'; 
-const route = '/locations';
+
+// FIGYELEM: Itt /locations kell legyen, nem /pictures!
+const route = '/locations'; 
 
 export default {
-     // GET: Összes rekord lekérése
+  // GET: Összes helyszín lekérése
   async getAll() {
     return await apiClient.get(`${route}`);
   },
 
-  // GET: Egy rekord (ID alapján)
+  // GET: Egy helyszín lekérése (ID alapján)
   async getById(id) {
-    const url = `${route}/${id}`
+    const url = `${route}/${id}`;
     return await apiClient.get(url);
   },
 
-  // POST: Új rekord posztolás
+  // POST: Új helyszín mentése
   async create(data) {
-    delete data.id; //id kulcsot kiveszi az objektumból
+    console.log("LocationService-be érkezett adat:", data);
     return await apiClient.post(`${route}`, data);
   },
 
-  // PUT: Módosítás
+  // PATCH: Módosítás
   async update(id, data) {
-    delete data.id; //id kulcsot kiveszi az objektumból
+    console.log(`LocationService frissítés (ID: ${id}):`, data);
     return await apiClient.patch(`${route}/${id}`, data);
   },
 

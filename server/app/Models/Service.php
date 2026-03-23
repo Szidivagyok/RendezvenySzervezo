@@ -12,6 +12,7 @@ class Service extends Model
       protected $fillable = [
       'service',
       'price',
+      'serviceTypeId'
       ];
 
        protected $hidden =[

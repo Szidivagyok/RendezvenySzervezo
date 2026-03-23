@@ -32,5 +32,12 @@ export default {
   // DELETE: Törlés
   async delete(id) {
     return await apiClient.delete(`${route}/${id}`);
-  }
+  },
+
+ // userService.js
+async changePassword(id, data) {
+  // Az api.php-ban: Route::patch('users/{id}', [UserController::class, 'update'])
+  // Fontos a / jel az elején!
+  return await apiClient.patch(`/users/${id}`, data);
+}
 };

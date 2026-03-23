@@ -60,7 +60,7 @@ import ButtonsCrudCreate from "@/components/Table/ButtonsCrudCreate.vue";
 import FormUser from "@/components/Forms/FormUser.vue";
 export default {
   //módosít
-  name: "SchooClassView",
+  name: "UsersView",
   components: {
     GenericTable,
     ConfirmModal,
@@ -77,12 +77,12 @@ export default {
       //módosít
       pageTitle: "Userek",
       //módosít
-      tableColumns: [
-        { key: "id", label: "ID", debug: import.meta.env.VITE_DEBUG_MODE },
-        { key: "name", label: "User név", debug: 2 },
-        { key: "email", label: "Email", debug: 2 },
-        { key: "role", label: "Szerepkör", debug: 2 },
-      ],
+     tableColumns: [
+  { key: "id", label: "ID", debug: 2 },
+  { key: "name", label: "User név", debug: 2 }, // 'name' helyett próbáld ki: 'userName'
+  { key: "email", label: "Email", debug: 2 },
+  { key: "role", label: "Szerepkör", debug: 2 }, // 'role' helyett lehet, hogy 'roleId' vagy 'role_id'
+],
       //módosít
       useCollectionStore: useUserStore,
       isOpenConfirmModal: false,
@@ -130,10 +130,6 @@ export default {
       // this.$refs.form.show();
       // console.log("Create:");
     },
-    passwordChangeHandler(id){
-      console.log("passwordChangeHandler", id);
-      
-    },
     sortHandler(column) {
       console.log(column);
       this.getAllSortSearch(column);
@@ -143,6 +139,24 @@ export default {
       this.isOpenConfirmModal = false;
       this.state = "r";
     },
+ async passwordChangeHandler(id) {
+  const newPassword = prompt("Add meg az új jelszót:");
+
+  // Csak akkor indulunk el, ha nem nyomott 'Mégse'-t (null)
+  if (newPassword !== null) {
+    try {
+      // Meghívjuk a store action-t
+      // Mivel a data()-ban 'useUserStore' van a 'useCollectionStore'-ban:
+      const userStore = this.useCollectionStore(); 
+      await userStore.changePassword(id, { password: newPassword });
+
+      alert("Sikeres mentés!");
+    } catch (error) {
+      console.error("Hiba történt:", error);
+      alert("A mentés nem sikerült. Nézd meg a konzolt!");
+    }
+  }
+},
     async confirmHandler() {
       try {
         await this.delete(this.toDeleteId);

@@ -10,28 +10,39 @@
           <form @submit.prevent="submit">
             
             <div class="mb-4">
-              <label class="form-label fw-bold small text-uppercase text-muted">Szolgáltatás Típus megnevezése</label>
+              <label class="form-label fw-bold small text-uppercase text-muted">Kép fájlneve / URL</label>
               <input 
                 type="text" 
-                class="form-control form-control-lg" 
-                v-model="localItem.serviceTypeName" 
-                placeholder="Pl. Helyszín, Élő zene, Étel..."
+                class="form-control form-control-lg shadow-sm" 
+                v-model="localItem.pictureName" 
+                placeholder="Pl. helyszin_01.jpg vagy https://..."
               >
-              <div v-if="errors.serviceTypeName" class="text-danger mt-1 small">
-                {{ errors.serviceTypeName[0] }}
-              </div>
+              <div v-if="errors.pictureName" class="text-danger mt-1 small">{{ errors.pictureName[0] }}</div>
             </div>
 
-            <div class="alert alert-light border-0 small text-muted">
-              <i class="bi bi-info-circle me-2"></i>
-              Ez a megnevezés fog megjelenni a szolgáltatások kategóriájaként.
+            <div class="mb-4">
+              <label class="form-label fw-bold small text-uppercase text-muted">Hozzárendelés</label>
+              <select 
+                class="form-select form-select-lg shadow-sm" 
+                v-model="localItem.serviceId"
+              >
+                <option :value="null" disabled>Válassz egy kategóriát...</option>
+                <option v-for="s in serviceStore.items" :key="s.id" :value="s.id">
+                  {{ s.service }} (ID: {{ s.id }})
+                </option>
+              </select>
+              <div v-if="errors.serviceId" class="text-danger mt-1 small">A hozzárendelés kötelező!</div>
+              <p class="text-muted small mt-2">
+                <i class="bi bi-info-circle me-1"></i>
+                Válaszd ki, hogy ez a kép melyik helyszínhez vagy szolgáltatáshoz (zene, étel, stb.) tartozzon.
+              </p>
             </div>
 
           </form>
         </div>
         <div class="modal-footer border-0 bg-light p-3">
           <button type="button" class="btn btn-outline-secondary rounded-pill px-4" @click="hide">Mégse</button>
-          <button type="button" class="btn btn-primary rounded-pill px-4 fw-bold" @click="submit">Típus mentése</button>
+          <button type="button" class="btn btn-primary rounded-pill px-4 fw-bold" @click="submit">Kép mentése</button>
         </div>
       </div>
     </div>
@@ -40,6 +51,7 @@
 
 <script>
 import * as bootstrap from "bootstrap";
+import { useServiceStore } from "@/stores/serviceStore"; // Szolgáltatások Store-ja a lenyílóhoz
 
 export default {
   props: {
@@ -49,9 +61,11 @@ export default {
   data() {
     return {
       modalInstance: null,
+      serviceStore: useServiceStore(), // Példányosítjuk a szolgáltatás store-t
       localItem: { 
         id: 0, 
-        serviceTypeName: "" 
+        pictureName: "", 
+        serviceId: null
       },
       errors: {},
     };
@@ -71,13 +85,13 @@ export default {
   },
   methods: {
     resetLocalItem() {
-      this.localItem = { 
-        id: 0, 
-        serviceTypeName: "" 
-      };
+      this.localItem = { id: 0, pictureName: "", serviceId: null };
     },
-    show() {
+    async show() {
       this.errors = {};
+      // Mielőtt megmutatjuk a modalt, lekérjük a legfrissebb szolgáltatás listát az adatbázisból
+      await this.serviceStore.getAll();
+      
       this.modalInstance = new bootstrap.Modal(this.$refs.modal);
       this.modalInstance.show();
     },
@@ -107,7 +121,8 @@ export default {
   margin-bottom: 0.3rem;
   letter-spacing: 0.5px;
 }
-.modal-dialog {
-  margin-top: 50px;
+.form-control:focus, .form-select:focus {
+  border-color: #a8b2bd;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1);
 }
 </style>

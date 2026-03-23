@@ -26,9 +26,7 @@
               <RouterLink class="nav-link" to="/about">Rólunk</RouterLink>
             </li>
             <li v-if="hasMenuAccess('/rendeles')">
-              <RouterLink class="nav-link" to="/rendeles"
-                >Rendelés</RouterLink
-              >
+              <RouterLink class="nav-link" to="/rendeles">Rendelés</RouterLink>
             </li>
             <li class="nav-item dropdown" v-if="hasMenuAccess('/adatok')">
               <a
@@ -42,45 +40,44 @@
               </a>
               <ul class="dropdown-menu">
                 <li v-if="hasMenuAccess('/adatok/szolgaltatasok')">
-                  <RouterLink class="dropdown-item" to="/adatok/szolgaltatasok"
-                    >Szolgáltatások</RouterLink
+                  <RouterLink
+                    class="dropdown-item"
+                    :to="{ name: 'szolgaltatasok' }"
                   >
+                    Szolgáltatások
+                  </RouterLink>
                 </li>
+
                 <li v-if="hasMenuAccess('/adatok/helyszinek')">
-                  <RouterLink class="dropdown-item" to="/adatok/helyszinek"
-                    >Helyszínek</RouterLink
+                  <RouterLink
+                    class="dropdown-item"
+                    :to="{ name: 'helyszinek' }"
                   >
-                </li>   
-              <li v-if="hasMenuAccess('/adatok/rendeles')">
-                  <RouterLink class="dropdown-item" to="/adatok/rendeles"
-                    >Rendelés</RouterLink
-                  >
+                    Helyszínek
+                  </RouterLink>
                 </li>
-                <li v-if="hasMenuAccess('/adatok/rendelesszolgaltatasok')">
-                  <RouterLink class="dropdown-item" to="/adatok/rendelesszolgaltatasok"
-                    >Rendelés szolgáltatások</RouterLink
-                  >
-                </li>
-                <li v-if="hasMenuAccess('/adatok/helyszinkepek')">
-                  <RouterLink class="dropdown-item" to="/adatok/helyszinkepek"
-                    >Helyszín képek</RouterLink
-                  >
-                </li>   
+
                 <li v-if="hasMenuAccess('/adatok/kepek')">
-                  <RouterLink class="dropdown-item" to="/adatok/kepek"
-                    >Képek</RouterLink
-                  >
-                </li>   
+                  <RouterLink class="dropdown-item" :to="{ name: 'kepek' }">
+                    Képek
+                  </RouterLink>
+                </li>
+
                 <li v-if="hasMenuAccess('/adatok/szolgaltatasoktipusok')">
-                  <RouterLink class="dropdown-item" to="/adatok/szolgaltatasoktipusok"
-                    >Szolgáltatások típusok</RouterLink
+                  <RouterLink
+                    class="dropdown-item"
+                    :to="{ name: 'szolgaltatasoktipusok' }"
                   >
-                </li>  
+                    Szolgáltatások típusok
+                  </RouterLink>
+                </li>
+
                 <li><hr class="dropdown-divider" /></li>
+
                 <li v-if="hasMenuAccess('/adatok/users')">
-                  <RouterLink class="dropdown-item" to="/adatok/users"
-                    >Userek</RouterLink
-                  >
+                  <RouterLink class="dropdown-item" :to="{ name: 'users' }">
+                    Userek
+                  </RouterLink>
                 </li>
               </ul>
             </li>
@@ -164,11 +161,15 @@ export default {
       this.searchWordInput = value;
     },
   },
- computed: {
-  ...mapState(useSearchStore, ["searchWord"]),
-  // Itt add hozzá a 'role'-t is!
-  ...mapState(useUserLoginLogoutStore, ["isLoggedIn", "role", "userNameWithRole"]),
-},
+  computed: {
+    ...mapState(useSearchStore, ["searchWord"]),
+    // Itt add hozzá a 'role'-t is!
+    ...mapState(useUserLoginLogoutStore, [
+      "isLoggedIn",
+      "role",
+      "userNameWithRole",
+    ]),
+  },
   methods: {
     ...mapActions(useSearchStore, ["resetSearchWord", "setSearchWord"]),
     onClickSearchButton() {
@@ -288,6 +289,4 @@ body,
 main {
   flex: 1; /* a tartalom kitölti a maradék helyet */
 }
-
-
 </style>

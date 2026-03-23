@@ -238,35 +238,34 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserRequest $request, int $id)
-    {
-        $row = User::find($id);
+   public function update(UpdateUserRequest $request, int $id)
+{
+    $row = User::find($id);
 
-        if ($row) {
-            # code...
-            $status = 200;
-            //Szabd-e ezt nekem?
-            $userToUpdate = $row;
-            $this->authorize('updateAdmin', $userToUpdate);
+    if ($row) {
+        $userToUpdate = $row;
+        $this->authorize('updateAdmin', $userToUpdate);
 
-            $row->update($request->all());
-
-            $data = [
-                'message' => 'OK',
-                'data' => [
-                    'data' => $row
-                ]
-            ];
-        } else {
-            # code...
-            $status = 404;
-            $data = [
-                'message' => "Patch error. Not found id: $id",
-                'data' => $id
-            ];
+        // --- ÚJ RÉSZ: Jelszó kezelése ---
+        $inputs = $request->all();
+        if ($request->has('password')) {
+            $inputs['password'] = Hash::make($request->password);
         }
-        return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
+        // -------------------------------
+
+        $row->update($inputs); // Az eredeti $request->all() helyett az $inputs-t használjuk
+
+        $data = [
+            'message' => 'OK',
+            'data' => ['data' => $row]
+        ];
+        $status = 200;
+    } else {
+        $status = 404;
+        $data = ['message' => "Patch error. Not found id: $id", 'data' => $id];
     }
+    return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
+}
 
     /**
      * Remove the specified resource from storage.
