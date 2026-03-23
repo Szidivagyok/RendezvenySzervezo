@@ -136,7 +136,7 @@ const router = createRouter({
           },
         },
         {
-          path: "/users",
+          path: "users",
           name: "users",
           component: () => import("@/views/UsersView.vue"),
           beforeEnter: [checkIfNotLogged],

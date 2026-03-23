@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UpdateServiceRequest as UpdateCurrentModelRequest;
 use App\Models\Service as CurrentModel;
 use App\Http\Requests\StoreServiceRequest as StoreCurrentModelRequest;
+use App\Models\Service;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-
+use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
@@ -27,14 +28,15 @@ class ServiceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCurrentModelRequest $request)
-    {
-        return $this->apiResponse(
-            function () use ($request) {
-                return CurrentModel::create($request->validated());
-            }
-        );
-    }
+   public function store(Request $request) {
+    $validated = $request->validate([
+        'service' => 'required|string|unique:services',
+        'price' => 'required|numeric',
+        'serviceTypeId' => 'required|integer', // EZT IS ADD HOZZÁ!
+    ]);
+
+    return Service::create($validated);
+}
 
     /**
      * Display the specified resource.

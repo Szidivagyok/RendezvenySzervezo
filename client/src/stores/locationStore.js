@@ -1,23 +1,19 @@
 import { defineStore } from "pinia";
-// import { useToastStore } from "@/stores/toastStore";
+import locationService from "@/api/locationService"; // Feltételezve, hogy ez a neve
 import { useSearchStore } from "./searchStore";
-import service from "@/api/locationService";
 
-// const toast = useToastStore();
-
-//változtatás
 class Item {
   constructor(
-    id = 0,
-    cityName = "",
-    zipCode = "",
-    street = "",
-    houseNumber = "",
-    locationName = "",
-    maxCapacity = 0,
-    minCapacity = 0,
-    priceSlashPerson = 0,
-    roomPriceSlashDay = 0,
+    id = 0, 
+    cityName = "", 
+    zipCode = null, 
+    street = "", 
+    houseNumber = "", 
+    locationName = "", 
+    maxCapacity = 0, 
+    minCapacity = 0, 
+    priceSlashPerson = 0, 
+    roomPriceSlashDay = 0
   ) {
     this.id = id;
     this.cityName = cityName;
@@ -35,119 +31,117 @@ class Item {
 export const useLocationStore = defineStore("locations", {
   state: () => ({
     item: new Item(),
-    items: [new Item()],
+    items: [],
     loading: false,
     error: null,
-    sortColumn: "id",
-    sortDirection: "asc",
+    searchStore: useSearchStore(),
   }),
   getters: {
-    getItemsLength() {
-      return this.items.length;
-    },
+    getItemsLength: (state) => state.items.length
   },
   actions: {
-    clearItem() {
-      this.item = new Item();
-    },
-    //Ha a direction meg van aadva, akkor ez lesz a sorrend
-    //Ha nincs megadva, akkor ellentettjére vált
+    clearItem() { this.item = new Item(); },
+
     async getAll() {
-      //   const toast = useToastStore();
       this.loading = true;
-      this.error = null;
       try {
-        const response = await service.getAll();
-        // this.searchStore.reset();
+        const response = await locationService.getAll();
         this.items = response.data;
       } catch (err) {
         this.error = err;
-        throw err;
       } finally {
         this.loading = false;
       }
     },
 
-    // READ - Egy adat lekérése
     async getById(id) {
       this.loading = true;
-      this.error = null;
-      //   const toast = useToastStore();
       try {
-        const response = await service.getById(id);
+        const response = await locationService.getById(id);
         this.item = response.data;
       } catch (err) {
         this.error = err;
-        throw err;
       } finally {
         this.loading = false;
       }
     },
 
-    // CREATE - Új elem hozzáadása
-    async create(data) {
-      this.loading = true;
-      this.error = null;
-      try {
-        const newItem = await service.create(data);
-        const response = await service.getAll();
+ // locationStore.js
 
-        this.items = response.data;
-        // toast.messages.push("Sikeresen létrehozva!");
-        // toast.show("Success");
-        return true;
-      } catch (err) {
-        this.error = err.response.data.errors.cityName[0];
-        throw err;
-        return false;
-      } finally {
-        this.loading = false;
-      }
-    },
+async create(data) {
+  this.loading = true;
+  this.error = null;
+  try {
+    // Nagyon fontos: Minden mezőt bele kell tenni a payloadba, 
+    // amit a Laravel és az adatbázis elvár!
+    const payload = {
+      locationName: data.locationName || "",
+      cityName: data.cityName || "",
+      zipCode: data.zipCode ? data.zipCode.toString() : "",
+      street: data.street || "",
+      houseNumber: data.houseNumber ? data.houseNumber.toString() : "",
+      minCapacity: Number(data.minCapacity) || 0,
+      maxCapacity: Number(data.maxCapacity) || 0,
+      priceSlashPerson: Number(data.priceSlashPerson) || 0,
+      roomPriceSlashDay: Number(data.roomPriceSlashDay) || 0
+    };
 
-    // 3. UPDATE - Módosítás (Helyi frissítéssel, újraolvasás nélkül)
-    async update(id, updateData) {
-      this.loading = true;
-      this.error = null;
-      try {
-        const updatedItem = await service.update(id, updateData);
-        const response = await service.getAll();
-        this.items = response.data;
-        // toast.messages.push(`Sikeresen módosítva`);
-        // toast.show("Success");
-        return true;
-      } catch (err) {
-        this.error = err;
-        throw err;
-        return false;
-      } finally {
-        this.loading = false;
-      }
-    },
+    // DEBUG: Nézzük meg a konzolban, mi indul el a szerverre
+    console.log("Küldés folyamatban...", payload);
 
-    // 4. DELETE - Törlés
+    const response = await locationService.create(payload);
+    
+    // Frissítjük a listát, hogy az új elem is benne legyen
+    await this.getAll(); 
+    return true;
+  } catch (err) {
+    this.error = err;
+    // Kiírjuk a konkrét hibaüzenetet a konzolra a könnyebb javításhoz
+    console.error("Hiba a mentés során:", err.response?.data || err);
+    return false;
+  } finally {
+    this.loading = false;
+  }
+},
+   async update(id, data) {
+  this.loading = true;
+  try {
+    const payload = {
+      locationName: data.locationName,
+      cityName: data.cityName,
+      zipCode: data.zipCode ? data.zipCode.toString() : "",
+      street: data.street,
+      houseNumber: data.houseNumber ? data.houseNumber.toString() : "", // EZ KELL IDE IS!
+      minCapacity: Number(data.minCapacity),
+      maxCapacity: Number(data.maxCapacity),
+      priceSlashPerson: Number(data.priceSlashPerson),
+      roomPriceSlashDay: Number(data.roomPriceSlashDay)
+    };
+
+    await locationService.update(id, payload);
+    await this.getAll(); // Lista frissítése
+    return true;
+  } catch (err) {
+    this.error = err;
+    console.error("Módosítási hiba:", err.response?.data || err);
+    return false;
+  } finally {
+    this.loading = false;
+  }
+},
+
     async delete(id) {
       this.loading = true;
-      this.error = null;
       try {
-        await service.delete(id);
-        //const response = await service.getAll();
-        const response = await service.getAllSortSearch(
-          this.sortColumn,
-          this.sortDirection,
-          this.searchStore.searchWord,
-        );
-        this.items = response.data;
-        // toast.messages.push(`Sikeresen törölve`);
-        // toast.show("Success");
+        await locationService.delete(id);
+        await this.getAll();
         return true;
       } catch (err) {
         this.error = err;
-        throw err;
         return false;
       } finally {
         this.loading = false;
       }
-    },
-  },
+    }
+  }
 });

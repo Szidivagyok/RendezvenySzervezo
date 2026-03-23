@@ -1,44 +1,38 @@
 <template>
-  <div>
-    <!-- oldal fejléc -->
-    <div class="d-flex align-items-center m-0 mb-2">
-      <h1>{{ pageTitle }}</h1>
-      <div class="d-flex align-items-center m-0 ms-2">
-        <!-- loading ikon -->
-        <i
-          v-if="loading"
-          class="bi bi-hourglass-split fs-3 col-auto p-0 pe-1"
-        ></i>
-        <p class="m-0 ms-2">({{ getItemsLength }})</p>
+  <div class="container py-4">
+    <div class="d-flex align-items-center mb-4">
+      <h1 class="m-0">{{ pageTitle }}</h1>
+      <div class="ms-3 d-flex align-items-center">
+        <i v-if="loading" class="bi bi-hourglass-split fs-3 text-primary me-2"></i>
+        <span class="badge bg-secondary fs-6" v-if="items">{{ items.length }} db</span>
       </div>
     </div>
 
-    <!-- táblázat -->
     <GenericTable
+      v-if="items && items.length > 0"
       :items="items"
       :columns="tableColumns"
       :useCollectionStore="useCollectionStore"
-      :cButtonVisible="true"
+      :cButtonVisible="true" 
       :pButtonVisible="false"
       @delete="deleteHandler"
       @update="updateHandler"
       @create="createHandler"
       @sort="sortHandler"
-      v-if="items.length > 0"
     />
     
+    <div v-else-if="!loading" class="alert alert-info text-center mt-3">
+      Nincs megjeleníthető szolgáltatás.
+    </div>
 
-    <div v-else class="m-auto text-center">Nincs találat</div>
-
-    <!-- FORM -->
     <FormService
       ref="form"
       :title="title"
       :item="item"
       @yesEventForm="yesEventFormHandler"
+      :service_types="serviceTypeStoreItems"
     />
 
-    <!-- CONFIRM -->
     <ConfirmModal
       :isOpenConfirmModal="isOpenConfirmModal"
       @cancel="cancelHandler"
@@ -49,83 +43,51 @@
 
 <script>
 import { mapActions, mapState } from "pinia";
-
-// store
 import { useServiceStore } from "@/stores/serviceStore";
 import { useSearchStore } from "@/stores/searchStore";
-
-// components
+import { useServiceTypeStore } from "@/stores/servicetypeStore";
 import GenericTable from "@/components/Table/GenericTable.vue";
 import ConfirmModal from "@/components/Confirm/ConfirmModal.vue";
 import FormService from "@/components/Forms/FormService.vue";
+import userService from "@/api/userService";
 
 export default {
   name: "ServicesView",
-
-  components: {
-    GenericTable,
-    ConfirmModal,
-    FormService,
-  },
-
+  components: { GenericTable, ConfirmModal, FormService },
   data() {
     return {
-      pageTitle: "Szolgáltatások",
-
+      pageTitle: "Szolgáltatások Kezelése",
       tableColumns: [
-        { key: "id", label: "ID", debug: import.meta.env.VITE_DEBUG_MODE },
-        { key: "name", label: "Megnevezés", debug: 2 },
+        { key: "id", label: "ID", debug: 2 },
+        { key: "service", label: "Megnevezés", debug: 2 },
         { key: "serviceTypeId", label: "Típus", debug: 2 },
         { key: "price", label: "Ár (Ft)", debug: 2 },
       ],
-
       useCollectionStore: useServiceStore,
-
       isOpenConfirmModal: false,
       toDeleteId: null,
-
-      state: "r", // r, c, u, d
+      state: "r", // 'r' = read, 'c' = create, 'u' = update, 'd' = delete
       title: "",
+    
     };
   },
-
   computed: {
-    ...mapState(useServiceStore, [
-      "item",
-      "items",
-      "loading",
-      "getItemsLength",
-    ]),
-    ...mapState(useSearchStore, ["searchWord"]),
+    ...mapState(useServiceStore, ["item", "items", "loading"]),
+    ...mapState(useServiceTypeStore, {serviceTypeStoreItems: "items"}),
   },
-
-  watch: {
-    searchWord() {
-      this.getAllSortSearch(this.sortColumn, this.sortDirection);
-    },
-  },
-
   methods: {
-    ...mapActions(useServiceStore, [
-      "getAll",
-      "getAllSortSearch",
-      "getById",
-      "create",
-      "update",
-      "delete",
-      "clearItem",
-    ]),
-
+    ...mapActions(useServiceStore, ["getAll", "getById", "create", "update", "delete", "clearItem"]),
     ...mapActions(useSearchStore, ["resetSearchWord"]),
+    ...mapActions(useServiceTypeStore, { getServiceTypeStoreAll: "getAll"}),
 
-    // DELETE
+    // TÖRLÉS: Megnyitja a ConfirmModal-t
     deleteHandler(id) {
       this.state = "d";
       this.toDeleteId = id;
       this.isOpenConfirmModal = true;
     },
 
-    // UPDATE
+    // MÓDOSÍTÁS: Betölti az adatot és megnyitja a Form-ot
     updateHandler(id) {
       this.state = "u";
       this.title = "Szolgáltatás módosítása";
@@ -133,63 +95,53 @@ export default {
       this.$refs.form.show();
     },
 
-    // CREATE
+    // HOZZÁADÁS: Ez fut le a zöld gombra kattintva!
     createHandler() {
       this.state = "c";
-      this.title = "Új szolgáltatás";
-      this.clearItem();
-      this.$refs.form.show();
+      this.title = "Új szolgáltatás hozzáadása";
+      this.clearItem(); // Kiüríti a store-ban az aktuális elemet
+      this.$refs.form.show(); // Megnyitja az üres űrlapot
     },
 
-    // SORT
-    sortHandler(column) {
-      this.getAllSortSearch(column);
-    },
-
-    // CANCEL DELETE
     cancelHandler() {
       this.isOpenConfirmModal = false;
-      this.state = "r";
     },
 
-    // CONFIRM DELETE
     async confirmHandler() {
-      try {
-        await this.delete(this.toDeleteId);
-      } catch (error) {}
-
+      await this.delete(this.toDeleteId);
       this.isOpenConfirmModal = false;
-      this.state = "r";
     },
 
-    // FORM SUBMIT
-    async yesEventFormHandler({ item, done }) {
-      try {
-        if (this.state === "c") {
-          await this.create(item);
-        } else {
-          await this.update(item.id, item);
-        }
+    // Mentés gomb kezelése az űrlapon
+   async yesEventFormHandler({ item, done }) {
+  try {
+    let success = false;
+    if (this.state === "c") {
+      success = await this.create(item); // Várjuk meg a mentést
+    } else {
+      success = await this.update(item.id, item);
+    }
 
-        this.state = "r";
-        done(true);
-      } catch (err) {
-        if (err.response && err.response.status === 422) {
-          this.$refs.form.setServerErrors(err.response.data.errors);
-          done(false);
-        } else {
-          done(false);
-        }
-      }
-    },
+    if (success) {
+      done(true); // Csak akkor zárjuk be az ablakot, ha sikerült a mentés
+    } else {
+      alert("Hiba történt a mentés során. Ellenőrizd az adatokat!");
+      done(false); 
+    }
+  } catch (err) {
+    done(false);
+  }
+},
+
+    sortHandler(column) {
+      console.log("Rendezés:", column);
+    }
   },
-
   async mounted() {
     this.resetSearchWord();
     await this.getAll();
+
+    await this.getServiceTypeStoreAll();
   },
 };
 </script>
-
-<style scoped>
-</style>

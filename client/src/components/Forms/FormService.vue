@@ -1,74 +1,57 @@
 <template>
-  <div>
-    <div class="modal fade" ref="modal">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <!-- HEADER -->
-          <div class="modal-header">
-            <h5 class="modal-title">{{ title }}</h5>
-            <button type="button" class="btn-close" @click="hide"></button>
-          </div>
-
-          <!-- BODY -->
-          <div class="modal-body">
-            <!-- SZOLGÁLTATÁS TÍPUSOK -->
+  <div class="modal fade" ref="modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content shadow-lg border-0 rounded-4">
+        <div class="modal-header bg-light">
+          <h5 class="modal-title fw-bold text-dark">{{ title }}</h5>
+          <button type="button" class="btn-close" @click="hide"></button>
+        </div>
+        <div class="modal-body p-4">
+          <form @submit.prevent="submit">
             <div class="mb-3">
-              <label class="form-label">Szolgáltatás</label>
-              <select v-model="localItem.serviceTypeId" class="form-select">
-                <option value="" disabled>Válassz típust</option>
+              <label class="form-label fw-bold small text-uppercase text-muted">Kategória</label>
+              <select v-model="localItem.serviceTypeId" class="form-select form-select-lg">
+                <option :value="null" disabled>Válassz típust...</option>
                 <option v-for="type in service_types" :key="type.id" :value="type.id">
                   {{ type.serviceTypeName }}
                 </option>
               </select>
             </div>
 
-            <!-- KONKRÉT SZOLGÁLTATÁS / VÁROS -->
             <div class="mb-3">
-              <label class="form-label">Szolgáltatás típusok</label>
-              <select
-                v-model="localItem.serviceId"
-                class="form-select"
+              <label class="form-label fw-bold small text-uppercase text-muted">Konkrét szolgáltatás</label>
+              <input 
+                type="text" 
+                class="form-control form-control-lg" 
+                v-model="localItem.service" 
+                list="serviceSuggestions"
+                placeholder="Írd be a nevét vagy válassz..."
                 :disabled="!localItem.serviceTypeId"
               >
-                <option value="" disabled>Válassz szolgáltatást</option>
-                <option
-                  v-for="service in filteredServices"
-                  :key="service.id"
-                  :value="service.id"
-                >
-                  {{ service.name }}
-                </option>
-              </select>
-
-              <div v-if="errors.serviceId" class="text-danger mt-1">
-                <div v-for="(err, i) in errors.serviceId" :key="i">
-                  {{ err }}
-                </div>
+              <datalist id="serviceSuggestions">
+                <option v-for="s in filteredServices" :key="s.id" :value="s.name"></option>
+              </datalist>
+              
+              <div v-if="errors.service" class="text-danger mt-1 small">
+                <i class="bi bi-exclamation-circle me-1"></i>{{ errors.service[0] }}
               </div>
             </div>
 
-            <!-- ÁR -->
             <div class="mb-3">
-              <label class="form-label">Ár (Ft)</label>
-              <input
-                type="number"
-                class="form-control"
-                v-model="localItem.price"
-              />
-
-              <div v-if="errors.price" class="text-danger mt-1">
-                <div v-for="(err, i) in errors.price" :key="i">
-                  {{ err }}
-                </div>
+              <label class="form-label fw-bold small text-uppercase text-muted">Ár (Ft)</label>
+              <div class="input-group">
+                <input type="number" class="form-control form-control-lg" v-model="localItem.price">
+                <span class="input-group-text">Ft</span>
+              </div>
+              <div v-if="errors.price" class="text-danger mt-1 small">
+                <i class="bi bi-exclamation-circle me-1"></i>{{ errors.price[0] }}
               </div>
             </div>
-          </div>
-
-          <!-- FOOTER -->
-          <div class="modal-footer">
-            <button class="btn btn-secondary" @click="hide">Mégse</button>
-            <button class="btn btn-primary" @click="submit">Mentés</button>
-          </div>
+          </form>
+        </div>
+        <div class="modal-footer border-0 bg-light p-3">
+          <button type="button" class="btn btn-outline-secondary rounded-pill px-4" @click="hide">Mégse</button>
+          <button type="button" class="btn btn-primary rounded-pill px-4 fw-bold" @click="submit">Mentés</button>
         </div>
       </div>
     </div>
@@ -79,34 +62,27 @@
 import * as bootstrap from "bootstrap";
 
 export default {
-  name: "FormService",
-
   props: {
-    title: String,
-    item: Object,
+    title: {type:String},
+    item: {type: Object},
+    service_types: {type: Array}
   },
-
   data() {
     return {
       modalInstance: null,
-
-      localItem: {
-        id: null,
-        serviceTypeId: null,
-        serviceId: null,
-        price: null,
+      localItem: { 
+        id: 0, 
+        service: "", 
+        serviceTypeId: null, 
+        price: 0 
       },
-
       errors: {},
-
-      // service típusok
-      service_types: [
-        { id: 1, serviceTypeName: "helyszín" },
-        { id: 2, serviceTypeName: "étel" },
-        { id: 3, serviceTypeName: "szolgáltatás" },
-      ],
-
-      // szolgáltatások a típusokhoz
+      // service_types: [
+      //   { id: 1, serviceTypeName: "Helyszín" },
+      //   { id: 2, serviceTypeName: "étel" },
+      //   { id: 3, serviceTypeName: "szolgáltatás" },
+      // ],
+      // Ezek csak javaslatok lesznek a datalist-ben
       services: [
         { id: 1, serviceTypeId: 2, name: "két fogásos menü" },
         { id: 2, serviceTypeId: 2, name: "három fogásos menü" },
@@ -117,61 +93,39 @@ export default {
         { id: 7, serviceTypeId: 3, name: "közepes dekoráció" },
         { id: 8, serviceTypeId: 3, name: "dekoratív dekoráció" },
       ],
-
-      // városok a helyszínhez
       cities: ["Budapest", "Szolnok", "Szeged", "Keszthely", "Székesfehérvár"],
     };
   },
-
   computed: {
     filteredServices() {
       if (!this.localItem.serviceTypeId) return [];
-
-      // helyszínhez random városok
       if (this.localItem.serviceTypeId === 1) {
-        return this.cities
-          .sort(() => 0.5 - Math.random())
-          .slice(0, 5) // pl. 5 random város
-          .map((city, index) => ({ id: index + 1, name: city }));
+        return this.cities.map((city, index) => ({ id: 100 + index, name: city }));
       }
-
-      // egyéb típusokhoz a szolgáltatások
-      return this.services.filter(
-        (s) => s.serviceTypeId === this.localItem.serviceTypeId
-      );
-    },
+      return this.services.filter(s => s.serviceTypeId === this.localItem.serviceTypeId);
+    }
   },
-
   watch: {
     item: {
       immediate: true,
       handler(newVal) {
         if (newVal) {
-          this.localItem = {
-            id: newVal.id ?? null,
-            serviceTypeId: newVal.serviceTypeId ?? null,
-            serviceId: newVal.serviceId ?? null,
-            price: newVal.price ?? null,
-          };
+          this.localItem = JSON.parse(JSON.stringify(newVal));
         }
-      },
-    },
+      }
+    }
   },
-
   methods: {
     show() {
       this.errors = {};
       this.modalInstance = new bootstrap.Modal(this.$refs.modal);
       this.modalInstance.show();
     },
-
     hide() {
-      if (this.modalInstance) {
-        this.modalInstance.hide();
-      }
+      this.modalInstance?.hide();
     },
-
     submit() {
+      // Itt küldjük el a szülőknek (ServicesView) az adatokat
       this.$emit("yesEventForm", {
         item: this.localItem,
         done: (success) => {
@@ -179,13 +133,22 @@ export default {
         },
       });
     },
-
     setServerErrors(errors) {
       this.errors = errors || {};
-    },
-  },
+    }
+  }
 };
 </script>
+
+<style scoped>
+.modal-content {
+  overflow: hidden;
+}
+.form-label {
+  margin-bottom: 0.3rem;
+  letter-spacing: 0.5px;
+}
+</style>
 
 <style scoped>
 .modal-dialog {

@@ -17,7 +17,7 @@ export default {
     const url = `locationpictures/${id}`
     return await apiClient.get(url);
   },
-
+ 
   async getPicturesByServiceId(id) {
     // Ez hívja meg a Laravel-t a /api/servicepictures/{id} címen
     return await apiClient.get(`/servicepictures/${id}`);
@@ -39,4 +39,5 @@ export default {
     return await apiClient.delete(`${route}/${id}`);
   }
 };
+ 
  

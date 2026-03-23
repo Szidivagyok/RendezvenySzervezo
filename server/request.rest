@@ -134,7 +134,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "service":"dj2",
+    "service":"dj",
     "price":6000
 }
 

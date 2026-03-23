@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 import { useSearchStore } from "./searchStore";
 import { useToastStore } from "./toastStore";
 import service from "@/api/userService";
+import userService from '@/api/userService';
 
 //változtatás
 class Item {
@@ -190,5 +191,10 @@ export const useUserStore = defineStore("user", {
         this.loading = false;
       }
     },
-  },
+
+ async changePassword(id, data) {
+      // Itt a 197. sor környékén használod a userService-t
+      return await userService.changePassword(id, data); 
+    },
+  }
 });

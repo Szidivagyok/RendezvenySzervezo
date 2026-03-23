@@ -6,31 +6,45 @@
       <div class="col-lg-7">
         <div class="glass-card p-4 shadow">
           <form @submit.prevent="submitOrder">
-            
             <section class="mb-4">
-              <h4 class="section-title"><i class="bi bi-person-fill"></i> Személyes adatok</h4>
-              <div class="row g-3">
-                <div class="col-md-6">
-                  <label class="form-label">Név</label>
-                  <input type="text" v-model="form.name" class="form-control" placeholder="Teljes név" required>
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label">Email</label>
-                  <input type="email" v-model="form.email" class="form-control" placeholder="pelda@email.com" required>
-                </div>
-              </div>
-            </section>
+  <h4 class="section-title"><i class="bi bi-person-fill"></i> Személyes adatok</h4>
+  <div class="row g-3">
+    <div class="col-6 col-md-6"> <label class="form-label">Név</label>
+      <input 
+        type="text" 
+        v-model="form.name" 
+        class="form-control bg-light border-0 shadow-sm" 
+        readonly
+      >
+    </div>
+    <div class="col-6 col-md-6"> <label class="form-label">Email</label>
+      <input 
+        type="email" 
+        v-model="form.email" 
+        class="form-control bg-light border-0 shadow-sm" 
+        readonly
+      >
+    </div>
+  </div>
+</section>
 
-            <hr>
+            <hr />
 
             <section class="mb-4">
-              <h4 class="section-title"><i class="bi bi-gear-fill"></i> Alap szolgáltatások</h4>
+              <h4 class="section-title">
+                <i class="bi bi-gear-fill"></i> Alap szolgáltatások
+              </h4>
               <div class="mb-3">
                 <label class="form-label">Helyszín</label>
                 <select v-model="form.location" class="form-select" required>
                   <option :value="null" disabled>Válassz helyszínt...</option>
-                  <option v-for="loc in locationItems" :key="loc.id" :value="loc">
-                    {{ loc.cityName }}, {{ loc.address }} - {{ loc.locationName }}
+                  <option
+                    v-for="loc in locationItems"
+                    :key="loc.id"
+                    :value="loc"
+                  >
+                    {{ loc.cityName }}, {{ loc.address }} -
+                    {{ loc.locationName }}
                   </option>
                 </select>
               </div>
@@ -39,28 +53,42 @@
                 <label class="form-label">Étel menü</label>
                 <select v-model="form.food" class="form-select">
                   <option :value="null">Válassz menüt...</option>
-                  <option v-for="food in foodItems" :key="food.id" :value="food">
+                  <option
+                    v-for="food in foodItems"
+                    :key="food.id"
+                    :value="food"
+                  >
                     {{ food.service }} ({{ food.price }} Ft/fő)
                   </option>
                 </select>
               </div>
             </section>
 
-            <hr>
+            <hr />
 
             <section class="mb-4">
-              <h4 class="section-title"><i class="bi bi-plus-circle-fill"></i> Extra szolgáltatások</h4>
-              <p class="text-muted small">Kategóriánként (Zene, Dekoráció) csak egy opció választható, de több kategória kombinálható.</p>
-              
+              <h4 class="section-title">
+                <i class="bi bi-plus-circle-fill"></i> Extra szolgáltatások
+              </h4>
+              <p class="text-muted small">
+                Kategóriánként (Zene, Dekoráció) csak egy opció választható, de
+                több kategória kombinálható.
+              </p>
+
               <div class="extra-services-grid">
-                <div v-for="s in serviceItems" :key="s.id" class="form-check mb-2 p-2 rounded hover-effect" :class="{'selected-bg': isSelected(s)}">
-                  <input 
-                    class="form-check-input ms-1" 
-                    type="checkbox" 
+                <div
+                  v-for="s in serviceItems"
+                  :key="s.id"
+                  class="form-check mb-2 p-2 rounded hover-effect"
+                  :class="{ 'selected-bg': isSelected(s) }"
+                >
+                  <input
+                    class="form-check-input ms-1"
+                    type="checkbox"
                     :id="'service-' + s.id"
                     :checked="isSelected(s)"
                     @change="toggleExtra(s)"
-                  >
+                  />
                   <label class="form-check-label ms-2" :for="'service-' + s.id">
                     {{ s.service }} - <strong>{{ s.price }} Ft</strong>
                   </label>
@@ -68,18 +96,32 @@
               </div>
             </section>
 
-            <hr>
+            <hr />
 
             <section class="mb-4">
-              <h4 class="section-title"><i class="bi bi-calendar-event"></i> Időpont és Létszám</h4>
+              <h4 class="section-title">
+                <i class="bi bi-calendar-event"></i> Időpont és Létszám
+              </h4>
               <div class="row g-3">
                 <div class="col-md-6">
                   <label class="form-label">Dátum</label>
-                  <input type="date" v-model="form.date" class="form-control" :min="minDate" required>
+                  <input
+                    type="date"
+                    v-model="form.date"
+                    class="form-control"
+                    :min="minDate"
+                    required
+                  />
                 </div>
                 <div class="col-md-6">
                   <label class="form-label">Vendégek száma (fő)</label>
-                  <input type="number" v-model.number="form.guests" class="form-control" min="1" required>
+                  <input
+                    type="number"
+                    v-model.number="form.guests"
+                    class="form-control"
+                    min="1"
+                    required
+                  />
                 </div>
               </div>
             </section>
@@ -92,12 +134,17 @@
       </div>
 
       <div class="col-lg-5">
-        <div class="summary-card p-4 shadow sticky-top" style="top: 100px;">
+        <div class="summary-card p-4 shadow sticky-top" style="top: 100px">
           <h4 class="twinkle-header text-center mb-4">Összegzés</h4>
           <div v-if="form.location" class="summary-details">
             <div class="summary-item d-flex justify-content-between">
               <span>Helyszín alapdíj:</span>
-              <strong>{{ Number(form.location.roomPriceSlashDay || 0).toLocaleString() }} Ft</strong>
+              <strong
+                >{{
+                  Number(form.location.roomPriceSlashDay || 0).toLocaleString()
+                }}
+                Ft</strong
+              >
             </div>
             <div class="summary-item d-flex justify-content-between">
               <span>Helyszín főre ({{ form.guests }} fő):</span>
@@ -105,24 +152,35 @@
             </div>
           </div>
 
-          <div v-if="form.food" class="summary-item d-flex justify-content-between mt-2">
+          <div
+            v-if="form.food"
+            class="summary-item d-flex justify-content-between mt-2"
+          >
             <span>Étel ({{ form.guests }} fő):</span>
             <strong>{{ foodTotal.toLocaleString() }} Ft</strong>
           </div>
 
           <div v-if="form.selectedExtras.length > 0" class="mt-3">
             <span class="text-muted small">Extra szolgáltatások:</span>
-            <div v-for="extra in form.selectedExtras" :key="extra.id" class="summary-item d-flex justify-content-between small ms-2">
+            <div
+              v-for="extra in form.selectedExtras"
+              :key="extra.id"
+              class="summary-item d-flex justify-content-between small ms-2"
+            >
               <span>• {{ extra.service }}</span>
               <strong>{{ Number(extra.price).toLocaleString() }} Ft</strong>
             </div>
           </div>
-          
-          <hr class="my-4">
-          
-          <div class="total-price d-flex justify-content-between align-items-center">
+
+          <hr class="my-4" />
+
+          <div
+            class="total-price d-flex justify-content-between align-items-center"
+          >
             <span>Végösszeg:</span>
-            <span class="price-tag">{{ roundedTotalCost.toLocaleString() }} Ft</span>
+            <span class="price-tag"
+              >{{ roundedTotalCost.toLocaleString() }} Ft</span
+            >
           </div>
         </div>
       </div>
@@ -131,83 +189,114 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'pinia';
-import { useLocationStore } from '@/stores/locationStore';
-import { useServiceStore } from '@/stores/serviceStore';
-import { useOrderStore } from '@/stores/orderStore';
-import { useUserLoginLogoutStore } from '@/stores/userLoginLogoutStore';
+import { mapState, mapActions } from "pinia";
+import { useLocationStore } from "@/stores/locationStore";
+import { useServiceStore } from "@/stores/serviceStore";
+import { useOrderStore } from "@/stores/orderStore";
+import { useUserLoginLogoutStore } from "@/stores/userLoginLogoutStore";
 
 export default {
   data() {
     return {
       form: {
-        name: '',
-        email: '',
+        name: "",
+        email: "",
         location: null,
         food: null,
         selectedExtras: [],
-        date: '',
-        guests: 1
+        date: "",
+        guests: 1,
       },
-      minDate: new Date().toISOString().split('T')[0]
-    }
+      minDate: new Date().toISOString().split("T")[0],
+    };
   },
   computed: {
-    ...mapState(useLocationStore, { locationItems: 'items' }),
-    ...mapState(useServiceStore, { allServices: 'items' }),
-    ...mapState(useUserLoginLogoutStore, { userItem: 'item' }), 
-    
-    foodItems() { return this.allServices.filter(s => s.serviceTypeId === 2); },
-    serviceItems() { return this.allServices.filter(s => s.serviceTypeId === 3); },
+    ...mapState(useLocationStore, { locationItems: "items" }),
+    ...mapState(useServiceStore, { allServices: "items" }),
+    ...mapState(useUserLoginLogoutStore, { userItem: "item" }),
+
+    foodItems() {
+      return this.allServices.filter((s) => s.serviceTypeId === 2);
+    },
+    serviceItems() {
+      return this.allServices.filter((s) => s.serviceTypeId === 3);
+    },
 
     locationGuestTotal() {
       if (!this.form.location) return 0;
-      return Number(this.form.location.priceSlashPerson || 0) * this.form.guests;
+      return (
+        Number(this.form.location.priceSlashPerson || 0) * this.form.guests
+      );
     },
     foodTotal() {
       if (!this.form.food) return 0;
       return Number(this.form.food.price || 0) * this.form.guests;
     },
     extrasTotal() {
-      return this.form.selectedExtras.reduce((sum, item) => sum + Number(item.price || 0), 0);
+      return this.form.selectedExtras.reduce(
+        (sum, item) => sum + Number(item.price || 0),
+        0
+      );
     },
     roundedTotalCost() {
-      const roomBase = this.form.location ? Number(this.form.location.roomPriceSlashDay || 0) : 0;
-      const total = roomBase + this.locationGuestTotal + this.foodTotal + this.extrasTotal;
+      const roomBase = this.form.location
+        ? Number(this.form.location.roomPriceSlashDay || 0)
+        : 0;
+      const total =
+        roomBase + this.locationGuestTotal + this.foodTotal + this.extrasTotal;
       return Math.round(total / 100) * 100;
-    }
+    },
+  },
+  watch: {
+    // Figyeljük, ha betöltődik a user adat
+    userItem: {
+      immediate: true, // Akkor is fusson le, ha már be van jelentkezve amikor az oldalra ér
+      handler(newUser) {
+        if (newUser && newUser.id) {
+          this.form.name = newUser.name || "";
+          this.form.email = newUser.email || "";
+        }
+      },
+    },
   },
   methods: {
-    ...mapActions(useLocationStore, { locationGetAll: 'getAll' }),
-    ...mapActions(useServiceStore, { serviceGetAll: 'getAll' }),
-    ...mapActions(useOrderStore, { orderStoreAction: 'create' }),
+    ...mapActions(useLocationStore, { locationGetAll: "getAll" }),
+    ...mapActions(useServiceStore, { serviceGetAll: "getAll" }),
+    ...mapActions(useOrderStore, { orderStoreAction: "create" }),
 
     isSelected(service) {
-      return this.form.selectedExtras.some(s => s.id === service.id);
+      return this.form.selectedExtras.some((s) => s.id === service.id);
     },
 
-    // MEGTARTVA: Az eredeti logikád (kategória szűrés)
     toggleExtra(service) {
-      let category = '';
-      if (service.service.toLowerCase().includes('dekoráció')) category = 'dekor';
-      if (service.service.toLowerCase().includes('zene') || service.service.toLowerCase().includes('dj')) category = 'zene';
+      let category = "";
+      if (service.service.toLowerCase().includes("dekoráció"))
+        category = "dekor";
+      if (
+        service.service.toLowerCase().includes("zene") ||
+        service.service.toLowerCase().includes("dj")
+      )
+        category = "zene";
 
-      const index = this.form.selectedExtras.findIndex(s => s.id === service.id);
+      const index = this.form.selectedExtras.findIndex(
+        (s) => s.id === service.id
+      );
       if (index > -1) {
         this.form.selectedExtras.splice(index, 1);
       } else {
         if (category) {
-          this.form.selectedExtras = this.form.selectedExtras.filter(s => {
+          this.form.selectedExtras = this.form.selectedExtras.filter((s) => {
             const sName = s.service.toLowerCase();
-            if (category === 'dekor') return !sName.includes('dekoráció');
-            if (category === 'zene') return !sName.includes('zene') && !sName.includes('dj');
+            if (category === "dekor") return !sName.includes("dekoráció");
+            if (category === "zene")
+              return !sName.includes("zene") && !sName.includes("dj");
             return true;
           });
         }
         this.form.selectedExtras.push(service);
       }
     },
-    
+
     async submitOrder() {
       if (!this.userItem || !this.userItem.id) {
         alert("A foglaláshoz be kell jelentkezned!");
@@ -215,39 +304,78 @@ export default {
       }
 
       try {
-        // JAVÍTVA: Pontos mezőnevek a szervernek (OrderStore Item osztály alapján)
         const payload = {
           userId: this.userItem.id,
           locationId: this.form.location.id,
           howManyPeople: this.form.guests,
-          howManyDays: 1, 
-          orderTime: this.form.date
+          howManyDays: 1,
+          orderTime: this.form.date,
         };
 
         await this.orderStoreAction(payload);
-        
+
         alert("Sikeres foglalás!");
-        this.$router.push('/userprofil');
+        this.$router.push("/userprofil");
       } catch (error) {
         console.error("Hiba a mentés során:", error);
         alert("Szerver hiba történt a mentéskor (500).");
       }
-    }
+    },
   },
   async mounted() {
     await Promise.all([this.locationGetAll(), this.serviceGetAll()]);
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
-.order-container { min-height: 100vh; background-color: #fffafc; }
-.twinkle-header { font-family: 'Twinkle Star', cursive; font-size: 3rem; background: linear-gradient(45deg, #a855f7, #ec4899); -webkit-background-clip: text; -webkit-fill-color: transparent; }
-.glass-card { background: rgba(255, 255, 255, 0.9); border-radius: 20px; border: 1px solid #f5d0fe; }
-.summary-card { background: white; border-radius: 20px; border: 2px solid #f3e8ff; padding: 25px; }
-.section-title { color: #a855f7; font-weight: 600; margin-bottom: 1.2rem; }
-.hover-effect:hover { background-color: #fdf4ff; cursor: pointer; }
-.selected-bg { background-color: #f3e8ff; border-left: 4px solid #a855f7; }
-.btn-order { background: linear-gradient(90deg, #a855f7, #ec4899); color: white; border: none; border-radius: 10px; font-weight: bold; font-size: 1.2rem; transition: all 0.3s; }
-.price-tag { font-size: 2.2rem; color: #a855f7; font-weight: bold; }
+.order-container {
+  min-height: 100vh;
+  background-color: #fffafc;
+}
+.twinkle-header {
+  font-family: "Twinkle Star", cursive;
+  font-size: 3rem;
+  background: linear-gradient(45deg, #a855f7, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-fill-color: transparent;
+}
+.glass-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  border: 1px solid #f5d0fe;
+}
+.summary-card {
+  background: white;
+  border-radius: 20px;
+  border: 2px solid #f3e8ff;
+  padding: 25px;
+}
+.section-title {
+  color: #a855f7;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+}
+.hover-effect:hover {
+  background-color: #fdf4ff;
+  cursor: pointer;
+}
+.selected-bg {
+  background-color: #f3e8ff;
+  border-left: 4px solid #a855f7;
+}
+.btn-order {
+  background: linear-gradient(90deg, #a855f7, #ec4899);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 1.2rem;
+  transition: all 0.3s;
+}
+.price-tag {
+  font-size: 2.2rem;
+  color: #a855f7;
+  font-weight: bold;
+}
 </style>
