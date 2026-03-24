@@ -71,21 +71,13 @@ Route::delete('locations/{id}', [LocationController::class, 'destroy'])
     ->middleware(['auth:sanctum', 'ability:locations:delete']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    
-    // Listázás (Már a csoporton BELÜL van, így lesz User objektumod!)
-    Route::get('orders', [OrderController::class, 'index']);
-    // Egy elem megtekintése
-    Route::get('orders/{id}', [OrderController::class, 'show']);
-    // Mentés (Létrehozás)
-    Route::post('orders', [OrderController::class, 'store'])
+Route::get('orders', [OrderController::class, 'index']);
+Route::get('orders/{id}', [OrderController::class, 'show']);
+Route::post('orders', [OrderController::class, 'store'])
      ->middleware('ability:orders:post');
-
-    // Módosítás
-    Route::patch('orders/{id}', [OrderController::class, 'update'])
+Route::patch('orders/{id}', [OrderController::class, 'update'])
         ->middleware('ability:orders:patch');
-
-    // Törlés
-    Route::delete('orders/{id}', [OrderController::class, 'destroy'])
+ Route::delete('orders/{id}', [OrderController::class, 'destroy'])
         ->middleware('ability:orders:delete');
         });
 
