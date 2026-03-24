@@ -46,39 +46,39 @@ class StoreOrderRequest extends FormRequest
         ];
     }
 
-    // public function withValidator($validator): void
-    // {
-    //     $validator->after(function ($validator) {
-    //         // Csak akkor fusson az ütközésvizsgálat, ha az alapadatok érvényesek
-    //         if ($validator->errors()->any()) return;
+    public function withValidator($validator): void
+    {
+        $validator->after(function ($validator) {
+            // Csak akkor fusson az ütközésvizsgálat, ha az alapadatok érvényesek
+            if ($validator->errors()->any()) return;
 
-    //         // A biztonság kedvéért pontosítjuk a változókat a kérésből
-    //         $orderTime = $this->input('orderTime');
-    //         $howManyDays = $this->input('howManyDays');
-    //         $uId = $this->input('userId');
-    //         $lId = $this->input('locationId');
+            // A biztonság kedvéért pontosítjuk a változókat a kérésből
+            $orderTime = $this->input('orderTime');
+            $howManyDays = $this->input('howManyDays');
+            $uId = $this->input('userId');
+            $lId = $this->input('locationId');
 
-    //         $start = Carbon::parse($orderTime);
-    //         $end = $start->copy()->addDays($howManyDays);
+            $start = Carbon::parse($orderTime);
+            $end = $start->copy()->addDays($howManyDays);
 
-    //         $conflict = DB::table('orders')
-    //             ->where('userId', $uId) // Itt biztosan a táblázatbeli userId-t nézzük
-    //             ->where('locationId', $lId)
-    //             ->where(function ($q) use ($start, $end) {
-    //                 $q->where('orderTime', '<', $end)
-    //                     ->whereRaw(
-    //                         'DATE_ADD(orderTime, INTERVAL howManyDays DAY) > ?',
-    //                         [$start]
-    //                     );
-    //             })
-    //             ->exists();
+            $conflict = DB::table('orders')
+                ->where('userId', $uId) // Itt biztosan a táblázatbeli userId-t nézzük
+                ->where('locationId', $lId)
+                ->where(function ($q) use ($start, $end) {
+                    $q->where('orderTime', '<', $end)
+                        ->whereRaw(
+                            'DATE_ADD(orderTime, INTERVAL howManyDays DAY) > ?',
+                            [$start]
+                        );
+                })
+                ->exists();
 
-    //         if ($conflict) {
-    //             $validator->errors()->add(
-    //                 'orderTime',
-    //                 'Ez a foglalás időben ütközik egy meglévő rendeléseddel ezen a helyszínen.'
-    //             );
-    //         }
-    //     });
-    // }
+            if ($conflict) {
+                $validator->errors()->add(
+                    'orderTime',
+                    'Ez a foglalás időben ütközik egy meglévő rendeléseddel ezen a helyszínen.'
+                );
+            }
+        });
+    }
 }
