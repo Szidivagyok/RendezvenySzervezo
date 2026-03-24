@@ -43,6 +43,7 @@ export const useOrderStore = defineStore("orders", {
       this.loading = true;
       try {
         const response = await service.create(data);
+        this.item = response.data;
         // FONTOS: Mentés után újra le kell kérni az összeset, 
         // hogy a profil oldaladon látszódjon az új elem!
         await this.getAll(); 
