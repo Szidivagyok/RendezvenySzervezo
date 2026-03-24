@@ -266,30 +266,35 @@ export default {
       }
     },
 
-    async submitOrder() {
-      if (!this.userItem || !this.userItem.id) {
-        alert("A foglaláshoz be kell jelentkezned!");
-        return;
-      }
+ async submitOrder() {
+  try {
+    // Adatok előkészítése (Payload)
+    const payload = {
+      userId: this.userItem.id,
+      locationId: this.form.location.id,
+      howManyPeople: this.form.guests,
+      howManyDays: 1, 
+      orderTime: this.form.date,
+      is_system: 0 
+    };
 
-      try {
-        const payload = {
-          userId: this.userItem.id,
-          locationId: this.form.location.id,
-          howManyPeople: this.form.guests,
-          howManyDays: 1,
-          orderTime: this.form.date,
-        };
+    const orderStore = useOrderStore();
+    
+    // Meghívjuk a komplex mentést
+    await orderStore.createComplexOrder(payload, this.form.selectedExtras);
 
-        await this.orderStoreAction(payload);
+    // Ha idáig eljut a kód, sikeres volt a mentés
+    alert("Sikeres foglalás!");
+    this.$router.push("/userprofil");
 
-        alert("Sikeres foglalás!");
-        this.$router.push("/userprofil");
-      } catch (error) {
-        console.error("Hiba a mentés során:", error);
-        alert("Szerver hiba történt a mentéskor (500).");
-      }
-    },
+  } catch (error) {
+    // Ha a szerver (Laravel) hibát dob (pl. ütközés), itt írjuk ki
+    if (error.response && error.response.data && error.response.data.message) {
+      alert(error.response.data.message);
+    } else {
+      alert("Hiba történt a mentés során!");
+    }
+  }}
   },
   async mounted() {
     await Promise.all([this.locationGetAll(), this.serviceGetAll()]);

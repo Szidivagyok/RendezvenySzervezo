@@ -38,6 +38,35 @@ export const useOrderStore = defineStore("orders", {
       }
     },
 
+  async createComplexOrder(orderPayload, selectedExtras) {
+      this.loading = true;
+      try {
+        // 1. Orders mentése (Fő tábla)
+        const response = await service.create(orderPayload);
+        
+        // 2. ID figyelése (A válaszból kinyerjük a friss ID-t)
+        const newOrderId = response.data.id;
+
+        // 3. Szolgáltatások összegyűjtése és 4. szolgáltatások egyenkénti mentése
+        if (selectedExtras && selectedExtras.length > 0) {
+          for (const extra of selectedExtras) {
+            // Itt a kapcsolótáblába (order_services) mentünk
+            await axios.post('/api/order_services', {
+              orderId: newOrderId,
+              serviceId: extra.id
+            });
+          }
+        }
+        
+        return response.data;
+      } catch (error) {
+        console.error("Mentési hiba:", error);
+        throw error; // Továbbadjuk a View-nak a hibaüzenetet
+      } finally {
+        this.loading = false;
+      }
+    },
+
     // EZ A RÉSZ HIÁNYOZHATOTT VAGY NEM FRISSÍTETT:
     async create(data) {
       this.loading = true;
