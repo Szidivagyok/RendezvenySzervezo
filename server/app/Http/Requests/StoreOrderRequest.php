@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class StoreOrderRequest extends FormRequest
 {
@@ -19,6 +20,7 @@ class StoreOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
+            // Marad a userId (Nagy I), ahogy kérted
             'userId'        => 'required|integer|exists:users,id',
             'locationId'    => 'required|integer|exists:locations,id',
             'orderTime'     => 'required|date',
@@ -50,12 +52,18 @@ class StoreOrderRequest extends FormRequest
             // Csak akkor fusson az ütközésvizsgálat, ha az alapadatok érvényesek
             if ($validator->errors()->any()) return;
 
-            $start = Carbon::parse($this->orderTime);
-            $end = $start->copy()->addDays($this->howManyDays);
+            // A biztonság kedvéért pontosítjuk a változókat a kérésből
+            $orderTime = $this->input('orderTime');
+            $howManyDays = $this->input('howManyDays');
+            $uId = $this->input('userId');
+            $lId = $this->input('locationId');
+
+            $start = Carbon::parse($orderTime);
+            $end = $start->copy()->addDays($howManyDays);
 
             $conflict = DB::table('orders')
-                ->where('userId', $this->userId)
-                ->where('locationId', $this->locationId)
+                ->where('userId', $uId) // Itt biztosan a táblázatbeli userId-t nézzük
+                ->where('locationId', $lId)
                 ->where(function ($q) use ($start, $end) {
                     $q->where('orderTime', '<', $end)
                         ->whereRaw(

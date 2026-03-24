@@ -15,11 +15,18 @@ class Order extends Model
         'locationId',
         'howManyPeople',
         'howManyDays',
-        'orderTime'
+        'orderTime',
+        'is_system' // <--- Ezt adtuk hozzá
     ];
 
     protected $hidden = [
         'created_at',
         'updated_at'
+    ];
+
+    // Ezt is érdemes betenni, hogy a kódodban true/false legyen az értéke
+    protected $casts = [
+        'is_system' => 'boolean',
+        'orderTime' => 'datetime'
     ];
 }

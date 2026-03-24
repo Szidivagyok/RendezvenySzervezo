@@ -1,13 +1,13 @@
 <?php
-
+ 
 namespace Database\Seeders;
-
+ 
 use App\Helpers\CsvReader;
 use App\Models\Order;
 use App\Models\OrderService;
 use App\Models\Service;
 use Illuminate\Database\Seeder;
-
+ 
 class OrderServiceSeeder extends Seeder
 {
     /**
@@ -17,9 +17,10 @@ class OrderServiceSeeder extends Seeder
     {
         //
         $numberOfOrders = 30;
-
+ 
     for ($i = 0; $i < $numberOfOrders; $i++) {
       OrderService::factory()->create();
     }
 }
 }
+ 

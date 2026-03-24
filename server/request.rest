@@ -177,7 +177,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "orderId": 21,
+    "orderId": 31,
     "serviceId": 4
 }
 
@@ -273,11 +273,11 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "userId": 20,
+    "userId": 19,
     "locationId": 14,
     "howManyPeople": 5,
     "howManyDays": 2,
-    "orderTime": "2026-11-12 08:56:04"
+    "orderTime": "2026-1-12 08:56:04"
 }
 
 ###patch 
@@ -295,7 +295,7 @@ Authorization: Bearer {{token}}
 }
 
 ### delete orders by id
-delete {{host}}/api/orders/21
+delete {{host}}/api/orders/50
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}

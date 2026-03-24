@@ -22,7 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
+        'role', // Ez marad, így tudod menteni a jogosultságot
     ];
 
     /**
@@ -51,10 +51,12 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Ez a függvény dönti el, hogy admin-e a felhasználó.
+     * Rugalmas: elfogadja az 1-est (szám/szöveg) és az 'Admin' szót is.
+     */
     public function isAdmin(): bool
     {
-        // Feltételezve, hogy a 'role' mező tárolja a szerepkört,
-        // és '1' az adminisztrátori szerep száma.
-        return $this->role === 1; 
+        return $this->role == 1 || $this->role === 'Admin';
     }
 }
