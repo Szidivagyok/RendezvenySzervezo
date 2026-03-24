@@ -12,6 +12,8 @@ use App\Http\Controllers\UserController;
 use App\Models\LocationsPicture;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -124,3 +126,25 @@ Route::patch('service_types/{id}', [ServiceTypeController::class, 'update'])
 Route::delete('service_types/{id}', [ServiceTypeController::class, 'destroy'])
     ->middleware(['auth:sanctum', 'ability:service_types:delete']);
 //endregion
+
+
+
+
+
+Route::get('/download-aszf', function () {
+    // A storage_path pontosan a server/storage mappába mutat
+    $path = storage_path('app/public/aszf.pdf');
+
+    if (!file_exists($path)) {
+        return response()->json([
+            'error' => 'A fájl nincs a storage/app/public mappában!',
+            'keresett_utvonal' => $path
+        ], 404);
+    }
+
+    // Visszaadjuk a fájlt letöltésre/megtekintésre
+    return response()->file($path, [
+        'Content-Type' => 'application/pdf',
+        'Content-Disposition' => 'inline; filename="aszf.pdf"'
+    ]);
+});

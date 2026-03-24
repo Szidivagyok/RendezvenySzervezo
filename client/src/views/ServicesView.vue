@@ -62,6 +62,7 @@ export default {
         { key: "service", label: "Megnevezés", debug: 2 },
         { key: "serviceTypeId", label: "Típus", debug: 2 },
         { key: "price", label: "Ár (Ft)", debug: 2 },
+        
       ],
       useCollectionStore: useServiceStore,
       isOpenConfirmModal: false,

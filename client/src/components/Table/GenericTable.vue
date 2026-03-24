@@ -59,7 +59,12 @@
                 'rounded-end-4': index === columns.length - 1 
               }"
             >
-              {{ item[col.key] }}
+              <template v-if="col.key === 'serviceTypeId'">
+                {{ formatServiceType(item[col.key]) }}
+              </template>
+              <template v-else>
+                {{ item[col.key] }}
+              </template>
             </td>
           </template>
         </tr>
@@ -108,60 +113,64 @@ export default {
     onClickRow(id) {
       this.selectedId = id;
     },
+    // Ez a függvény fordítja le a számokat szövegre
+    formatServiceType(id) {
+      const types = {
+        1: 'Helyszín',
+        2: 'Étel',
+        3: 'Szolgáltatás'
+      };
+      return types[id] || id; // Ha nem 1, 2 vagy 3, akkor kiírja az eredeti számot
+    }
   },
 };
 </script>
 
 <style scoped>
-/* A táblázat konténere legyen teljesen áttetsző */
 .my-table-container {
   border: none;
   background: transparent !important;
+  max-width: 1000px; 
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* Kényszerítsük a táblázatot és minden elemét, hogy ne legyen alap fehér háttere */
 .table {
   background-color: transparent !important;
   border-collapse: separate;
-  border-spacing: 0 8px; /* Térköz a sorok között */
-}
-
-/* FEJLÉC: Maradjon sötét, de adjunk neki lekerekítést */
-.custom-header {
-  background-color: #2d3436 !important; 
-  color: #ffffff !important;
+  border-spacing: 0 8px;
+  width: 100% !important; 
+  table-layout: auto; 
 }
 
 .custom-header {
-  /* Egy kellemes, közepesen halvány lila, ami elüt a háttértől, de nem "üt" */
   background-color: #d1b3ff !important; 
-  color: #4b0082 !important; /* Sötétlila szöveg a jobb olvashatóságért */
+  color: #4b0082 !important;
 }
 
 .custom-header th {
   border: none !important;
-  background-color: #d1b3ff !important; /* Fixen ugyanaz a lila */
+  background-color: #d1b3ff !important;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-size: 0.85rem;
 }
 
-/* Lekerekítések a fejléc szélein */
-.custom-header th:first-child {
-  border-top-left-radius: 12px;
-  border-bottom-left-radius: 12px;
+.custom-header th, .custom-row td {
+  padding-left: 20px !important;
+  padding-right: 20px !important;
 }
 
-.custom-header th:last-child {
-  border-top-right-radius: 12px;
-  border-bottom-right-radius: 12px;
+th:first-child, td:first-child {
+  width: 1%;
+  white-space: text-nowrap;
 }
 
-/* SOROK: Itt történik a varázslat */
+.custom-header th:first-child { border-top-left-radius: 12px; border-bottom-left-radius: 12px; }
+.custom-header th:last-child { border-top-right-radius: 12px; border-bottom-right-radius: 12px; }
+
 .custom-row td {
-  /* Itt a trükk: rgba-val adunk neki egy nagyon pici pinkes tónust, 
-     de alapvetően átlátszó, hogy a body háttere látszódjon */
   background-color: rgba(255, 192, 203, 0.2) !important; 
   border-top: 1px solid rgba(0,0,0,0.05) !important;
   border-bottom: 1px solid rgba(0,0,0,0.05) !important;
@@ -169,19 +178,16 @@ export default {
   transition: all 0.2s ease;
 }
 
-/* Amikor az egér felette van */
 .custom-row:hover td {
   background-color: rgba(255, 192, 203, 0.4) !important;
   transform: translateY(-2px);
 }
 
-/* Kijelölt sor */
 .row-active td {
   background-color: rgba(255, 192, 203, 0.6) !important;
   font-weight: bold;
 }
 
-/* Lekerekítések a sorok szélein */
 .custom-row td:first-child {
   border-left: 1px solid rgba(0,0,0,0.05) !important;
   border-top-left-radius: 12px;
@@ -194,8 +200,8 @@ export default {
   border-bottom-right-radius: 12px;
 }
 
-/* Bootstrap felülbírálás: ne legyen fehér csíkozás */
 .table-hover tbody tr:hover td {
     color: inherit;
 }
+.my-pointer { cursor: pointer; }
 </style>

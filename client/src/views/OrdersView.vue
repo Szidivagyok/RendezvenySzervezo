@@ -7,26 +7,16 @@
         <div class="glass-card p-4 shadow">
           <form @submit.prevent="submitOrder">
             <section class="mb-4">
-  <h4 class="section-title"><i class="bi bi-person-fill"></i> Személyes adatok</h4>
-  <div class="row g-3">
-    <div class="col-6 col-md-6"> <label class="form-label">Név</label>
-      <input 
-        type="text" 
-        v-model="form.name" 
-        class="form-control bg-light border-0 shadow-sm" 
-        readonly
-      >
-    </div>
-    <div class="col-6 col-md-6"> <label class="form-label">Email</label>
-      <input 
-        type="email" 
-        v-model="form.email" 
-        class="form-control bg-light border-0 shadow-sm" 
-        readonly
-      >
-    </div>
-  </div>
-</section>
+              <h4 class="section-title"><i class="bi bi-person-fill"></i> Személyes adatok</h4>
+              <div class="row g-3">
+                <div class="col-6 col-md-6"> <label class="form-label">Név</label>
+                  <input type="text" v-model="form.name" class="form-control bg-light border-0 shadow-sm" readonly>
+                </div>
+                <div class="col-6 col-md-6"> <label class="form-label">Email</label>
+                  <input type="email" v-model="form.email" class="form-control bg-light border-0 shadow-sm" readonly>
+                </div>
+              </div>
+            </section>
 
             <hr />
 
@@ -38,11 +28,7 @@
                 <label class="form-label">Helyszín</label>
                 <select v-model="form.location" class="form-select" required>
                   <option :value="null" disabled>Válassz helyszínt...</option>
-                  <option
-                    v-for="loc in locationItems"
-                    :key="loc.id"
-                    :value="loc"
-                  >
+                  <option v-for="loc in locationItems" :key="loc.id" :value="loc">
                     {{ loc.cityName }}, {{ loc.address }} -
                     {{ loc.locationName }}
                   </option>
@@ -53,11 +39,7 @@
                 <label class="form-label">Étel menü</label>
                 <select v-model="form.food" class="form-select">
                   <option :value="null">Válassz menüt...</option>
-                  <option
-                    v-for="food in foodItems"
-                    :key="food.id"
-                    :value="food"
-                  >
+                  <option v-for="food in foodItems" :key="food.id" :value="food">
                     {{ food.service }} ({{ food.price }} Ft/fő)
                   </option>
                 </select>
@@ -76,19 +58,10 @@
               </p>
 
               <div class="extra-services-grid">
-                <div
-                  v-for="s in serviceItems"
-                  :key="s.id"
-                  class="form-check mb-2 p-2 rounded hover-effect"
-                  :class="{ 'selected-bg': isSelected(s) }"
-                >
-                  <input
-                    class="form-check-input ms-1"
-                    type="checkbox"
-                    :id="'service-' + s.id"
-                    :checked="isSelected(s)"
-                    @change="toggleExtra(s)"
-                  />
+                <div v-for="s in serviceItems" :key="s.id" class="form-check mb-2 p-2 rounded hover-effect"
+                  :class="{ 'selected-bg': isSelected(s) }">
+                  <input class="form-check-input ms-1" type="checkbox" :id="'service-' + s.id" :checked="isSelected(s)"
+                    @change="toggleExtra(s)" />
                   <label class="form-check-label ms-2" :for="'service-' + s.id">
                     {{ s.service }} - <strong>{{ s.price }} Ft</strong>
                   </label>
@@ -105,28 +78,36 @@
               <div class="row g-3">
                 <div class="col-md-6">
                   <label class="form-label">Dátum</label>
-                  <input
-                    type="date"
-                    v-model="form.date"
-                    class="form-control"
-                    :min="minDate"
-                    required
-                  />
+                  <input type="date" v-model="form.date" class="form-control" :min="minDate" required />
                 </div>
                 <div class="col-md-6">
                   <label class="form-label">Vendégek száma (fő)</label>
-                  <input
-                    type="number"
-                    v-model.number="form.guests"
-                    class="form-control"
-                    min="1"
-                    required
-                  />
+                  <input type="number" v-model.number="form.guests" class="form-control" min="1" required />
                 </div>
               </div>
             </section>
 
-            <button type="submit" class="btn btn-order w-100 py-3 mt-3">
+            <div class="mb-4 form-check">
+              <input 
+                type="checkbox" 
+                class="form-check-input" 
+                id="aszfCheck" 
+                v-model="form.acceptAszf"
+              >
+              <label class="form-check-label ms-2" for="aszfCheck">
+                Kijelentem, hogy az 
+                <a href="http://localhost:8000/api/download-aszf" target="_blank" class="fw-bold text-decoration-underline">
+                  Általános Szerződési Feltételeket (ÁSZF)
+                </a> 
+                elolvastam és elfogadom.
+              </label>
+            </div>
+
+            <button 
+              type="submit" 
+              class="btn btn-order w-100 py-3 mt-3" 
+              :disabled="!form.acceptAszf"
+            >
               Foglalás elküldése
             </button>
           </form>
@@ -139,12 +120,10 @@
           <div v-if="form.location" class="summary-details">
             <div class="summary-item d-flex justify-content-between">
               <span>Helyszín alapdíj:</span>
-              <strong
-                >{{
-                  Number(form.location.roomPriceSlashDay || 0).toLocaleString()
-                }}
-                Ft</strong
-              >
+              <strong>{{
+                Number(form.location.roomPriceSlashDay || 0).toLocaleString()
+              }}
+                Ft</strong>
             </div>
             <div class="summary-item d-flex justify-content-between">
               <span>Helyszín főre ({{ form.guests }} fő):</span>
@@ -152,21 +131,15 @@
             </div>
           </div>
 
-          <div
-            v-if="form.food"
-            class="summary-item d-flex justify-content-between mt-2"
-          >
+          <div v-if="form.food" class="summary-item d-flex justify-content-between mt-2">
             <span>Étel ({{ form.guests }} fő):</span>
             <strong>{{ foodTotal.toLocaleString() }} Ft</strong>
           </div>
 
           <div v-if="form.selectedExtras.length > 0" class="mt-3">
             <span class="text-muted small">Extra szolgáltatások:</span>
-            <div
-              v-for="extra in form.selectedExtras"
-              :key="extra.id"
-              class="summary-item d-flex justify-content-between small ms-2"
-            >
+            <div v-for="extra in form.selectedExtras" :key="extra.id"
+              class="summary-item d-flex justify-content-between small ms-2">
               <span>• {{ extra.service }}</span>
               <strong>{{ Number(extra.price).toLocaleString() }} Ft</strong>
             </div>
@@ -174,13 +147,9 @@
 
           <hr class="my-4" />
 
-          <div
-            class="total-price d-flex justify-content-between align-items-center"
-          >
+          <div class="total-price d-flex justify-content-between align-items-center">
             <span>Végösszeg:</span>
-            <span class="price-tag"
-              >{{ roundedTotalCost.toLocaleString() }} Ft</span
-            >
+            <span class="price-tag">{{ roundedTotalCost.toLocaleString() }} Ft</span>
           </div>
         </div>
       </div>
@@ -206,6 +175,7 @@ export default {
         selectedExtras: [],
         date: "",
         guests: 1,
+        acceptAszf: false, 
       },
       minDate: new Date().toISOString().split("T")[0],
     };
@@ -248,9 +218,8 @@ export default {
     },
   },
   watch: {
-    // Figyeljük, ha betöltődik a user adat
     userItem: {
-      immediate: true, // Akkor is fusson le, ha már be van jelentkezve amikor az oldalra ér
+      immediate: true,
       handler(newUser) {
         if (newUser && newUser.id) {
           this.form.name = newUser.name || "";
@@ -333,6 +302,7 @@ export default {
   min-height: 100vh;
   background-color: #fffafc;
 }
+
 .twinkle-header {
   font-family: "Twinkle Star", cursive;
   font-size: 3rem;
@@ -340,30 +310,36 @@ export default {
   -webkit-background-clip: text;
   -webkit-fill-color: transparent;
 }
+
 .glass-card {
   background: rgba(255, 255, 255, 0.9);
   border-radius: 20px;
   border: 1px solid #f5d0fe;
 }
+
 .summary-card {
   background: white;
   border-radius: 20px;
   border: 2px solid #f3e8ff;
   padding: 25px;
 }
+
 .section-title {
   color: #a855f7;
   font-weight: 600;
   margin-bottom: 1.2rem;
 }
+
 .hover-effect:hover {
   background-color: #fdf4ff;
   cursor: pointer;
 }
+
 .selected-bg {
   background-color: #f3e8ff;
   border-left: 4px solid #a855f7;
 }
+
 .btn-order {
   background: linear-gradient(90deg, #a855f7, #ec4899);
   color: white;
@@ -373,6 +349,13 @@ export default {
   font-size: 1.2rem;
   transition: all 0.3s;
 }
+
+.btn-order:disabled {
+  background: #ccc !important;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 .price-tag {
   font-size: 2.2rem;
   color: #a855f7;
