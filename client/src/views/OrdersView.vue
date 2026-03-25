@@ -87,6 +87,37 @@
               </div>
             </section>
 
+            <hr />
+
+            <section class="mb-4">
+              <h4 class="section-title">
+                <i class="bi bi-credit-card-fill"></i> Fizetési adatok
+              </h4>
+              <div class="row g-3">
+                <div class="col-12">
+                  <label class="form-label">Kártyán szereplő név</label>
+                  <input type="text" class="form-control" placeholder="Minta János" />
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Kártyaszám</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-white"><i class="bi bi-credit-card"></i></span>
+                    <input type="text" class="form-control border-start-0" placeholder="0000 0000 0000 0000" />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Lejárati dátum</label>
+                  <input type="text" class="form-control" placeholder="HH/ÉÉ" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">CVC / CVV</label>
+                  <input type="text" class="form-control" placeholder="123" />
+                </div>
+              </div>
+            </section>
+
+            <hr />
+
             <div class="mb-4 form-check">
               <input 
                 type="checkbox" 
@@ -96,7 +127,7 @@
               >
               <label class="form-check-label ms-2" for="aszfCheck">
                 Kijelentem, hogy az 
-                <a href="http://localhost:8000/api/download-aszf" target="_blank" class="fw-bold text-decoration-underline">
+                <a :href="`${baseURL}/download-aszf`" target="_blank" class="fw-bold text-decoration-underline">
                   Általános Szerződési Feltételeket (ÁSZF)
                 </a> 
                 elolvastam és elfogadom.
@@ -176,7 +207,9 @@ export default {
         date: "",
         guests: 1,
         acceptAszf: false, 
+
       },
+      baseURL: import.meta.env.VITE_API_URL,
       minDate: new Date().toISOString().split("T")[0],
     };
   },
@@ -231,7 +264,6 @@ export default {
   methods: {
     ...mapActions(useLocationStore, { locationGetAll: "getAll" }),
     ...mapActions(useServiceStore, { serviceGetAll: "getAll" }),
-    ...mapActions(useOrderStore, { orderStoreAction: "create" }),
 
     isSelected(service) {
       return this.form.selectedExtras.some((s) => s.id === service.id);
@@ -239,26 +271,19 @@ export default {
 
     toggleExtra(service) {
       let category = "";
-      if (service.service.toLowerCase().includes("dekoráció"))
-        category = "dekor";
-      if (
-        service.service.toLowerCase().includes("zene") ||
-        service.service.toLowerCase().includes("dj")
-      )
-        category = "zene";
+      const sName = service.service.toLowerCase();
+      if (sName.includes("dekoráció")) category = "dekor";
+      if (sName.includes("zene") || sName.includes("dj")) category = "zene";
 
-      const index = this.form.selectedExtras.findIndex(
-        (s) => s.id === service.id
-      );
+      const index = this.form.selectedExtras.findIndex((s) => s.id === service.id);
       if (index > -1) {
         this.form.selectedExtras.splice(index, 1);
       } else {
         if (category) {
           this.form.selectedExtras = this.form.selectedExtras.filter((s) => {
-            const sName = s.service.toLowerCase();
-            if (category === "dekor") return !sName.includes("dekoráció");
-            if (category === "zene")
-              return !sName.includes("zene") && !sName.includes("dj");
+            const currentName = s.service.toLowerCase();
+            if (category === "dekor") return !currentName.includes("dekoráció");
+            if (category === "zene") return !currentName.includes("zene") && !currentName.includes("dj");
             return true;
           });
         }
@@ -266,35 +291,31 @@ export default {
       }
     },
 
- async submitOrder() {
-  try {
-    // Adatok előkészítése (Payload)
-    const payload = {
-      userId: this.userItem.id,
-      locationId: this.form.location.id,
-      howManyPeople: this.form.guests,
-      howManyDays: 1, 
-      orderTime: this.form.date,
-      is_system: 0 
-    };
+    async submitOrder() {
+      try {
+        const payload = {
+          userId: this.userItem.id,
+          locationId: this.form.location.id,
+          howManyPeople: this.form.guests,
+          howManyDays: 1, 
+          orderTime: this.form.date,
+          is_system: 0 
+        };
 
-    const orderStore = useOrderStore();
-    
-    // Meghívjuk a komplex mentést
-    await orderStore.createComplexOrder(payload, this.form.selectedExtras);
+        const orderStore = useOrderStore();
+        await orderStore.createComplexOrder(payload, this.form.selectedExtras);
 
-    // Ha idáig eljut a kód, sikeres volt a mentés
-    alert("Sikeres foglalás!");
-    this.$router.push("/userprofil");
+        alert("Sikeres foglalás!");
+        this.$router.push("/userprofil");
 
-  } catch (error) {
-    // Ha a szerver (Laravel) hibát dob (pl. ütközés), itt írjuk ki
-    if (error.response && error.response.data && error.response.data.message) {
-      alert(error.response.data.message);
-    } else {
-      alert("Hiba történt a mentés során!");
+      } catch (error) {
+        if (error.response && error.response.data && error.response.data.message) {
+          alert(error.response.data.message);
+        } else {
+          alert("Hiba történt a mentés során!");
+        }
+      }
     }
-  }}
   },
   async mounted() {
     await Promise.all([this.locationGetAll(), this.serviceGetAll()]);

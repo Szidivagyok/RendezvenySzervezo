@@ -5,6 +5,6 @@ id;service;serviceTypeId;price
 4;két fogásos menü;2;6000
 5;három fogásos menü;2;10000
 6;négy fogásos menü;2;15000
-7;egyszerű dekoráció;3;100000
-8;közepes dekoráció;3;150000
-9;dekoratív dekoráció;3;200000
+7;egyszerű dekoráció;4;100000
+8;közepes dekoráció;4;150000
+9;dekoratív dekoráció;4;200000
