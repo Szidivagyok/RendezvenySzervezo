@@ -6,9 +6,9 @@
           <div class="avatar-circle mb-3 mx-auto">
             <i class="bi bi-person-badge display-1 text-primary"></i>
           </div>
-          <h2 class="twinkle-header">{{ userName || 'Vendég' }}</h2>
+          <h2 class="twinkle-header">{{ userName || "Vendég" }}</h2>
           <p class="text-muted small mb-0">{{ userEmail }}</p>
-          <hr>
+          <hr />
           <div class="info-box text-start">
             <p class="mb-1"><strong>Szerepkör:</strong> {{ userRoleName }}</p>
             <p class="mb-0 text-secondary small">Saját ID: #{{ userId }}</p>
@@ -21,51 +21,65 @@
           <h3 class="section-title mb-4">
             <i class="bi bi-calendar-range me-2"></i>Saját foglalásaim
           </h3>
-          
+
           <div v-if="loading" class="text-center py-5">
             <div class="spinner-border text-primary"></div>
             <p class="mt-2 text-muted">Adatok letöltése...</p>
           </div>
 
-          <div v-else-if="allOrdersSorted.length === 0" class="text-center py-5">
+          <div
+            v-else-if="allOrdersSorted.length === 0"
+            class="text-center py-5"
+          >
             <p class="text-muted">Még nincs leadott foglalásod.</p>
-            <router-link to="/orders" class="btn btn-outline-primary">Foglalás indítása</router-link>
+            <router-link to="/orders" class="btn btn-outline-primary"
+              >Foglalás indítása</router-link
+            >
           </div>
 
           <div v-else class="order-list">
-            <div v-for="order in allOrdersSorted" :key="order.id" 
-                 class="order-card mb-3 p-3 border-start border-primary border-4 position-relative"
-                 @click="showDetails(order)">
-              
-              <button 
-                v-if="isAdmin" 
+            <div
+              v-for="order in allOrdersSorted"
+              :key="order.id"
+              class="order-card mb-3 p-3 border-start border-primary border-4 position-relative"
+              @click="showDetails(order)"
+            >
+              <button
+                v-if="isAdmin"
                 class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2 shadow-sm admin-btn"
                 @click.stop="confirmDelete(order.id)"
               >
                 <i class="bi bi-trash3-fill"></i>
               </button>
 
-              <div class="d-flex justify-content-between align-items-center pe-5 mb-2">
+              <div
+                class="d-flex justify-content-between align-items-center pe-5 mb-2"
+              >
                 <div>
-                  <span class="fw-bold text-primary">#{{ order.id }} Foglalás</span>
-                  <span v-if="isAdmin" class="ms-3 badge bg-secondary-subtle text-secondary border fw-normal">
-                    Ügyfél: #{{ order.userId }}
-                  </span>
+                  <span class="fw-bold text-primary"
+                    >#{{ order.id }} Foglalás</span
+                  >
                 </div>
                 <span class="small text-muted">
-                  <i class="bi bi-calendar-check me-1"></i>{{ formatDate(order.orderTime) }}
+                  <i class="bi bi-calendar-check me-1"></i
+                  >{{ formatDate(order.orderTime) }}
                 </span>
               </div>
-              
-              <hr class="my-2 opacity-25">
+
+              <hr class="my-2 opacity-25" />
 
               <div class="row">
                 <div class="col-6">
-                  <span class="fw-medium"><i class="bi bi-people me-2"></i>{{ order.howManyPeople }} fő</span>
+                  <span class="fw-medium"
+                    ><i class="bi bi-people me-2"></i
+                    >{{ order.howManyPeople }} fő</span
+                  >
                 </div>
                 <div class="col-6 text-end">
                   <span class="badge bg-light text-dark border fw-normal">
-                    {{ getLocationName(order.locationId) }}
+                    {{
+                      order.locationName || getLocationName(order.locationId)
+                    }}
                   </span>
                 </div>
               </div>
@@ -75,30 +89,39 @@
       </div>
     </div>
 
-    <div v-if="selectedOrder" class="modal-overlay" @click.self="selectedOrder = null">
+    <div
+      v-if="selectedOrder"
+      class="modal-overlay"
+      @click.self="selectedOrder = null"
+    >
       <div class="glass-card modal-content p-4 shadow-lg">
-        <div class="d-flex justify-content-between align-items-start mb-3 border-bottom pb-2">
+        <div
+          class="d-flex justify-content-between align-items-start mb-3 border-bottom pb-2"
+        >
           <h4 class="text-primary mb-0">Foglalás részletei</h4>
           <button class="btn-close" @click="selectedOrder = null"></button>
         </div>
-        
+
         <div class="mb-3 text-muted small">
-          Azonosító: <strong>#{{ selectedOrder.id }}</strong> | 
-          Dátum: <strong>{{ formatDate(selectedOrder.orderTime) }}</strong>
+          Azonosító: <strong>#{{ selectedOrder.id }}</strong> | Dátum:
+          <strong>{{ formatDate(selectedOrder.orderTime) }}</strong>
         </div>
 
         <div class="detail-item mb-2">
           <i class="bi bi-geo-alt text-primary me-2"></i>
-          <strong>Helyszín:</strong> {{ getLocationName(selectedOrder.locationId) }}
+          <strong>Helyszín:</strong>
+          {{ selectedOrder.locationName || "Betöltés..." }}
         </div>
         <div class="detail-item mb-3">
           <i class="bi bi-people text-primary me-2"></i>
           <strong>Létszám:</strong> {{ selectedOrder.howManyPeople }} fő
         </div>
 
-        <hr class="my-3">
+        <hr class="my-3" />
 
-        <h6 class="fw-bold mb-3 text-secondary uppercase-label">Választott szolgáltatások:</h6>
+        <h6 class="fw-bold mb-3 text-secondary uppercase-label">
+          Választott szolgáltatások:
+        </h6>
 
         <div class="service-box mb-2">
           <div class="small text-muted italic">Étel menü:</div>
@@ -124,7 +147,10 @@
           </div>
         </div>
 
-        <button class="btn btn-primary w-100 py-2 shadow-sm" @click="selectedOrder = null">
+        <button
+          class="btn btn-primary w-100 py-2 shadow-sm"
+          @click="selectedOrder = null"
+        >
           Bezárás
         </button>
       </div>
@@ -133,46 +159,82 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'pinia';
-import { useOrderStore } from '@/stores/orderStore';
-import { useUserLoginLogoutStore } from '@/stores/userLoginLogoutStore';
-import { useLocationStore } from '@/stores/locationStore';
-import { useServiceStore } from '@/stores/serviceStore';
+import axios from "axios"; // EZ HIÁNYZOTT!
+import { mapState, mapActions } from "pinia";
+import { useOrderStore } from "@/stores/orderStore";
+import { useUserLoginLogoutStore } from "@/stores/userLoginLogoutStore";
+import { useLocationStore } from "@/stores/locationStore";
+import { useServiceStore } from "@/stores/serviceStore";
 
 export default {
-  data() { 
-    return { 
-      selectedOrder: null 
-    }; 
+  data() {
+    return { selectedOrder: null };
   },
   computed: {
-    ...mapState(useUserLoginLogoutStore, ['item']),
-    ...mapState(useOrderStore, ['items', 'loading']),
-    ...mapState(useLocationStore, { locations: 'items' }),
-    ...mapState(useServiceStore, { allServices: 'items' }),
+    ...mapState(useUserLoginLogoutStore, ["item"]),
+    ...mapState(useOrderStore, ["items", "loading"]),
+    ...mapState(useLocationStore, { locations: "items" }),
+    ...mapState(useServiceStore, { allServices: "items" }),
 
-    userId() { return this.item?.id; },
-    userName() { return this.item?.name; },
-    userEmail() { return this.item?.email; },
-    isAdmin() { return this.item?.role === 1; },
-    userRoleName() { return this.isAdmin ? 'Adminisztrátor' : 'Megrendelő'; },
-    
+    userId() {
+      return this.item?.id;
+    },
+    userName() {
+      return this.item?.name;
+    },
+    userEmail() {
+      return this.item?.email;
+    },
+    isAdmin() {
+      return this.item?.role === 1;
+    },
+    userRoleName() {
+      return this.isAdmin ? "Adminisztrátor" : "Megrendelő";
+    },
+
     allOrdersSorted() {
       let filtered = this.items;
-      // Biztonsági szűrés: ha nem admin, csak a sajátjait lássa
-      if (!this.isAdmin) {
-        filtered = this.items.filter(o => o.userId === this.userId);
-      }
+      if (!this.isAdmin)
+        filtered = this.items.filter((o) => o.userId === this.userId);
       return [...filtered].sort((a, b) => b.id - a.id);
-    }
+    },
   },
   methods: {
-    ...mapActions(useOrderStore, ['getAll', 'delete']), 
-    ...mapActions(useLocationStore, { fetchLocations: 'getAll' }),
-    ...mapActions(useServiceStore, { fetchServices: 'getAll' }),
-    
-    showDetails(order) { 
-      this.selectedOrder = order; 
+    ...mapActions(useOrderStore, ["getAll", "delete"]),
+    ...mapActions(useLocationStore, { fetchLocations: "getAll" }),
+    ...mapActions(useServiceStore, { fetchServices: "getAll" }),
+
+    async showDetails(order) {
+      try {
+        // 1. Lekérjük az adatokat
+        const response = await axios.get(
+          `http://localhost:8000/api/booking-details/${order.id}`
+        );
+
+        // 2. MENTÉS ELŐTT nézd meg a konzolt (F12), hogy lásd mi jön vissza!
+        console.log("Backend válasz:", response.data.data);
+
+        this.selectedOrder = response.data.data;
+      } catch (error) {
+        console.error("Hiba történt:", error);
+        this.selectedOrder = order;
+      }
+    },
+
+    getServiceByCategory(order, typeId) {
+      // Ellenőrizzük, hogy van-e egyáltalán order és services tömb
+      if (!order || !order.services || !Array.isArray(order.services)) {
+        return "Betöltés...";
+      }
+
+      // Megkeressük azt a szolgáltatást, aminek a serviceTypeId-ja egyezik
+      // Tipp: Használjunk ==-t a === helyett, hátha a backend stringként küldi az ID-t
+      const found = order.services.find((s) => s.serviceTypeId == typeId);
+
+      // Ha megtaláltuk, visszaadjuk a nevét, ha nem, akkor a hibaüzenetet
+      return found
+        ? found.service
+        : "Nincs ilyen típusú szolgáltatás választva";
     },
 
     async confirmDelete(id) {
@@ -180,90 +242,115 @@ export default {
       if (confirm(`Biztosan törlöd a #${id} foglalást?`)) {
         try {
           await this.delete(id);
-        } catch (error) {
-          alert("Hiba történt a törlés során.");
+        } catch (e) {
+          alert("Hiba történt.");
         }
       }
     },
-    
-    getLocationName(id) { 
-      const loc = this.locations.find(l => l.id === id);
-      return loc ? loc.locationName : `Helyszín #${id}`; 
+
+    getLocationName(id) {
+      const loc = this.locations.find((l) => l.id === id);
+      return loc ? loc.locationName : `Helyszín #${id}`;
     },
 
     getServiceByCategory(order, typeId) {
-      if (!order || !order.services || !Array.isArray(order.services)) {
-        return 'Nincs adat';
-      }
-      const service = order.services.find(s => s.serviceTypeId === typeId);
-      return service ? service.service : 'Nem kért szolgáltatás';
+      if (!order || !order.services) return "Nincs adat";
+      const service = order.services.find((s) => s.serviceTypeId === typeId);
+      return service ? service.service : "Nem kért szolgáltatás";
     },
-    
+
     formatDate(d) {
-      if (!d) return 'Nincs megadva';
-      return new Date(d).toLocaleDateString('hu-HU', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
+      if (!d) return "Nincs megadva";
+      return new Date(d).toLocaleDateString("hu-HU", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
       });
-    }
+    },
   },
   async mounted() {
-    try {
-      // Egyszerre indítjuk el az összes kérést a jobb teljesítményért
-      await Promise.all([
-        this.getAll(), 
-        this.fetchLocations(),
-        this.fetchServices()
-      ]);
-    } catch (error) {
-      console.error("Hiba az adatok betöltésekor a profil oldalon:", error);
-    }
-  }
-}
+    await Promise.all([
+      this.getAll(),
+      this.fetchLocations(),
+      this.fetchServices(),
+    ]);
+  },
+};
 </script>
 
 <style scoped>
-.profile-container { min-height: 85vh; background-color: #f8fafc; }
-.glass-card { background: white; border-radius: 12px; border: 1px solid #e2e8f0; }
-.section-title { color: #4f46e5; font-weight: bold; border-left: 5px solid #4f46e5; padding-left: 15px; }
-
-.order-card { 
-  background: #ffffff; 
-  border: 1px solid #edf2f7; 
-  cursor: pointer; 
-  transition: 0.2s; 
+/* A stílusokat hagyd meg, ahogy voltak */
+.profile-container {
+  min-height: 85vh;
+  background-color: #f8fafc;
 }
-.order-card:hover { background: #f1f5f9; transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-
-.admin-btn { z-index: 5; padding: 5px 10px; }
-.pe-5 { padding-right: 4rem !important; }
-
-.modal-overlay { 
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-  background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; 
+.glass-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+.section-title {
+  color: #4f46e5;
+  font-weight: bold;
+  border-left: 5px solid #4f46e5;
+  padding-left: 15px;
+}
+.order-card {
+  background: #ffffff;
+  border: 1px solid #edf2f7;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.order-card:hover {
+  background: #f1f5f9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
   backdrop-filter: blur(3px);
 }
-.modal-content { max-width: 450px; width: 90%; border-top: 5px solid #4f46e5; }
-
+.modal-content {
+  max-width: 450px;
+  width: 90%;
+  border-top: 5px solid #4f46e5;
+}
 .service-box {
   background: #f8fafc;
   padding: 10px 15px;
   border-radius: 8px;
   border-left: 3px solid #cbd5e1;
 }
-
-.uppercase-label { font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase; color: #64748b; }
-.italic { font-style: italic; font-size: 0.85rem; }
-.info-box { background: #f1f5f9; padding: 10px; border-radius: 8px; }
-
+.uppercase-label {
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #64748b;
+}
+.italic {
+  font-style: italic;
+  font-size: 0.85rem;
+}
+.info-box {
+  background: #f1f5f9;
+  padding: 10px;
+  border-radius: 8px;
+}
 .twinkle-header {
   background: linear-gradient(45deg, #4f46e5, #ec4899);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: bold;
 }
-
 .avatar-circle {
   width: 100px;
   height: 100px;

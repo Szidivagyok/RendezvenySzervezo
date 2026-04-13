@@ -8,20 +8,31 @@ use Illuminate\Support\Facades\DB;
 
 class BookingSelectionController extends Controller
 {
-    public function getAll()
-    {
-        // Az összes rendelés lekérése
-        $orders = Order::all();
+  public function getBookingDetails(int $id)
+{
+    return $this->apiResponse(
+        function () use ($id){
+            $order = Order::findOrFail($id);
 
-        // Minden rendeléshez hozzácsatoljuk a szolgáltatásait
-        foreach ($orders as $order) {
-            $order->services = DB::table('orderServices')
-                ->join('services', 'orderServices.serviceId', '=', 'services.id')
-                ->where('orderServices.orderId', $order->id)
+            // Helyszín lekérése
+            $order->locationName = DB::table('locations')
+                ->where('id', $order->locationId)
+                ->value('locationName'); 
+
+            // Szolgáltatások lekérése
+            $services = DB::table('order_services')
+                ->join('services', 'order_services.serviceId', '=', 'services.id')
+                ->where('order_services.orderId', $order->id)
                 ->select('services.service', 'services.serviceTypeId')
                 ->get();
-        }
 
-        return response()->json($orders);
-    }
+            // Ha van kiválasztott szolgáltatás, hozzáadjuk, ha nincs, nem fog szerepelni a JSON-ben
+            if ($services->isNotEmpty()) {
+                $order->services = $services;
+            }
+
+            return $order;
+        }
+    );
+}
 }
