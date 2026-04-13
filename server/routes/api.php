@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookingSelectionController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\LocationsPictureController;
 use App\Http\Controllers\OrderController;
@@ -130,8 +131,7 @@ Route::delete('service_types/{id}', [ServiceTypeController::class, 'destroy'])
 //endregion
 
 
-
-
+Route::get('/booking-details/{id}', [BookingSelectionController::class, 'getBookingDetails']);
 
 Route::get('/download-aszf', function () {
     // A storage_path pontosan a server/storage mappába mutat

@@ -260,7 +260,14 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### get orders by id
-get {{host}}/api/orders
+get {{host}}/api/orders/55
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+### get orders by id
+get {{host}}/api/booking-details/55
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
