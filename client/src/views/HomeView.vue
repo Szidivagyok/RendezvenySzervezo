@@ -38,7 +38,12 @@
 
     <Carousel />
 
-    <div class="container mt-5">
+    <div class="flower-overflow-wrapper">
+      <img src="/kepek2/virag1.png" alt="dekoráció jobb" class="corner-flower flower-right">
+      <img src="/kepek2/virag3.png" alt="dekoráció bal" class="corner-flower flower-left">
+    </div>
+
+    <div class="container mt-5 welcome-section">
       <h1 class="twinkle-title text-center">Üdvözlünk az oldalon</h1>
 
       <div class="row my-5 py-4 text-center">
@@ -107,37 +112,64 @@
         </div>
       </section>
     </div>
+
     <section class="text-center py-5">
-  <div class="container">
-    <h2 class="twinkle-title mb-3 fs-2">Megtalálhatóak vagyunk a közösségi médiában</h2>
-    <p class="mb-4">
-      Kövess minket Instagramon, Facebookon és TikTokon is, hogy ne maradj le a legújabb esküvői inspirációkról!
-    </p>
+      <div class="container">
+        <h2 class="twinkle-title mb-3 fs-2">Megtalálhatóak vagyunk a közösségi médiában</h2>
+        <p class="mb-4">
+          Kövess minket Instagramon, Facebookon és TikTokon is, hogy ne maradj le a legújabb esküvői inspirációkról!
+        </p>
 
-    <div class="d-flex justify-content-center gap-4 fs-3">
-      <a href="https://instagram.com" target="_blank" class="color-purple">
-        <i class="bi bi-instagram"></i>
-      </a>
-
-      <a href="https://facebook.com" target="_blank" class="color-purple">
-        <i class="bi bi-facebook"></i>
-      </a>
-
-      <a href="https://tiktok.com" target="_blank" class="color-purple">
-        <i class="bi bi-tiktok"></i>
-      </a>
-    </div>
+        <div class="d-flex justify-content-center gap-4 fs-3">
+          <a href="https://instagram.com" target="_blank" class="color-purple">
+            <i class="bi bi-instagram"></i>
+          </a>
+          <a href="https://facebook.com" target="_blank" class="color-purple">
+            <i class="bi bi-facebook"></i>
+          </a>
+          <a href="https://tiktok.com" target="_blank" class="color-purple">
+            <i class="bi bi-tiktok"></i>
+          </a>
+        </div>
+      </div>
+    </section>
   </div>
-</section>
-
-  </div>
-
 </template>
-
-
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Twinkle+Star&display=swap");
+
+/* VIRÁG POZÍCIONÁLÁS ALAPOK */
+.flower-overflow-wrapper {
+  position: relative;
+  width: 100%;
+  height: 0;
+  overflow: visible;
+}
+
+.corner-flower {
+  position: absolute;
+  top: -10px; /* Megtartva a FENTI pozíció */
+  width: 500px; /* Megtartva a NAGY méret */
+  height: auto;
+  z-index: 1; 
+  pointer-events: none;
+  opacity: 0.95; 
+}
+
+/* KÜLÖN POZÍCIÓK A KÉT OLDALRA */
+.flower-right {
+  right: -20px; /* Megtartva a BALRA tolás a jobb szélétől */
+}
+
+.flower-left {
+  left: 0; /* MÓDOSÍTVA: Jobbra tolva (-20px-ről 0-ra) */
+}
+
+.welcome-section {
+  position: relative;
+  z-index: 2; 
+}
 
 /* HERO ÉS EGYÉB STÍLUSOK */
 .hero-video-container { position: relative; max-height: 500px; overflow: hidden; }
@@ -146,22 +178,22 @@
 .hero-subtext { font-size: 1.5rem; letter-spacing: 2px; text-transform: uppercase; }
 
 /* STATS BAR */
-.stats-bar { background: linear-gradient(90deg, #fdf2f8 0%, #f3e8ff 100%); }
+.stats-bar { background: linear-gradient(90deg, #fdf2f8 0%, #f3e8ff 100%); position: relative; z-index: 3; }
 .stat-number { font-family: "Twinkle Star", cursive; color: #a855f7; font-size: 3rem; margin-bottom: 0; }
 .stat-label { color: #6b7280; font-weight: 600; text-transform: uppercase; font-size: 0.8rem; }
 
 /* FEATURE BOXES */
-.feature-box { padding: 30px; border-radius: 20px; background: white; transition: all 0.3s ease; border: 1px solid #f3e8ff; }
+.feature-box { padding: 30px; border-radius: 20px; background: white; transition: all 0.3s ease; border: 1px solid #f3e8ff; position: relative; z-index: 2; }
 .feature-box:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(168, 85, 247, 0.1); }
 .active-feature { border: 2px solid #f5d0fe; background: #fffaff; }
 .icon-circle { width: 60px; height: 60px; background: #f3e8ff; color: #a855f7; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 1.5rem; }
 
 /* RÓLUNK ÉS TÉRKÉP STÍLUSOK */
-.twinkle-title { font-family: "Twinkle Star", cursive; font-size: 3.5rem; color: #8533e4; }
+.twinkle-title { font-family: "Twinkle Star", cursive; font-size: 3.5rem; color: #8533e4; position: relative; z-index: 2; }
 .about-card { background: white; border-radius: 20px; border-left: 8px solid #f3e8ff; }
 .border-glow { box-shadow: 0 0 15px rgba(243, 232, 255, 0.5); }
 .map-frame { border-radius: 25px; border: 10px solid white; overflow: hidden; height: 100%; }
-.title-spacer { height: 5.2rem; } /* Ez szinkronizálja a cím és térkép magasságát */
+.title-spacer { height: 5.2rem; }
 .btn-outline-purple { border: 2px solid #a855f7; color: #a855f7; font-weight: 600; padding: 10px 30px; }
 .btn-outline-purple:hover { background: linear-gradient(45deg, #a855f7, #ec4899); color: white; border: 2px solid transparent; }
 .color-purple { color: #a855f7; }
@@ -169,9 +201,9 @@
 
 @media (max-width: 991px) {
   .hero-text { font-size: 2.5rem; }
-  .title-spacer { display: none; } /* Mobilon eltüntetjük a távtartót */
+  .title-spacer { display: none; }
+  .corner-flower { width: 280px; top: 0px; }
+  .flower-right { right: -10px; }
+  .flower-left { left: 0; } /* Mobilon is módosítva */
 }
-
-/* Ezt az értéket írd át, ha nagyobbat vagy kisebbet szeretnél alul */
-
 </style>
