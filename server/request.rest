@@ -302,7 +302,7 @@ Authorization: Bearer {{token}}
 }
 
 ### delete orders by id
-delete {{host}}/api/orders/50
+delete {{host}}/api/orders/60
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}

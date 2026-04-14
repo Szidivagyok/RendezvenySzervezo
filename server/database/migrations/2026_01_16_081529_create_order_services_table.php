@@ -13,12 +13,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('order_services', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('orderId')->constrained('orders')->onDelete('restrict');
-            $table->foreignId('serviceId')->constrained('services')->onDelete('restrict');
-            $table->unique(['orderId', 'serviceId']);
-            $table->timestamps();
-        });
+        $table->id();
+        // A 'restrict'-et átírtuk 'cascade'-ra:
+        $table->foreignId('orderId')->constrained('orders')->onDelete('cascade');
+        
+        // A serviceId maradhat restrict, ha nem akarod, hogy egy szolgáltatást 
+        // törölni lehessen, amíg van benne rendelésben.
+        $table->foreignId('serviceId')->constrained('services')->onDelete('restrict');
+        
+        $table->unique(['orderId', 'serviceId']);
+        $table->timestamps();
+    });
     }
  
     /**
