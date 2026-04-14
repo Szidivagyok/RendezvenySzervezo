@@ -131,14 +131,75 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Twinkle+Star&display=swap');
+
 .page-wrapper { background-color: #fffafc; }
-.menu { position: fixed; top: 0; left: 0; right: 0; background: linear-gradient(90deg, #fce7f3 0%, #f3e8ff 100%); padding: 1rem; box-shadow: 0 4px 15px rgba(168, 85, 247, 0.15); z-index: 1000; border-bottom: 2px solid #f5d0fe; }
-.menu ul { display: flex; gap: 2.5rem; list-style: none; margin: 0; padding: 0; justify-content: center; }
-.nav-link-style { text-decoration: none; color: #a855f7; font-family: 'Twinkle Star', cursive; font-size: 1.7rem; }
-.section { min-height: 100vh; padding: 8rem 2rem 4rem 2rem; border-bottom: 1px dashed #f5d0fe; }
-.twinkle-header { font-family: 'Twinkle Star', cursive; font-size: 3.8rem; background: linear-gradient(45deg, #a855f7, #8533e4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 2.5rem; display: inline-block; }
-.scrollable-list { max-height: 500px; overflow-y: auto; border-radius: 15px; background: white; border: 1px solid #f5d0fe; }
-.my-pointer { cursor: pointer; padding: 1rem; border-left: 5px solid transparent; color: #6b7280; }
+
+/* Menü reszponzivitás: mobilon kisebb betűk és tördelés */
+.menu { 
+  position: fixed; top: 0; left: 0; right: 0; 
+  background: linear-gradient(90deg, #fce7f3 0%, #f3e8ff 100%); 
+  padding: 0.8rem; z-index: 1000; border-bottom: 2px solid #f5d0fe; 
+}
+.menu ul { display: flex; gap: 1.5rem; list-style: none; margin: 0; padding: 0; justify-content: center; flex-wrap: wrap; }
+.nav-link-style { text-decoration: none; color: #a855f7; font-family: 'Twinkle Star', cursive; font-size: 1.4rem; }
+
+/* Szekciók távolsága */
+.section { min-height: 100vh; padding: 6rem 1rem 4rem 1rem; border-bottom: 1px dashed #f5d0fe; }
+
+.twinkle-header { 
+  font-family: 'Twinkle Star', cursive; 
+  font-size: clamp(2.5rem, 8vw, 3.8rem); /* Rugalmas betűméret */
+  background: linear-gradient(45deg, #a855f7, #8533e4); 
+  -webkit-background-clip: text; 
+  -webkit-text-fill-color: transparent; 
+  margin-bottom: 2rem;
+}
+
+/* Lista magassága mobilon változik */
+.scrollable-list { 
+  max-height: 400px; 
+  overflow-y: auto; 
+  border-radius: 15px; 
+  background: white; 
+  border: 1px solid #f5d0fe;
+  margin-bottom: 1.5rem; /* Távolság a képtől mobilon */
+}
+
+/* CAROUSEL RESZPONZIVITÁS */
+.carousel-wrapper { 
+  border-radius: 20px; 
+  overflow: hidden; 
+  border: 4px solid white;
+  width: 100%;
+  position: relative;
+  /* Kép méretének kordában tartása */
+  max-height: 600px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eee; /* Amíg tölt a kép */
+}
+
+/* Biztosítjuk, hogy a Carousel-en belüli img tag-ek (ha ott vannak) reszponzívak legyenek */
+:deep(.carousel-item img) {
+  width: 100%;
+  height: auto;
+  object-fit: cover; /* Kitölti a helyet vágás nélkül/vágással */
+  aspect-ratio: 16 / 9; /* Fix oldalarány, hogy ne ugráljon az oldal */
+}
+
+.my-pointer { cursor: pointer; padding: 1rem; border-left: 5px solid transparent; color: #6b7280; transition: 0.3s; }
 .active-location { background-color: #f3e8ff !important; border-left: 5px solid #a855f7 !important; color: #a855f7 !important; font-weight: 600; }
-.carousel-wrapper { border-radius: 20px; overflow: hidden; border: 4px solid white; }
+
+/* MÉDIA LEKÉRDEZÉSEK EXTRA FINOMHANGOLÁSHOZ */
+@media (max-width: 991px) {
+  .section { padding-top: 5rem; }
+  .scrollable-list { max-height: 250px; } /* Mobilon rövidebb lista, hogy látszódjon alatta a kép */
+  .nav-link-style { font-size: 1.2rem; }
+}
+
+@media (min-width: 1200px) {
+  .nav-link-style { font-size: 1.7rem; }
+  .scrollable-list { max-height: 600px; }
+}
 </style>
