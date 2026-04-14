@@ -1,87 +1,90 @@
 <template>
-  <div class="profile-container container py-5">
-    <div class="row g-4">
-      <div class="col-lg-4">
-        <div class="glass-card p-4 text-center shadow-sm">
-          <div class="avatar-circle mb-3 mx-auto">
-            <i class="bi bi-person-badge display-1 text-primary"></i>
-          </div>
-          <h2 class="twinkle-header">{{ userName || "Vendég" }}</h2>
-          <p class="text-muted small mb-0">{{ userEmail }}</p>
-          <hr />
-          <div class="info-box text-start">
-            <p class="mb-1"><strong>Szerepkör:</strong> {{ userRoleName }}</p>
-            <p class="mb-0 text-secondary small">Saját ID: #{{ userId }}</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-8">
-        <div class="glass-card p-4 shadow-sm">
-          <h3 class="section-title mb-4">
-            <i class="bi bi-calendar-range me-2"></i>Saját foglalásaim
-          </h3>
-
-          <div v-if="loading" class="text-center py-5">
-            <div class="spinner-border text-primary"></div>
-            <p class="mt-2 text-muted">Adatok letöltése...</p>
-          </div>
-
-          <div
-            v-else-if="allOrdersSorted.length === 0"
-            class="text-center py-5"
-          >
-            <p class="text-muted">Még nincs leadott foglalásod.</p>
-            <router-link to="/orders" class="btn btn-outline-primary"
-              >Foglalás indítása</router-link
-            >
-          </div>
-
-          <div v-else class="order-list">
-            <div
-              v-for="order in allOrdersSorted"
-              :key="order.id"
-              class="order-card mb-3 p-3 border-start border-primary border-4 position-relative"
-              @click="showDetails(order)"
-            >
-              <button
-                v-if="isAdmin"
-                class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2 shadow-sm admin-btn"
-                @click.stop="confirmDelete(order.id)"
-              >
-                <i class="bi bi-trash3-fill"></i>
-              </button>
-
-              <div
-                class="d-flex justify-content-between align-items-center pe-5 mb-2"
-              >
-                <div>
-                  <span class="fw-bold text-primary"
-                    >#{{ order.id }} Foglalás</span
-                  >
-                </div>
-                <span class="small text-muted">
-                  <i class="bi bi-calendar-check me-1"></i
-                  >{{ formatDate(order.orderTime) }}
+  <div class="profile-page py-5">
+    <div class="container">
+      <div class="row g-4 justify-content-center">
+        
+        <div class="col-lg-4">
+          <div class="glass-card profile-sidebar text-center p-4">
+            <div class="avatar-container mb-4 mx-auto">
+              <div class="avatar-blob"></div>
+              <i class="bi bi-person-badge text-white"></i>
+            </div>
+            
+            <h2 class="user-display-name mb-1">{{ userName || "Vendég" }}</h2>
+            <div class="user-email-tag mb-4">{{ userEmail }}</div>
+            
+            <div class="user-stats-box text-start p-3">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="label">Rang:</span>
+                <span class="badge-role" :class="isAdmin ? 'admin' : 'user'">
+                  {{ userRoleName }}
                 </span>
               </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="label">Azonosító:</span>
+                <span class="value">#{{ userId }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
-              <hr class="my-2 opacity-25" />
+        <div class="col-lg-8">
+          <div class="glass-card main-content p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h3 class="section-title">
+                <i class="bi bi-calendar-check-fill me-2"></i>Saját foglalásaim
+              </h3>
+              <div v-if="allOrdersSorted.length" class="order-count-badge">
+                {{ allOrdersSorted.length }} foglalás
+              </div>
+            </div>
 
-              <div class="row">
-                <div class="col-6">
-                  <span class="fw-medium"
-                    ><i class="bi bi-people me-2"></i
-                    >{{ order.howManyPeople }} fő</span
-                  >
+            <div v-if="loading" class="loader-wrapper py-5">
+              <div class="spinner-grow text-primary" role="status"></div>
+              <p>Adatok szinkronizálása...</p>
+            </div>
+
+            <div v-else-if="allOrdersSorted.length === 0" class="empty-state py-5 text-center">
+              <div class="empty-icon mb-3">
+                <i class="bi bi-journal-x"></i>
+              </div>
+              <p>Még nem adtál le foglalást.</p>
+              <router-link to="/orders" class="btn btn-primary-gradient rounded-pill">
+                Foglalás indítása
+              </router-link>
+            </div>
+
+            <div v-else class="order-grid">
+              <div
+                v-for="order in allOrdersSorted"
+                :key="order.id"
+                class="order-item-card"
+                @click="showDetails(order)"
+              >
+                <div class="order-card-header">
+                  <span class="order-id">#{{ order.id }}</span>
+                  <span class="order-date">{{ formatDate(order.orderTime) }}</span>
                 </div>
-                <div class="col-6 text-end">
-                  <span class="badge bg-light text-dark border fw-normal">
-                    {{
-                      order.locationName || getLocationName(order.locationId)
-                    }}
-                  </span>
+                
+                <div class="order-card-body mt-3">
+                  <div class="info-pill">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    {{ order.locationName || getLocationName(order.locationId) }}
+                  </div>
+                  <div class="info-pill">
+                    <i class="bi bi-people-fill"></i>
+                    {{ order.howManyPeople }} fő
+                  </div>
                 </div>
+
+                <button
+                  v-if="isAdmin"
+                  class="btn-delete-mini"
+                  @click.stop="confirmDelete(order.id)"
+                  title="Törlés"
+                >
+                  <i class="bi bi-trash3"></i>
+                </button>
               </div>
             </div>
           </div>
@@ -89,77 +92,61 @@
       </div>
     </div>
 
-    <div
-      v-if="selectedOrder"
-      class="modal-overlay"
-      @click.self="selectedOrder = null"
-    >
-      <div class="glass-card modal-content p-4 shadow-lg">
-        <div
-          class="d-flex justify-content-between align-items-start mb-3 border-bottom pb-2"
-        >
-          <h4 class="text-primary mb-0">Foglalás részletei</h4>
-          <button class="btn-close" @click="selectedOrder = null"></button>
-        </div>
+    <Transition name="scale">
+      <div v-if="selectedOrder" class="modal-backdrop-blur" @click.self="selectedOrder = null">
+        <div class="modern-modal-card">
+          <div class="modal-header-gradient">
+            <h4>Foglalás részletei</h4>
+            <button class="btn-close-white" @click="selectedOrder = null">&times;</button>
+          </div>
+          
+          <div class="modal-body p-4">
+            <div class="id-date-bar mb-4">
+              <span>Azonosító: <b>#{{ selectedOrder.id }}</b></span>
+              <span>Dátum: <b>{{ formatDate(selectedOrder.orderTime) }}</b></span>
+            </div>
 
-        <div class="mb-3 text-muted small">
-          Azonosító: <strong>#{{ selectedOrder.id }}</strong> | Dátum:
-          <strong>{{ formatDate(selectedOrder.orderTime) }}</strong>
-        </div>
+            <div class="detail-grid">
+              <div class="detail-item">
+                <label>Helyszín</label>
+                <p><i class="bi bi-map me-2"></i>{{ selectedOrder.locationName || "Helyszín betöltése..." }}</p>
+              </div>
+              <div class="detail-item">
+                <label>Létszám</label>
+                <p><i class="bi bi-people me-2"></i>{{ selectedOrder.howManyPeople }} fő</p>
+              </div>
+            </div>
 
-        <div class="detail-item mb-2">
-          <i class="bi bi-geo-alt text-primary me-2"></i>
-          <strong>Helyszín:</strong>
-          {{ selectedOrder.locationName || "Betöltés..." }}
-        </div>
-        <div class="detail-item mb-3">
-          <i class="bi bi-people text-primary me-2"></i>
-          <strong>Létszám:</strong> {{ selectedOrder.howManyPeople }} fő
-        </div>
+            <hr class="my-4">
 
-        <hr class="my-3" />
+            <h6 class="services-title">VÁLASZTOTT SZOLGÁLTATÁSOK</h6>
+            <div class="service-tags-container">
+              <div class="service-tag food">
+                <i class="bi bi-egg-fried"></i>
+                <span>{{ getServiceByCategory(selectedOrder, 2) }}</span>
+              </div>
+              <div class="service-tag music">
+                <i class="bi bi-music-note-beamed"></i>
+                <span>{{ getServiceByCategory(selectedOrder, 3) }}</span>
+              </div>
+              <div class="service-tag deco">
+                <i class="bi bi-palette"></i>
+                <span>{{ getServiceByCategory(selectedOrder, 4) }}</span>
+              </div>
+            </div>
 
-        <h6 class="fw-bold mb-3 text-secondary uppercase-label">
-          Választott szolgáltatások:
-        </h6>
-
-        <div class="service-box mb-2">
-          <div class="small text-muted italic">Étel menü:</div>
-          <div class="fw-medium">
-            <i class="bi bi-egg-fried me-2 text-danger"></i>
-            {{ getServiceByCategory(selectedOrder, 2) }}
+            <button class="btn btn-dark w-100 rounded-pill mt-4 py-2" @click="selectedOrder = null">
+              Bezárás
+            </button>
           </div>
         </div>
-
-        <div class="service-box mb-2">
-          <div class="small text-muted italic">Zene / DJ:</div>
-          <div class="fw-medium">
-            <i class="bi bi-music-note-beamed me-2 text-primary"></i>
-            {{ getServiceByCategory(selectedOrder, 3) }}
-          </div>
-        </div>
-
-        <div class="service-box mb-4">
-          <div class="small text-muted italic">Dekoráció:</div>
-          <div class="fw-medium">
-            <i class="bi bi-palette me-2 text-success"></i>
-            {{ getServiceByCategory(selectedOrder, 4) }}
-          </div>
-        </div>
-
-        <button
-          class="btn btn-primary w-100 py-2 shadow-sm"
-          @click="selectedOrder = null"
-        >
-          Bezárás
-        </button>
       </div>
-    </div>
+    </Transition>
   </div>
 </template>
 
 <script>
-import axios from "axios"; // EZ HIÁNYZOTT!
+import axios from "axios";
 import { mapState, mapActions } from "pinia";
 import { useOrderStore } from "@/stores/orderStore";
 import { useUserLoginLogoutStore } from "@/stores/userLoginLogoutStore";
@@ -176,21 +163,11 @@ export default {
     ...mapState(useLocationStore, { locations: "items" }),
     ...mapState(useServiceStore, { allServices: "items" }),
 
-    userId() {
-      return this.item?.id;
-    },
-    userName() {
-      return this.item?.name;
-    },
-    userEmail() {
-      return this.item?.email;
-    },
-    isAdmin() {
-      return this.item?.role === 1;
-    },
-    userRoleName() {
-      return this.isAdmin ? "Adminisztrátor" : "Megrendelő";
-    },
+    userId() { return this.item?.id; },
+    userName() { return this.item?.name; },
+    userEmail() { return this.item?.email; },
+    isAdmin() { return this.item?.role === 1; },
+    userRoleName() { return this.isAdmin ? "Adminisztrátor" : "Megrendelő"; },
 
     allOrdersSorted() {
       let filtered = this.items;
@@ -206,57 +183,30 @@ export default {
 
     async showDetails(order) {
       try {
-        // 1. Lekérjük az adatokat
-        const response = await axios.get(
-          `http://localhost:8000/api/booking-details/${order.id}`
-        );
-
-        // 2. MENTÉS ELŐTT nézd meg a konzolt (F12), hogy lásd mi jön vissza!
-        console.log("Backend válasz:", response.data.data);
-
+        const response = await axios.get(`http://localhost:8000/api/booking-details/${order.id}`);
         this.selectedOrder = response.data.data;
       } catch (error) {
-        console.error("Hiba történt:", error);
+        console.error("Hiba:", error);
         this.selectedOrder = order;
       }
     },
 
     getServiceByCategory(order, typeId) {
-      // Ellenőrizzük, hogy van-e egyáltalán order és services tömb
-      if (!order || !order.services || !Array.isArray(order.services)) {
-        return "Betöltés...";
-      }
-
-      // Megkeressük azt a szolgáltatást, aminek a serviceTypeId-ja egyezik
-      // Tipp: Használjunk ==-t a === helyett, hátha a backend stringként küldi az ID-t
+      if (!order || !order.services) return "Nincs választva";
       const found = order.services.find((s) => s.serviceTypeId == typeId);
-
-      // Ha megtaláltuk, visszaadjuk a nevét, ha nem, akkor a hibaüzenetet
-      return found
-        ? found.service
-        : "Nincs ilyen típusú szolgáltatás választva";
+      return found ? found.service : "Nem igényelt";
     },
 
     async confirmDelete(id) {
       if (!this.isAdmin) return;
       if (confirm(`Biztosan törlöd a #${id} foglalást?`)) {
-        try {
-          await this.delete(id);
-        } catch (e) {
-          alert("Hiba történt.");
-        }
+        try { await this.delete(id); } catch (e) { alert("Hiba történt."); }
       }
     },
 
     getLocationName(id) {
       const loc = this.locations.find((l) => l.id === id);
       return loc ? loc.locationName : `Helyszín #${id}`;
-    },
-
-    getServiceByCategory(order, typeId) {
-      if (!order || !order.services) return "Nincs adat";
-      const service = order.services.find((s) => s.serviceTypeId === typeId);
-      return service ? service.service : "Nem kért szolgáltatás";
     },
 
     formatDate(d) {
@@ -269,96 +219,187 @@ export default {
     },
   },
   async mounted() {
-    await Promise.all([
-      this.getAll(),
-      this.fetchLocations(),
-      this.fetchServices(),
-    ]);
+    await Promise.all([this.getAll(), this.fetchLocations(), this.fetchServices()]);
   },
 };
 </script>
 
 <style scoped>
-/* A stílusokat hagyd meg, ahogy voltak */
-.profile-container {
-  min-height: 85vh;
-  background-color: #f8fafc;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+.profile-page {
+  font-family: 'Inter', sans-serif;
+  background-color: #f0f2f5;
+  min-height: 100vh;
 }
+
+/* Glassmorphism kártyák */
 .glass-card {
-  background: white;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
-.section-title {
-  color: #4f46e5;
-  font-weight: bold;
-  border-left: 5px solid #4f46e5;
-  padding-left: 15px;
+
+/* Avatar animált blob háttérrel */
+.avatar-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.order-card {
-  background: #ffffff;
-  border: 1px solid #edf2f7;
-  cursor: pointer;
-  transition: 0.2s;
-}
-.order-card:hover {
-  background: #f1f5f9;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
+
+.avatar-blob {
+  position: absolute;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  backdrop-filter: blur(3px);
-}
-.modal-content {
-  max-width: 450px;
-  width: 90%;
-  border-top: 5px solid #4f46e5;
-}
-.service-box {
-  background: #f8fafc;
-  padding: 10px 15px;
-  border-radius: 8px;
-  border-left: 3px solid #cbd5e1;
-}
-.uppercase-label {
-  font-size: 0.75rem;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: #64748b;
-}
-.italic {
-  font-style: italic;
-  font-size: 0.85rem;
-}
-.info-box {
-  background: #f1f5f9;
-  padding: 10px;
-  border-radius: 8px;
-}
-.twinkle-header {
   background: linear-gradient(45deg, #4f46e5, #ec4899);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: bold;
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  animation: blob-anim 7s infinite alternate;
 }
-.avatar-circle {
-  width: 100px;
-  height: 100px;
-  background: #eef2ff;
-  border-radius: 50%;
+
+@keyframes blob-anim {
+  0% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+  100% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; }
+}
+
+.avatar-container i {
+  position: relative;
+  font-size: 4rem;
+  z-index: 1;
+}
+
+/* Felhasználói infók */
+.user-display-name {
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.user-email-tag {
+  color: #64748b;
+  font-size: 0.9rem;
+  background: #f1f5f9;
+  display: inline-block;
+  padding: 2px 12px;
+  border-radius: 15px;
+}
+
+.user-stats-box {
+  background: #f8fafc;
+  border-radius: 15px;
+  border: 1px solid #e2e8f0;
+}
+
+.badge-role {
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge-role.admin { background: #e0e7ff; color: #4338ca; }
+.badge-role.user { background: #fef3c7; color: #92400e; }
+
+/* Foglalás lista */
+.section-title {
+  font-weight: 700;
+  color: #334155;
+  font-size: 1.25rem;
+}
+
+.order-count-badge {
+  background: #4f46e5;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+}
+
+.order-item-card {
+  background: white;
+  border-radius: 15px;
+  padding: 1.25rem;
+  border: 1px solid #f1f5f9;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.order-item-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  border-color: #4f46e5;
+}
+
+.order-id { font-weight: 700; color: #4f46e5; }
+.order-date { font-size: 0.85rem; color: #94a3b8; float: right; }
+
+.info-pill {
+  display: inline-flex;
+  align-items: center;
+  background: #f8fafc;
+  padding: 5px 12px;
+  border-radius: 10px;
+  margin-right: 10px;
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+.info-pill i { margin-right: 6px; color: #4f46e5; }
+
+/* Modal */
+.modal-backdrop-blur {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(8px);
+  z-index: 2000;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #4f46e5;
 }
+
+.modern-modal-card {
+  background: white;
+  width: 95%;
+  max-width: 450px;
+  border-radius: 25px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+}
+
+.modal-header-gradient {
+  background: linear-gradient(45deg, #4f46e5, #9333ea);
+  padding: 20px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-close-white {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.service-tag {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.service-tag.food { background: #fff1f2; color: #be123c; }
+.service-tag.music { background: #eff6ff; color: #1d4ed8; }
+.service-tag.deco { background: #9df1a4; color: rgba(0, 0, 0, 0.774); }
 </style>
