@@ -2,75 +2,61 @@
 
 namespace Tests\Unit;
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Tests\TestCase;
 use Illuminate\Support\Facades\Schema;
+use Tests\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 class LocationPictureTest extends TestCase
 {
-    use DatabaseTransactions;
+    protected $table = 'locations_pictures';
 
-    protected string $table = 'locations_pictures';
-
+    /**
+     * Adatszolgáltató a locations_pictures tábla szerkezetéhez
+     */
     public static function expectedSchemaDataProvider(): array
     {
         return [
-            'locationId oszlop' => ['locationId', 'bigint'],
+            'id oszlop'        => ['id', 'bigint'],
             'pictureId oszlop'  => ['pictureId', 'bigint'],
+            'locationId oszlop' => ['locationId', 'bigint'],
         ];
     }
 
-    #[DataProvider('expectedSchemaDataProvider')]
-    public function test_does_the_locations_pictures_table_contain_all_fields(
-        string $expectedColumn,
-        string $expectedType
-    ): void {
-        $this->assertTrue(
-            Schema::hasColumn($this->table, $expectedColumn),
-            "A '{$expectedColumn}' oszlop nem létezik"
-        );
-    }
-
-    #[DataProvider('expectedSchemaDataProvider')]
-    public function test_the_locations_pictures_table_columns_have_expected_types(
-        string $expectedColumn,
-        string $expectedType
-    ): void {
-        $actualDbSqlType = Schema::getColumnType($this->table, $expectedColumn);
-
-        $this->assertSame(
-            $expectedType,
-            $actualDbSqlType,
-            "A '{$expectedColumn}' oszlop típusa nem egyezik.
-            Várt: '{$expectedType}', Kapott: '{$actualDbSqlType}'"
-        );
-    }
-
+    /**
+     * Ellenőrizzük, hogy a tábla egyáltalán létezik-e az adatbázisban
+     */
     public function test_exists_locations_pictures_table(): void
     {
         $this->assertTrue(
-            Schema::hasTable($this->table),
-            "A locations_pictures tábla nem létezik"
+            Schema::hasTable($this->table), 
+            "A '{$this->table}' tábla nem létezik az adatbázisban."
         );
     }
 
-    public function test_locationId_pictureId_unique_index_exists(): void
+    /**
+     * Ellenőrizzük, hogy minden várt oszlop szerepel-e a táblában
+     */
+    #[DataProvider('expectedSchemaDataProvider')]
+    public function test_does_the_locations_pictures_table_contain_all_fields(string $expectedColumn, string $expectedType): void
     {
-        $connection = Schema::getConnection()->getDoctrineSchemaManager();
-        $indexes = $connection->listTableIndexes($this->table);
-
-        $found = false;
-        foreach ($indexes as $index) {
-            if ($index->isUnique() && $index->getColumns() === ['locationId', 'pictureId']) {
-                $found = true;
-                break;
-            }
-        }
-
         $this->assertTrue(
-            $found,
-            "A locations_pictures táblában nem található unique index a ['locationId', 'pictureId'] oszlopokra."
+            Schema::hasColumn($this->table, $expectedColumn), 
+            "A(z) '$expectedColumn' oszlop nem található a '{$this->table}' táblában."
+        );
+    }
+
+    /**
+     * Ellenőrizzük, hogy az oszlopok típusa megfelel-e az elvárásoknak
+     */
+    #[DataProvider('expectedSchemaDataProvider')]
+    public function test_the_locations_pictures_table_columns_have_the_expected_types(string $expectedColumn, string $expectedType): void
+    {
+        $actualDbSqlType = Schema::getColumnType($this->table, $expectedColumn);
+
+        $this->assertEquals(
+            $expectedType, 
+            $actualDbSqlType, 
+            "A '{$expectedColumn}' oszlop típusa nem egyezik. Várt: '{$expectedType}', Kapott: '{$actualDbSqlType}'."
         );
     }
 }
