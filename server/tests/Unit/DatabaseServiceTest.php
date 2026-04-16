@@ -24,6 +24,10 @@ class DatabaseServiceTest extends TestCase
             'orders tábla' => ['orders'],
             'order_services tábla' => ['order_services'],
             'locations tábla' => ['locations'],
+            'service_types' => ['service_types'],
+            'locations_pictures' => ['locations_pictures'],
+            'pictures' => ['pictures'],
+
         ];
     }
 
