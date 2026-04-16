@@ -81,7 +81,7 @@ class PingTest extends TestBase
             'get locations admin: 200' => ['locations', 'admin@example.com', '123', 200],
             'get services admin: 200' => ['services', 'admin@example.com', '123', 200],
             'get orders admin: 200' => ['orders', 'admin@example.com', '123', 200],
-            'get order_services admin: 200' => ['order_services', 'admin@example.com', '123', 200],
+            'get orderServices admin: 200' => ['orderServices', 'admin@example.com', '123', 200],
             'get locations_pictures admin: 200' => ['locations_pictures', 'admin@example.com', '123', 200],
             'get pictures admin: 200' => ['pictures', 'admin@example.com', '123', 200],
             'get service_types admin: 200' => ['service_types', 'admin@example.com', '123', 200],
@@ -90,7 +90,7 @@ class PingTest extends TestBase
             'get locations user: 200' => ['locations', 'megrendelo@example.com', '123', 200],
             'get services user: 200' => ['services', 'megrendelo@example.com', '123', 200],
             'get orders user: 200' => ['orders', 'megrendelo@example.com', '123', 200],
-            'get order_services user: 200' => ['order_services', 'megrendelo@example.com', '123', 200],
+            'get orderServices user: 200' => ['orderServices', 'megrendelo@example.com', '123', 200],
             'get locations_pictures user: 200' => ['locations_pictures', 'megrendelo@example.com', '123', 200],
             'get pictures user: 200' => ['pictures', 'megrendelo@example.com', '123', 200],
             'get service_types user: 200' => ['service_types', 'megrendelo@example.com', '123', 200],
@@ -104,7 +104,7 @@ class PingTest extends TestBase
             'post-delete locations admin' => ['locations', 'admin@example.com', '123', true, true, self::$dataLocation],
             'post-delete services admin' => ['services', 'admin@example.com', '123', true, true, self::$dataService],
             'post-delete orders admin' => ['orders', 'admin@example.com', '123', true, true, self::$dataOrder],
-            'post-delete order_services admin' => ['order_services', 'admin@example.com', '123', true, true, self::$dataOrderService],
+            'post-delete orderServices admin' => ['orderServices', 'admin@example.com', '123', true, true, self::$dataOrderService],
             'post-delete locations_pictures admin' => ['locations_pictures', 'admin@example.com', '123', true, true, self::$dataLocationPicture],
             'post-delete pictures admin' => ['pictures', 'admin@example.com', '123', true, true, self::$dataPicture],
             'post-delete service_types admin' => ['service_types', 'admin@example.com', '123', true, true, self::$dataServiceType],
@@ -113,7 +113,7 @@ class PingTest extends TestBase
             'post-delete locations user' => ['locations', 'megrendelo@example.com', '123', false, false, self::$dataLocation],
             'post-delete services user' => ['services', 'megrendelo@example.com', '123', false, false, self::$dataService],
             'post-delete orders user' => ['orders', 'megrendelo@example.com', '123', true, false, self::$dataOrder],
-            'post-delete order_services user' => ['order_services', 'megrendelo@example.com', '123', false, false, self::$dataOrderService],
+            'post-delete orderServices user' => ['orderServices', 'megrendelo@example.com', '123', false, false, self::$dataOrderService],
             'post-delete locations_pictures user' => ['locations_pictures', 'megrendelo@example.com', '123', false, false, self::$dataLocationPicture],
             'post-delete pictures user' => ['pictures', 'megrendelo@example.com', '123', false, false, self::$dataPicture],
             'post-delete service_types user' => ['service_types', 'megrendelo@example.com', '123', false, false, self::$dataServiceType],
@@ -168,7 +168,7 @@ class PingTest extends TestBase
             $model = Service::factory()->create();
         } elseif ($route == "orders") {
             $model = Order::factory()->create();
-        } elseif ($route == "order_services") {
+        } elseif ($route == "orderServices") {
             $model = OrderService::factory()->create();
         } elseif ($route == "locations_pictures") {
             $model = LocationsPicture::factory()->create();

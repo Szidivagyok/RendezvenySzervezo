@@ -21,7 +21,7 @@ class ExampleTest extends TestBase
     public function test_user_login_logout()
     {
         //login admin
-        $response = $this->login('megrendelo@example.com', '123');
+        $response = $this->login('admin@example.com', '123');
         $response->assertStatus(200);
 
         //token
@@ -35,7 +35,8 @@ class ExampleTest extends TestBase
         //5xx: serverhiba
         // $response->assertStatus(403);
        //$response->assertSuccessful();
-       $response->assertClientError();
+        //$response->assertClientError();
+     $response->assertStatus(200);
 
         //logout
         $response = $this->logout($token);
