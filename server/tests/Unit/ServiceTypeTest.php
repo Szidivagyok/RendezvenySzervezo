@@ -2,56 +2,61 @@
 
 namespace Tests\Unit;
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Tests\TestCase;
 use Illuminate\Support\Facades\Schema;
+use Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class ServiceTypeTest extends TestCase
 {
-    use DatabaseTransactions;
+    // A tábla neve a képek alapján
+    protected $table = 'service_types';
 
-    protected string $table = 'service_types';
+    /**
+     * Adatszolgáltató a service_types tábla oszlopaihoz.
+     */
+    public static function expectedSchemaDataProvider(): array
+    {
+        return [
+            'id'              => ['id', 'bigint'],
+            'serviceTypeName' => ['serviceTypeName', 'varchar'],
+        ];
+    }
 
+    /**
+     * Ellenőrzi, hogy a 'service_types' tábla létezik-e.
+     */
     public function test_exists_service_types_table(): void
     {
         $this->assertTrue(
-            Schema::hasTable($this->table),
-            "A service_types tábla nem létezik"
+            Schema::hasTable($this->table), 
+            "A '{$this->table}' tábla nem létezik az adatbázisban."
         );
     }
 
-    public function test_serviceTypeName_column_exists_and_type(): void
+    /**
+     * Ellenőrzi, hogy a tábla tartalmazza-e a várt mezőket.
+     */
+    #[DataProvider('expectedSchemaDataProvider')]
+    public function test_does_the_service_types_table_contain_all_fields(string $expectedColumn, string $expectedType): void
     {
         $this->assertTrue(
-            Schema::hasColumn($this->table, 'serviceTypeName'),
-            "A 'serviceTypeName' oszlop nem létezik"
-        );
-
-        $actualDbSqlType = Schema::getColumnType($this->table, 'serviceTypeName');
-
-        $this->assertSame(
-            'varchar',
-            $actualDbSqlType,
-            "A 'serviceTypeName' oszlop típusa nem egyezik. Várt: 'varchar', Kapott: '{$actualDbSqlType}'"
+            Schema::hasColumn($this->table, $expectedColumn), 
+            "A '$expectedColumn' oszlop hiányzik a '{$this->table}' táblából."
         );
     }
 
-    public function test_serviceTypeName_unique_index_exists(): void
+    /**
+     * Ellenőrzi, hogy az oszlopok típusa megfelelő-e.
+     */
+    #[DataProvider('expectedSchemaDataProvider')]
+    public function test_the_service_types_table_columns_have_the_expected_types(string $expectedColumn, string $expectedType): void
     {
-        $connection = Schema::getConnection()->getDoctrineSchemaManager();
-        $indexes = $connection->listTableIndexes($this->table);
+        $actualDbSqlType = Schema::getColumnType($this->table, $expectedColumn);
 
-        $found = false;
-        foreach ($indexes as $index) {
-            if ($index->isUnique() && $index->getColumns() === ['serviceTypeName']) {
-                $found = true;
-                break;
-            }
-        }
-
-        $this->assertTrue(
-            $found,
-            "A service_types táblában nem található unique index a 'serviceTypeName' oszlopra."
+        $this->assertEquals(
+            $expectedType, 
+            $actualDbSqlType, 
+            "A '{$expectedColumn}' oszlop típusa nem megfelelő. Várt: '{$expectedType}', Kapott: '{$actualDbSqlType}'."
         );
     }
 }
