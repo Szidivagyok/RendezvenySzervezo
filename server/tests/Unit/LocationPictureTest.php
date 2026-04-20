@@ -16,9 +16,9 @@ class LocationPictureTest extends TestCase
     public static function expectedSchemaDataProvider(): array
     {
         return [
-            'id oszlop'        => ['id', 'bigint'],
-            'pictureId oszlop'  => ['pictureId', 'bigint'],
-            'locationId oszlop' => ['locationId', 'bigint'],
+            'id'        => ['id', 'bigint'],
+            'pictureId'  => ['pictureId', 'bigint'],
+            'locationId' => ['locationId', 'bigint'],
         ];
     }
 

@@ -2,59 +2,65 @@
 
 namespace Tests\Unit;
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Tests\TestCase;
 use Illuminate\Support\Facades\Schema;
+use Tests\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 class OrderTest extends TestCase
 {
-    use DatabaseTransactions;
+    // Figyelem: A táblanév kisbetűs a képen!
+    protected $table = 'orders';
 
-    protected string $table = 'orders';
-
+    /**
+     * Adatszolgáltató az orders tábla oszlopaihoz.
+     */
     public static function expectedSchemaDataProvider(): array
     {
         return [
-            'userId oszlop'          => ['userId', 'bigint'],
-            'locationId oszlop'      => ['locationId', 'bigint'],
-            'howManyPeople oszlop'   => ['howManyPeople', 'int'],
-            'howManyDays oszlop'     => ['howManyDays', 'int'],
-            'orderTime oszlop'       => ['orderTime', 'datetime'],
+            'id'            => ['id', 'bigint'],
+            'userId'        => ['userId', 'bigint'],
+            'locationId'    => ['locationId', 'bigint'],
+            'howManyPeople' => ['howManyPeople', 'int'],
+            'howManyDays'   => ['howManyDays', 'int'],
+            'orderTime'     => ['orderTime', 'datetime'], // A képen 'datumX' minta szerepel
         ];
     }
 
-    #[DataProvider('expectedSchemaDataProvider')]
-    public function test_does_the_orders_table_contain_all_fields(
-        string $expectedColumn,
-        string $expectedType
-    ): void {
-        $this->assertTrue(
-            Schema::hasColumn($this->table, $expectedColumn),
-            "A '{$expectedColumn}' oszlop nem létezik"
-        );
-    }
-
-    #[DataProvider('expectedSchemaDataProvider')]
-    public function test_the_orders_table_columns_have_expected_types(
-        string $expectedColumn,
-        string $expectedType
-    ): void {
-        $actualDbSqlType = Schema::getColumnType($this->table, $expectedColumn);
-
-        $this->assertSame(
-            $expectedType,
-            $actualDbSqlType,
-            "A '{$expectedColumn}' oszlop típusa nem egyezik.
-            Várt: '{$expectedType}', Kapott: '{$actualDbSqlType}'."
-        );
-    }
-
+    /**
+     * Ellenőrzi, hogy az 'orders' tábla létezik-e.
+     */
     public function test_exists_orders_table(): void
     {
         $this->assertTrue(
-            Schema::hasTable($this->table),
-            "Az orders tábla nem létezik"
+            Schema::hasTable($this->table), 
+            "A '{$this->table}' tábla nem létezik. Ellenőrizd a migrációt!"
+        );
+    }
+
+    /**
+     * Ellenőrzi, hogy minden mező megvan-e.
+     */
+    #[DataProvider('expectedSchemaDataProvider')]
+    public function test_does_the_orders_table_contain_all_fields(string $expectedColumn, string $expectedType): void
+    {
+        $this->assertTrue(
+            Schema::hasColumn($this->table, $expectedColumn), 
+            "A(z) '$expectedColumn' oszlop hiányzik a '{$this->table}' táblából."
+        );
+    }
+
+    /**
+     * Ellenőrzi az oszlopok típusait.
+     */
+    #[DataProvider('expectedSchemaDataProvider')]
+    public function test_the_orders_table_columns_have_the_expected_types(string $expectedColumn, string $expectedType): void
+    {
+        $actualDbSqlType = Schema::getColumnType($this->table, $expectedColumn);
+
+        $this->assertEquals(
+            $expectedType, 
+            $actualDbSqlType, 
+            "A '{$expectedColumn}' oszlop típusa eltér. Várt: '{$expectedType}', Kapott: '{$actualDbSqlType}'."
         );
     }
 }
