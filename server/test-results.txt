@@ -1,15 +1,3 @@
-# Backend tesztek
-
-## Unit tesztek
-
-## Feature tesztek
-Feature unit teszt minta:
-# A tesztek végeredménye: 
-```console
-php artisan test --testdox-text test-results.txt
-```
-
-```txt
 Database Service (Tests\Unit\DatabaseService)
  [x] Example
  [x] Exists all tables with data set "services tábla"
@@ -142,5 +130,3 @@ User (Tests\Unit\User)
  [x] Does the user exist
  [x] A given password matches the users hashed password
 
-
-```
