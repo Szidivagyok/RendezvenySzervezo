@@ -8,7 +8,6 @@
           <p>Kérjük, jelentkezzen be!</p>
         </header>
 
-        <!-- A form, aminek a belső kék részeit most átszinezzük -->
         <UserLogin @logIn="loginHandler" class="styled-form" />
         
         <div v-if="error" class="error-toast">
@@ -63,7 +62,6 @@ export default {
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   border: 1px solid #eee;
-  overflow: hidden;
 }
 
 .content-wrapper { padding: 40px; }
@@ -73,22 +71,33 @@ export default {
 h1 { color: #3d343d; font-size: 1.6rem; font-weight: 600; margin: 0; }
 p { color: #8e8e8e; font-size: 0.9rem; }
 
-/* --- A KÉK RÉSZEK ÁTDIZÁJNOLÁSA (DEEP) --- */
+/* --- KRITIKUS JAVÍTÁSOK A KÉK GOMB ELLEN --- */
 
-/* 1. A kék fejléc sáv (Login vagy regisztráció) */
+/* 1. Minden olyan gombot eltüntetünk, ami NEM a submit (LOGIN) gomb */
+.styled-form :deep(button:not([type="submit"])),
+.styled-form :deep(.btn-primary:not([type="submit"])),
+.styled-form :deep(button[style*="background-color: rgb(0, 123, 255)"]), /* Kék szín alapján is */
+.styled-form :deep(.btn:not([type="submit"])) {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* 2. Fejléc sáv */
 .styled-form :deep(.card-header), 
-.styled-form :deep(div[style*="background-color: blue"]), /* Ha inline stílus lenne */
 .styled-form :deep(.bg-primary) { 
-  background: #7d5a7a !important; /* Mályva lila */
+  background: #7d5a7a !important; 
   color: white !important;
   border-radius: 8px 8px 0 0;
   padding: 12px;
-  font-weight: 500;
   text-align: center;
   border: none !important;
 }
 
-/* 2. Az inputok (hogy ne legyen az a világoskék háttér) */
+/* 3. Inputok */
 .styled-form :deep(input) {
   background-color: #fcfafb !important;
   border: 1px solid #e2d5de !important;
@@ -96,43 +105,20 @@ p { color: #8e8e8e; font-size: 0.9rem; }
   padding: 12px !important;
 }
 
-.styled-form :deep(input:focus) {
-  border-color: #7d5a7a !important;
-  box-shadow: 0 0 0 3px rgba(125, 90, 122, 0.1) !important;
-}
-
-/* 3. A kék Regisztráció gomb az alján */
-.styled-form :deep(.btn-primary),
-.styled-form :deep(button:not([type="submit"])) {
-  background-color: transparent !important;
-  color: #7d5a7a !important;
-  border: 1px solid #7d5a7a !important;
-  border-radius: 8px !important;
-  transition: all 0.3s ease;
-  font-weight: 600;
-}
-
-.styled-form :deep(button:not([type="submit"])):hover {
-  background-color: #f4eff2 !important;
-  transform: translateY(-1px);
-}
-
-/* 4. A sötét LOGIN gomb (finomítás) */
+/* 4. A LOGIN gomb kinyújtása */
 .styled-form :deep(button[type="submit"]) {
   background-color: #3d343d !important;
+  color: white !important;
   border-radius: 8px !important;
-  border: none !important;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  width: 100% !important; /* Teljes szélesség */
   padding: 14px !important;
+  border: none !important;
+  display: block !important;
+  margin: 20px 0 0 0 !important;
 }
 
-.styled-form :deep(button[type="submit"]):hover {
-  background-color: #524652 !important;
-}
-
-/* --- EGYÉB ELEMEK --- */
-.error-toast { background: #fff5f5; color: #c53030; padding: 12px; border-radius: 8px; margin-top: 20px; font-size: 0.85rem; border: 1px solid #fed7d7; text-align: center; }
+/* Egyéb elemek */
+.error-toast { background: #fff5f5; color: #c53030; padding: 12px; border-radius: 8px; margin-top: 20px; text-align: center; }
 .footer { margin-top: 30px; text-align: center; border-top: 1px solid #eee; padding-top: 20px; font-size: 0.9rem; }
 .footer a { color: #7d5a7a; font-weight: 600; text-decoration: none; }
 </style>
