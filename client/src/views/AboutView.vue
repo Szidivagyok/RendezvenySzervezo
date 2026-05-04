@@ -68,8 +68,8 @@ export default {
   components: { Carousel },
   data() {
     return {
-      selectedState: {}, 
-      sectionImages: {} 
+      selectedState: {}, // { szekcióId: { id: elemId, type: 'location'|'service' } }
+      sectionImages: {}   // { szekcióId: [képek tömbje] }
     }
   },
   computed: {
@@ -87,22 +87,22 @@ export default {
       return this.serviceItems.filter(s => s.serviceTypeId == typeId);
     },
 
-  async selectItem(sectionId, itemId, type) {
- 
-  this.selectedState = { ...this.selectedState, [sectionId]: { id: itemId, type: type } };
+    async selectItem(sectionId, itemId, type) {
+      // Aktuális kiválasztás mentése
+      this.selectedState = { ...this.selectedState, [sectionId]: { id: itemId, type: type } };
 
-  const pictureStore = usePictureStore();
-  
-  
-  if (type === 'location') {
-    await pictureStore.getLocationpicturesById(itemId);
-  } else {
-    await pictureStore.getPicturesByServiceId(itemId);
-  }
+      const pictureStore = usePictureStore();
+      
+      // Megfelelő API hívás
+      if (type === 'location') {
+        await pictureStore.getLocationpicturesById(itemId);
+      } else {
+        await pictureStore.getPicturesByServiceId(itemId);
+      }
 
- 
-  this.sectionImages = { ...this.sectionImages, [sectionId]: [...pictureStore.items] };
-},
+      // Képek mentése a szekcióhoz
+      this.sectionImages = { ...this.sectionImages, [sectionId]: [...pictureStore.items] };
+    },
     
     scrollTo(id) {
       document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -111,23 +111,21 @@ export default {
   async mounted() {
     await Promise.all([this.getAll(), this.locationGetAll(), this.serviceGetAll()]);
 
-  
-  if (this.locationItems.length > 0) {
-    await this.selectItem(1, this.locationItems[0].id, 'location');
-  }
+    // Kezdő adatok betöltése mindhárom szekcióhoz
+    if (this.locationItems.length > 0) {
+      await this.selectItem(1, this.locationItems[0].id, 'location');
+    }
 
-  
-  const firstFood = this.getServicesByTypeId(2)[0];
-  if (firstFood) {
-    await this.selectItem(2, firstFood.id, 'service');
-  }
+    const firstFood = this.getServicesByTypeId(2)[0];
+    if (firstFood) {
+      await this.selectItem(2, firstFood.id, 'service');
+    }
 
- 
-  const firstService = this.getServicesByTypeId(3)[0];
-  if (firstService) {
-    await this.selectItem(3, firstService.id, 'service');
+    const firstService = this.getServicesByTypeId(3)[0];
+    if (firstService) {
+      await this.selectItem(3, firstService.id, 'service');
+    }
   }
-}
 };
 </script>
 
@@ -161,25 +159,20 @@ export default {
   border-radius: 15px; 
   background: white; 
   border: 1px solid #f5d0fe;
-  margin-bottom: 1.5rem; 
+  margin-bottom: 1.5rem;
 }
 
-
+/* --- CAROUSEL JAVÍTÁS --- */
 .carousel-wrapper { 
   border-radius: 20px; 
   overflow: hidden; 
   border: 4px solid white;
   width: 100%;
-  position: relative;
-  
-  max-height: 600px; 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #eee; 
+  background: #f8f9fa;
+  min-height: 300px; /* Megakadályozza az ugrálást üres állapotban */
 }
 
-
+/* Kép kényszerítése a keret kitöltésére */
 :deep(.carousel-item img) {
   width: 100% !important;
   height: 500px !important; /* Fix magasság a stabilitásért */
@@ -190,23 +183,18 @@ export default {
 :deep(.carousel-inner),
 :deep(.carousel-item) {
   width: 100%;
-  height: auto;
-  object-fit: cover; 
-  aspect-ratio: 16 / 9;
+  height: 500px;
 }
 
 .my-pointer { cursor: pointer; padding: 1rem; border-left: 5px solid transparent; color: #6b7280; transition: 0.3s; }
 .active-location { background-color: #f3e8ff !important; border-left: 5px solid #a855f7 !important; color: #a855f7 !important; font-weight: 600; }
 
-
 @media (max-width: 991px) {
   .section { padding-top: 5rem; }
-  .scrollable-list { max-height: 250px; } 
-  .nav-link-style { font-size: 1.2rem; }
-}
-
-@media (min-width: 1200px) {
-  .nav-link-style { font-size: 1.7rem; }
-  .scrollable-list { max-height: 600px; }
+  .scrollable-list { max-height: 250px; }
+  :deep(.carousel-item img),
+  :deep(.carousel-item) {
+    height: 300px !important; /* Mobilon kisebb magasság */
+  }
 }
 </style>
