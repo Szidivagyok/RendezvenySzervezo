@@ -3,9 +3,6 @@ import { defineStore } from "pinia";
 import { useSearchStore } from "./searchStore";
 import service from "@/api/studentService";
 
-// const toast = useToastStore();
-
-//változtatás
 class Item {
   constructor(
     id = 0,
@@ -56,14 +53,11 @@ export const useStudentStore = defineStore("student", {
       this.item = new Item();
     },
     // READ - Összes adat lekérése
-    //Ha a direction meg van aadva, akkor ez lesz a sorrend
-    //Ha nincs megadva, akkor ellentettjére vált
     async getStudentsBySchoolclassId(
       schoolclassId,
       column = "id",
       direction = null,
     ) {
-      //   const toast = useToastStore();
       this.loading = true;
       this.error = null;
       this.sortColumn = column;
@@ -90,12 +84,10 @@ export const useStudentStore = defineStore("student", {
       }
     },
     async getAll() {
-      //   const toast = useToastStore();
       this.loading = true;
       this.error = null;
       try {
         const response = await service.getAll();
-        // this.searchStore.reset();
         this.items = response.data;
       } catch (err) {
         this.error = err;
@@ -109,7 +101,6 @@ export const useStudentStore = defineStore("student", {
     async getById(id) {
       this.loading = true;
       this.error = null;
-      //   const toast = useToastStore();
       try {
         const response = await service.getById(id);
         this.item = response.data;
@@ -134,8 +125,7 @@ export const useStudentStore = defineStore("student", {
           this.searchStore.searchWord,
         );
         this.items = response.data;
-        // toast.messages.push("Sikeresen létrehozva!");
-        // toast.show("Success");
+
         return true;
       } catch (err) {
         this.error = err;
@@ -146,7 +136,7 @@ export const useStudentStore = defineStore("student", {
       }
     },
 
-    // 3. UPDATE - Módosítás (Helyi frissítéssel, újraolvasás nélkül)
+    // 3. UPDATE - Módosítás
     async update(id, updateData, schoolclassId) {
       this.loading = true;
       this.error = null;
@@ -159,8 +149,6 @@ export const useStudentStore = defineStore("student", {
           this.searchStore.searchWord,
         );
         this.items = response.data;
-        // toast.messages.push(`Sikeresen módosítva`);
-        // toast.show("Success");
         return true;
       } catch (err) {
         this.error = err;
@@ -186,8 +174,6 @@ export const useStudentStore = defineStore("student", {
           this.searchStore.searchWord,
         );
         this.items = response.data;
-        // toast.messages.push(`Sikeresen törölve`);
-        // toast.show("Success");
         return true;
       } catch (err) {
         this.error = err;

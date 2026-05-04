@@ -32,7 +32,7 @@ export const useUserLoginLogoutStore = defineStore("userLoginLogout", {
       return requiredRoles.map(Number).includes(userRole);
     },
 
-    // JAVÍTOTT LOGIN: Bejelentkezés után azonnal betölti a rendeléseket
+  
     async login(data) {
       try {
         this.loading = true;
@@ -41,9 +41,9 @@ export const useUserLoginLogoutStore = defineStore("userLoginLogout", {
         this.item = response.data;
         localStorage.setItem("user_data", JSON.stringify(response.data));
 
-        // Frissítjük a rendeléseket az új felhasználóhoz
+      
         const orderStore = useOrderStore();
-        await orderStore.getAll(); // Letölti az aktuális rendeléseket az adatbázisból
+        await orderStore.getAll(); 
         
         return true;
       } catch (err) {
@@ -59,7 +59,7 @@ export const useUserLoginLogoutStore = defineStore("userLoginLogout", {
         this.loading = true;
         const orderStore = useOrderStore();
         
-        // Kijelentkezéskor csak a memóriát ürítjük (az adatbázisban megmarad!)
+       
         orderStore.clearStore();
         this.myOrders = [];
         

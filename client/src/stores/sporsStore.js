@@ -3,9 +3,6 @@ import { defineStore } from "pinia";
 import { useSearchStore } from "./searchStore";
 import service from "@/api/sportService";
 
-// const toast = useToastStore();
-
-//változtatás
 class Item {
   constructor(id = 0, sportNev = "") {
     this.id = id;
@@ -61,7 +58,6 @@ export const useSportStore = defineStore("sports", {
     },
     // READ - Összes adat lekérése
     async getAllAbc() {
-      //   const toast = useToastStore();
       this.loading = true;
       this.error = null;
       try {
@@ -74,10 +70,7 @@ export const useSportStore = defineStore("sports", {
         this.loading = false;
       }
     },
-    //Ha a direction meg van aadva, akkor ez lesz a sorrend
-    //Ha nincs megadva, akkor ellentettjére vált
     async getAllSortSearch(column = "id", direction = null) {
-      //   const toast = useToastStore();
       this.loading = true;
       this.error = null;
       this.sortColumn = column;
@@ -103,12 +96,10 @@ export const useSportStore = defineStore("sports", {
       }
     },
     async getAll() {
-      //   const toast = useToastStore();
       this.loading = true;
       this.error = null;
       try {
         const response = await service.getAll();
-        // this.searchStore.reset();
         this.items = response.data;
       } catch (err) {
         this.error = err;
@@ -121,7 +112,6 @@ export const useSportStore = defineStore("sports", {
     async getPaging(page = null) {
       this.loading = true;
       this.error = null;
-      //Ha nincs megadva oldal, menj az aktuálisra
       if (!page) {
         page = this.pagination.current_page;
       }
@@ -138,8 +128,7 @@ export const useSportStore = defineStore("sports", {
         return true;
       } catch (err) {
         this.error = err;
-        // toast.messages.push(`Az adatok nem töltődtek be`);
-        // toast.show("Error");
+
         throw err;
         return false;
       } finally {
@@ -151,7 +140,6 @@ export const useSportStore = defineStore("sports", {
     async getById(id) {
       this.loading = true;
       this.error = null;
-      //   const toast = useToastStore();
       try {
         const response = await service.getById(id);
         this.item = response.data;
@@ -175,8 +163,6 @@ export const useSportStore = defineStore("sports", {
           this.searchStore.searchWord,
         );
         this.items = response.data;
-        // toast.messages.push("Sikeresen létrehozva!");
-        // toast.show("Success");
         return true;
       } catch (err) {
         this.error = err;
@@ -193,15 +179,12 @@ export const useSportStore = defineStore("sports", {
       this.error = null;
       try {
         const updatedItem = await service.update(id, updateData);
-        // const response = await service.getAll();
         const response = await service.getAllSortSearch(
           this.sortColumn,
           this.sortDirection,
           this.searchStore.searchWord,
         );
         this.items = response.data;
-        // toast.messages.push(`Sikeresen módosítva`);
-        // toast.show("Success");
         return true;
       } catch (err) {
         this.error = err;
@@ -218,15 +201,12 @@ export const useSportStore = defineStore("sports", {
       this.error = null;
       try {
         await service.delete(id);
-        // const response = await service.getAll();
         const response = await service.getAllSortSearch(
           this.sortColumn,
           this.sortDirection,
           this.searchStore.searchWord,
         );
         this.items = response.data;
-        // toast.messages.push(`Sikeresen törölve`);
-        // toast.show("Success");
         return true;
       } catch (err) {
         this.error = err;

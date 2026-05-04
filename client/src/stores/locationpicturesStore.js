@@ -3,9 +3,6 @@ import { defineStore } from "pinia";
 import { useSearchStore } from "./searchStore";
 import service from "@/api/locationspictureService";
 
-// const toast = useToastStore();
-
-//változtatás
 class Item {
   constructor(id = 0, locationId = "", pictureId = "") {
     this.id = id;
@@ -33,9 +30,8 @@ export const useLocationPictureStore = defineStore("locations_pictures", {
     clearItem() {
       this.item = new Item();
     },
-    // READ - Összes adat lekérése
+
     async getAllAbc() {
-      //   const toast = useToastStore();
       this.loading = true;
       this.error = null;
       try {
@@ -48,10 +44,8 @@ export const useLocationPictureStore = defineStore("locations_pictures", {
         this.loading = false;
       }
     },
-    //Ha a direction meg van aadva, akkor ez lesz a sorrend
-    //Ha nincs megadva, akkor ellentettjére vált
+
     async getAllSortSearch(column = "id", direction = null) {
-      //   const toast = useToastStore();
       this.loading = true;
       this.error = null;
       this.sortColumn = column;
@@ -77,12 +71,12 @@ export const useLocationPictureStore = defineStore("locations_pictures", {
       }
     },
     async getAll() {
-      //   const toast = useToastStore();
+
       this.loading = true;
       this.error = null;
       try {
         const response = await service.getAll();
-        // this.searchStore.reset();
+
         this.items = response.data;
       } catch (err) {
         this.error = err;
@@ -92,11 +86,11 @@ export const useLocationPictureStore = defineStore("locations_pictures", {
       }
     },
 
-    // READ - Egy adat lekérése
+
     async getById(id) {
       this.loading = true;
       this.error = null;
-      //   const toast = useToastStore();
+
       try {
         const response = await service.getById(id);
         this.item = response.data;
@@ -114,7 +108,6 @@ export const useLocationPictureStore = defineStore("locations_pictures", {
       this.error = null;
       try {
         await service.create(data);
-        // Létrehozás után frissítjük a listát a jelenlegi rendezés szerint
         const response = await service.getAllSortSearch(
           this.sortColumn,
           this.sortDirection,
@@ -123,7 +116,6 @@ export const useLocationPictureStore = defineStore("locations_pictures", {
         this.items = response.data;
         return true;
       } catch (err) {
-        // Általános hibaüzenet kezelés a Laravel validációs hibáihoz
         this.error = err.response?.data?.message || "Hiba történt a mentés során.";
         throw err;
       } finally {
@@ -137,15 +129,12 @@ export const useLocationPictureStore = defineStore("locations_pictures", {
       this.error = null;
       try {
         const updatedItem = await service.update(id, updateData);
-        // const response = await service.getAll();
         const response = await service.getAllSortSearch(
           this.sortColumn,
           this.sortDirection,
           this.searchStore.searchWord,
         );
         this.items = response.data;
-        // toast.messages.push(`Sikeresen módosítva`);
-        // toast.show("Success");
         return true;
       } catch (err) {
         this.error = err;
@@ -162,15 +151,12 @@ export const useLocationPictureStore = defineStore("locations_pictures", {
       this.error = null;
       try {
         await service.delete(id);
-        //const response = await service.getAll();
         const response = await service.getAllSortSearch(
           this.sortColumn,
           this.sortDirection,
           this.searchStore.searchWord,
         );
         this.items = response.data;
-        // toast.messages.push(`Sikeresen törölve`);
-        // toast.show("Success");
         return true;
       } catch (err) {
         this.error = err;

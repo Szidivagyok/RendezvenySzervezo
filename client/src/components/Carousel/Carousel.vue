@@ -60,7 +60,7 @@ export default {
 .carousel-img {
   max-height: 600px;
   max-width: 1400px;
-  object-fit: cover; /* Megtartja az arányokat, nem nyújtja a képet */
+  object-fit: cover;
 }
 
 .twinkle-font {

@@ -57,7 +57,7 @@ export default {
   },
   watch: {
     searchWord() {
-      // Ha nincs pagináció, akkor sima getAll-t vagy szűrést hívj
+   
       this.getAll(); 
     },
   },
@@ -114,7 +114,7 @@ export default {
     },
     sortHandler(column) {
       this.setColumn(column);
-      this.getAll(); // Újratöltés rendezés után
+      this.getAll(); 
     },
     cancelHandler() {
       this.isOpenConfirmModal = false;

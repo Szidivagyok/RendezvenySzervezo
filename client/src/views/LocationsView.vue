@@ -47,14 +47,14 @@ import { useSearchStore } from "@/stores/searchStore";
 
 import GenericTable from "@/components/Table/GenericTable.vue";
 import ConfirmModal from "@/components/Confirm/ConfirmModal.vue";
-import FormLocation from "@/components/Forms/FormLocation.vue"; // Ez az import jó volt
+import FormLocation from "@/components/Forms/FormLocation.vue";
 
 export default {
   name: "LocationsView",
   components: { 
     GenericTable, 
     ConfirmModal, 
-    FormLocation // Regisztrálva van
+    FormLocation 
   },
   data() {
     return {
@@ -94,8 +94,8 @@ export default {
     async updateHandler(id) {
       this.state = "u";
       this.title = "Helyszín módosítása";
-      await this.getById(id); // Megvárjuk, amíg betölti az adatokat a store-ba
-      this.$refs.form.show(); // Most már létezik a ref és a függvény!
+      await this.getById(id); 
+      this.$refs.form.show(); 
     },
 
     createHandler() {
@@ -126,7 +126,6 @@ export default {
         if (success) {
           done(true);
         } else {
-          // Ha a store-ban elmentettük a hibát, átadjuk a formnak
           if (this.error?.response?.data?.errors) {
              this.$refs.form.setServerErrors(this.error.response.data.errors);
           }

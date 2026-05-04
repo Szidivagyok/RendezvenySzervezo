@@ -1,22 +1,21 @@
 <template>
   <div>
-    <!-- oldal fejléc -->
-    <!-- oldal címe -->
+
     <div class="d-flex align-items-center m-0 mb-2">
       <h1>{{ pageTitle }}</h1>
       <div class="d-flex align-items-center m-0 ms-2">
-        <!-- homokóra -->
+
         <i
           v-if="loading"
           class="bi bi-hourglass-split fs-3 col-auto p-0 pe-1"
         ></i>
-        <!-- új rekord ikon -->
+
         <ButtonsCrudCreate v-if="!loading" @create="createHandler" />
         <p class="m-0 ms-2">({{ getItemsLength }})</p>
       </div>
     </div>
 
-    <!-- táblázat -->
+
     <GenericTable
       :items="items"
       :columns="tableColumns"
@@ -29,7 +28,6 @@
     />
     <div v-else style="width: 100px" class="m-auto">Nincs találat</div>
 
-    <!-- Form -->
     <FormSchoolClass
       ref="form"
       :title="title"
@@ -37,7 +35,7 @@
       @yesEventForm="yesEventFormHandler"
     />
 
-    <!-- Confirm modal -->
+
     <ConfirmModal
       :isOpenConfirmModal="isOpenConfirmModal"
       @cancel="cancelHandler"
@@ -48,7 +46,7 @@
 
 <script>
 import { mapActions, mapState } from "pinia";
-//módosít
+
 import { useSchoolclassStore } from "@/stores/schoolclassStore";
 import { useSearchStore } from "@/stores/searchStore";
 import GenericTable from "@/components/Table/GenericTable.vue";
@@ -56,7 +54,7 @@ import ConfirmModal from "@/components/Confirm/ConfirmModal.vue";
 import ButtonsCrudCreate from "@/components/Table/ButtonsCrudCreate.vue";
 import FormSchoolClass from "@/components/Forms/FormSchoolClass.vue";
 export default {
-  //módosít
+
   name: "SchooClassView",
   components: {
     GenericTable,
@@ -71,23 +69,23 @@ export default {
   },
   data() {
     return {
-      //módosít
+
       pageTitle: "Osztályok",
-      //módosít
+
       tableColumns: [
         { key: "id", label: "ID", debug: import.meta.env.VITE_DEBUG_MODE },
         { key: "osztalyNev", label: "Osztálynév", debug: 2 },
       ],
-      //módosít
+
       useCollectionStore: useSchoolclassStore,
       isOpenConfirmModal: false,
       toDeleteId: null,
-      state: "r", //crud
+      state: "r",
       title: "",
     };
   },
   computed: {
-    //módosít
+
     ...mapState(useSchoolclassStore, [
       "item",
       "items",
@@ -99,7 +97,7 @@ export default {
     ...mapState(useSearchStore, ["searchWord"]),
   },
   methods: {
-    //módosít
+
     ...mapActions(useSchoolclassStore, [
       "getAll",
       "getAllSortSearch",
@@ -115,7 +113,7 @@ export default {
       this.isOpenConfirmModal = true;
       this.toDeleteId = id;
     },
-    //módosítani akarok
+
     updateHandler(id) {
       this.state = "u";
       this.title = "Adatmódosítás";
@@ -123,7 +121,7 @@ export default {
       this.$refs.form.show();
       console.log("update:", id);
     },
-    //újat akarok
+
     createHandler() {
       this.state = "c";
       this.title = "Új adatbevitel";
@@ -135,13 +133,13 @@ export default {
       console.log(column);
       this.getAllSortSearch(column);
     },
-    //nem akarok törölni
+
     cancelHandler() {
       console.log("mégsem törlök");
       this.isOpenConfirmModal = false;
       this.state = "r";
     },
-    //mehet a torlés
+
     async confirmHandler() {
       try {
         await this.delete(this.toDeleteId);
@@ -152,30 +150,29 @@ export default {
     },
 
     async yesEventFormHandler({ item, done }) {
-      //vagy create, vagy update
+
       try {
         if (this.state == "c") {
-          //create
+
           await this.create(item);
         } else {
-          //update
+
           await this.update(item.id, item);
         }
-        //nem volt hiba
+
         this.state = "r";
         done(true);
       } catch (err) {
-        //hiba volt
-        //nem csukódik le az ablak
+
         if (err.response && err.response.status === 422) {
-          // Átadjuk a formnak a konkrét hibaüzeneteket (pl. "min 2 karakter")
+
           this.$refs.form.setServerErrors(err.response.data.errors);
-          done(false); // Nyitva tartja a modalt
+          done(false); 
         } else {
-          // Minden más hiba (500, 401) esetén is értesítjük a modalt, hogy ne záródjon be
+
           done(false);
         }
-        //átadom a hibát
+
       }
     },
   },
