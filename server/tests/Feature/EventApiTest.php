@@ -8,6 +8,7 @@ use Tests\TestBase;
 
 class EventApiTest extends TestBase
 {
+    
     /**
      * A basic feature test example.
      */
