@@ -3,10 +3,11 @@ const route = '/users';
 
 export default {
   // GET: Összes rekord lekérése
-  async getAllSortSearch(column, direction, search='') {
-    const route = `/userssortsearch/${column}/${direction}/${search}`
-    return await apiClient.get(`${route}`);
-  },
+  async getAllSortSearch(column, direction, search = '') {
+  // Ha a search üres, ne küldjünk üres perjelet a végére
+  const path = search ? `/userssortsearch/${column}/${direction}/${search}` : `/userssortsearch/${column}/${direction}`;
+  return await apiClient.get(path);
+},
   async getAll() {
     return await apiClient.get(`${route}`);
   },

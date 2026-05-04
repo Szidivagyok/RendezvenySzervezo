@@ -9,7 +9,7 @@ A szolgáltatás célja, hogy:
 - átlátható információt adjon a termekről,
 - csökkentse a szervezéssel járó problémákat.
 
-A foglalás lépései:
+## A foglalás lépései:
 1. A megfelelő terem kiválasztása.
 2. Az időpont és a létszám megadása.
 4. A foglalás visszaigazolása.
@@ -75,3 +75,5 @@ A szolgáltatás előnyei közé tartozik:
   - Rendelés
     - /rendeles
     - OrdersView
+
+    

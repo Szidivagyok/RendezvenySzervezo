@@ -35,6 +35,9 @@ Route::post('users', [UserController::class, 'store']);
 
 //Admin: 
 //minden user lekérdezése
+// Admin: minden user lekérdezése, rendezve és keresve
+Route::get('userssortsearch/{column}/{direction}/{search?}', [UserController::class, 'getAllSortSearch'])
+    ->middleware('auth:sanctum', 'ability:admin');
 Route::get('users', [UserController::class, 'index'])
     ->middleware('auth:sanctum', 'ability:admin');
 //Egy user lekérése    
