@@ -64,8 +64,8 @@ export default {
   components: { Carousel },
   data() {
     return {
-      selectedState: {}, // Melyik ID van kiválasztva szekciónként: { 1: {id: 5, type: 'location'} }
-      sectionImages: {}   // Képek szekciónként: { 1: [...], 2: [...] }
+      selectedState: {}, 
+      sectionImages: {} 
     }
   },
   computed: {
@@ -84,19 +84,19 @@ export default {
     },
 
   async selectItem(sectionId, itemId, type) {
-  // 1. Megjegyezzük, melyik szekcióban melyik ID az aktív
+ 
   this.selectedState = { ...this.selectedState, [sectionId]: { id: itemId, type: type } };
 
   const pictureStore = usePictureStore();
   
-  // 2. Szétválasztjuk: helyszínhez a régi, ételhez az új API kell
+  
   if (type === 'location') {
     await pictureStore.getLocationpicturesById(itemId);
   } else {
     await pictureStore.getPicturesByServiceId(itemId);
   }
 
-  // 3. Mentjük a képeket a szekció saját "fiókjába"
+ 
   this.sectionImages = { ...this.sectionImages, [sectionId]: [...pictureStore.items] };
 },
     
@@ -107,20 +107,18 @@ export default {
   async mounted() {
   await Promise.all([this.getAll(), this.locationGetAll(), this.serviceGetAll()]);
 
-  // Alapértelmezett képek betöltése mind a 3 szekcióhoz az oldalnyitáskor:
   
-  // 1. Helyszínek (ID 1)
   if (this.locationItems.length > 0) {
     await this.selectItem(1, this.locationItems[0].id, 'location');
   }
 
-  // 2. Ételek (ID 2)
+  
   const firstFood = this.getServicesByTypeId(2)[0];
   if (firstFood) {
     await this.selectItem(2, firstFood.id, 'service');
   }
 
-  // 3. Szolgáltatások (ID 3)
+ 
   const firstService = this.getServicesByTypeId(3)[0];
   if (firstService) {
     await this.selectItem(3, firstService.id, 'service');
@@ -134,7 +132,7 @@ export default {
 
 .page-wrapper { background-color: #fffafc; }
 
-/* Menü reszponzivitás: mobilon kisebb betűk és tördelés */
+
 .menu { 
   position: fixed; top: 0; left: 0; right: 0; 
   background: linear-gradient(90deg, #fce7f3 0%, #f3e8ff 100%); 
@@ -143,58 +141,58 @@ export default {
 .menu ul { display: flex; gap: 1.5rem; list-style: none; margin: 0; padding: 0; justify-content: center; flex-wrap: wrap; }
 .nav-link-style { text-decoration: none; color: #a855f7; font-family: 'Twinkle Star', cursive; font-size: 1.4rem; }
 
-/* Szekciók távolsága */
+
 .section { min-height: 100vh; padding: 6rem 1rem 4rem 1rem; border-bottom: 1px dashed #f5d0fe; }
 
 .twinkle-header { 
   font-family: 'Twinkle Star', cursive; 
-  font-size: clamp(2.5rem, 8vw, 3.8rem); /* Rugalmas betűméret */
+  font-size: clamp(2.5rem, 8vw, 3.8rem);
   background: linear-gradient(45deg, #a855f7, #8533e4); 
   -webkit-background-clip: text; 
   -webkit-text-fill-color: transparent; 
   margin-bottom: 2rem;
 }
 
-/* Lista magassága mobilon változik */
+
 .scrollable-list { 
   max-height: 400px; 
   overflow-y: auto; 
   border-radius: 15px; 
   background: white; 
   border: 1px solid #f5d0fe;
-  margin-bottom: 1.5rem; /* Távolság a képtől mobilon */
+  margin-bottom: 1.5rem; 
 }
 
-/* CAROUSEL RESZPONZIVITÁS */
+
 .carousel-wrapper { 
   border-radius: 20px; 
   overflow: hidden; 
   border: 4px solid white;
   width: 100%;
   position: relative;
-  /* Kép méretének kordában tartása */
+  
   max-height: 600px; 
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #eee; /* Amíg tölt a kép */
+  background: #eee; 
 }
 
-/* Biztosítjuk, hogy a Carousel-en belüli img tag-ek (ha ott vannak) reszponzívak legyenek */
+
 :deep(.carousel-item img) {
   width: 100%;
   height: auto;
-  object-fit: cover; /* Kitölti a helyet vágás nélkül/vágással */
-  aspect-ratio: 16 / 9; /* Fix oldalarány, hogy ne ugráljon az oldal */
+  object-fit: cover; 
+  aspect-ratio: 16 / 9;
 }
 
 .my-pointer { cursor: pointer; padding: 1rem; border-left: 5px solid transparent; color: #6b7280; transition: 0.3s; }
 .active-location { background-color: #f3e8ff !important; border-left: 5px solid #a855f7 !important; color: #a855f7 !important; font-weight: 600; }
 
-/* MÉDIA LEKÉRDEZÉSEK EXTRA FINOMHANGOLÁSHOZ */
+
 @media (max-width: 991px) {
   .section { padding-top: 5rem; }
-  .scrollable-list { max-height: 250px; } /* Mobilon rövidebb lista, hogy látszódjon alatta a kép */
+  .scrollable-list { max-height: 250px; } 
   .nav-link-style { font-size: 1.2rem; }
 }
 

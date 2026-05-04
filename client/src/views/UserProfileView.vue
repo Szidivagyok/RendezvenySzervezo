@@ -272,7 +272,7 @@ export default {
   z-index: 1;
 }
 
-/* Felhasználói infók */
+
 .user-display-name {
   font-weight: 700;
   color: #1e293b;
@@ -304,7 +304,7 @@ export default {
 .badge-role.admin { background: #e0e7ff; color: #4338ca; }
 .badge-role.user { background: #fef3c7; color: #92400e; }
 
-/* Foglalás lista */
+
 .section-title {
   font-weight: 700;
   color: #334155;
@@ -352,7 +352,7 @@ export default {
 
 .info-pill i { margin-right: 6px; color: #4f46e5; }
 
-/* Modal */
+
 .modal-backdrop-blur {
   position: fixed;
   inset: 0;

@@ -36,8 +36,6 @@ export const usePictureStore = defineStore("pictures", {
         throw err;
       } finally { this.loading = false; }
     },
-
-    // --- Ezekhez NEM NYÚLTUNK, az AboutView miatt ---
     async getById(id) {
       this.loading = true;
       try {
@@ -64,20 +62,17 @@ export const usePictureStore = defineStore("pictures", {
       } catch (err) { this.error = err; this.items = []; }
       finally { this.loading = false; }
     },
-    // ----------------------------------------------
 
     async create(data) {
       this.loading = true;
       this.error = null;
       try {
-        // Tisztítjuk az adatot a küldés előtt
         const payload = {
           pictureName: data.pictureName,
           serviceId: data.serviceId
         };
         await service.create(payload);
         
-        // Frissítjük a listát az admin felületen használt keresési feltételekkel
         const response = await service.getAllSortSearch(
           this.sortColumn,
           this.sortDirection,
@@ -86,7 +81,6 @@ export const usePictureStore = defineStore("pictures", {
         this.items = response.data;
         return true;
       } catch (err) {
-        // Itt figyeltem a specifikus hibaüzenetre, amit írtál
         this.error = err.response?.data?.errors?.pictureName ? err.response.data.errors.pictureName[0] : "Hiba a mentés során";
         return false;
       } finally { this.loading = false; }

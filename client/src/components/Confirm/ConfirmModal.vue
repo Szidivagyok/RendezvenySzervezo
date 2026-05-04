@@ -62,19 +62,16 @@ export default {
 </script>
 
 <style scoped>
-/* Megjelenési fázis (enter) és eltűnési fázis (leave) */
 .modal-fade-enter-active,
 .modal-fade-leave-active {
   transition: opacity 0.5s ease;
 }
 
-/* A belső ablak (modal-dialog) külön animálása: fentről lefelé úszás */
 .modal-fade-enter-active .modal-dialog,
 .modal-fade-leave-active .modal-dialog {
   transition: transform 0.3s ease-out;
 }
 
-/* Kiinduló és végállapot (amikor nincs a képernyőn) */
 .modal-fade-enter-from,
 .modal-fade-leave-to {
   opacity: 0;

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import locationService from "@/api/locationService"; // Feltételezve, hogy ez a neve
+import locationService from "@/api/locationService";
 import { useSearchStore } from "./searchStore";
 
 class Item {
@@ -66,14 +66,10 @@ export const useLocationStore = defineStore("locations", {
       }
     },
 
- // locationStore.js
-
 async create(data) {
   this.loading = true;
   this.error = null;
   try {
-    // Nagyon fontos: Minden mezőt bele kell tenni a payloadba, 
-    // amit a Laravel és az adatbázis elvár!
     const payload = {
       locationName: data.locationName || "",
       cityName: data.cityName || "",
@@ -86,17 +82,14 @@ async create(data) {
       roomPriceSlashDay: Number(data.roomPriceSlashDay) || 0
     };
 
-    // DEBUG: Nézzük meg a konzolban, mi indul el a szerverre
     console.log("Küldés folyamatban...", payload);
 
     const response = await locationService.create(payload);
-    
-    // Frissítjük a listát, hogy az új elem is benne legyen
+
     await this.getAll(); 
     return true;
   } catch (err) {
     this.error = err;
-    // Kiírjuk a konkrét hibaüzenetet a konzolra a könnyebb javításhoz
     console.error("Hiba a mentés során:", err.response?.data || err);
     return false;
   } finally {
@@ -111,7 +104,7 @@ async create(data) {
       cityName: data.cityName,
       zipCode: data.zipCode ? data.zipCode.toString() : "",
       street: data.street,
-      houseNumber: data.houseNumber ? data.houseNumber.toString() : "", // EZ KELL IDE IS!
+      houseNumber: data.houseNumber ? data.houseNumber.toString() : "",
       minCapacity: Number(data.minCapacity),
       maxCapacity: Number(data.maxCapacity),
       priceSlashPerson: Number(data.priceSlashPerson),
@@ -119,7 +112,7 @@ async create(data) {
     };
 
     await locationService.update(id, payload);
-    await this.getAll(); // Lista frissítése
+    await this.getAll();
     return true;
   } catch (err) {
     this.error = err;

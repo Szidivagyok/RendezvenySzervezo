@@ -3,9 +3,7 @@ import { defineStore } from "pinia";
 import { useSearchStore } from "./searchStore";
 import service from "@/api/schoolclassService";
 
-// const toast = useToastStore();
 
-//változtatás
 class Item {
   constructor(id = 0, osztalyNev = "") {
     this.id = id;
@@ -34,7 +32,6 @@ export const useSchoolclassStore = defineStore("schoolclass", {
     },
     // READ - Összes adat lekérése
     async getAllAbc() {
-      //   const toast = useToastStore();
       this.loading = true;
       this.error = null;
       try {
@@ -47,10 +44,7 @@ export const useSchoolclassStore = defineStore("schoolclass", {
         this.loading = false;
       }
     },
-    //Ha a direction meg van aadva, akkor ez lesz a sorrend
-    //Ha nincs megadva, akkor ellentettjére vált
     async getAllSortSearch(column = "id", direction = null) {
-      //   const toast = useToastStore();
       this.loading = true;
       this.error = null;
       this.sortColumn = column;
@@ -76,12 +70,10 @@ export const useSchoolclassStore = defineStore("schoolclass", {
       }
     },
     async getAll() {
-      //   const toast = useToastStore();
       this.loading = true;
       this.error = null;
       try {
         const response = await service.getAll();
-        // this.searchStore.reset();
         this.items = response.data;
       } catch (err) {
         this.error = err;
@@ -95,7 +87,6 @@ export const useSchoolclassStore = defineStore("schoolclass", {
     async getById(id) {
       this.loading = true;
       this.error = null;
-      //   const toast = useToastStore();
       try {
         const response = await service.getById(id);
         this.item = response.data;
@@ -119,8 +110,6 @@ export const useSchoolclassStore = defineStore("schoolclass", {
           this.searchStore.searchWord,
         );
         this.items = response.data;
-        // toast.messages.push("Sikeresen létrehozva!");
-        // toast.show("Success");
         return true;
       } catch (err) {
         this.error = err.response.data.errors.osztalyNev[0];
@@ -137,15 +126,12 @@ export const useSchoolclassStore = defineStore("schoolclass", {
       this.error = null;
       try {
         const updatedItem = await service.update(id, updateData);
-        // const response = await service.getAll();
         const response = await service.getAllSortSearch(
           this.sortColumn,
           this.sortDirection,
           this.searchStore.searchWord,
         );
         this.items = response.data;
-        // toast.messages.push(`Sikeresen módosítva`);
-        // toast.show("Success");
         return true;
       } catch (err) {
         this.error = err;
@@ -162,15 +148,12 @@ export const useSchoolclassStore = defineStore("schoolclass", {
       this.error = null;
       try {
         await service.delete(id);
-        //const response = await service.getAll();
         const response = await service.getAllSortSearch(
           this.sortColumn,
           this.sortDirection,
           this.searchStore.searchWord,
         );
         this.items = response.data;
-        // toast.messages.push(`Sikeresen törölve`);
-        // toast.show("Success");
         return true;
       } catch (err) {
         this.error = err;

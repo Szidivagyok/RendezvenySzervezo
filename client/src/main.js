@@ -1,5 +1,4 @@
-import './assets/main.css' // Itt importálod a globális stílust
-
+import './assets/main.css' 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 

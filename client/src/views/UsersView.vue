@@ -142,11 +142,10 @@ export default {
  async passwordChangeHandler(id) {
   const newPassword = prompt("Add meg az új jelszót:");
 
-  // Csak akkor indulunk el, ha nem nyomott 'Mégse'-t (null)
+
   if (newPassword !== null) {
     try {
-      // Meghívjuk a store action-t
-      // Mivel a data()-ban 'useUserStore' van a 'useCollectionStore'-ban:
+
       const userStore = this.useCollectionStore(); 
       await userStore.changePassword(id, { password: newPassword });
 
@@ -167,30 +166,29 @@ export default {
     },
 
     async yesEventFormHandler({ item, done }) {
-      //vagy create, vagy update
+
       try {
         if (this.state == "c") {
-          //create
+
           await this.create(item);
         } else {
-          //update
+
           await this.update(item.id, item);
         }
-        //nem volt hiba
+
         this.state = "r";
         done(true);
       } catch (err) {
-        //hiba volt
-        //nem csukódik le az ablak
+
         if (err.response && err.response.status === 422) {
-          // Átadjuk a formnak a konkrét hibaüzeneteket (pl. "min 2 karakter")
+
           this.$refs.form.setServerErrors(err.response.data.errors);
-          done(false); // Nyitva tartja a modalt
+          done(false); 
         } else {
-          // Minden más hiba (500, 401) esetén is értesítjük a modalt, hogy ne záródjon be
+be
           done(false);
         }
-        //átadom a hibát
+
       }
     },
 

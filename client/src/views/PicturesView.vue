@@ -119,7 +119,6 @@ export default {
         if (success) {
           done(true);
         } else {
-          // Hibakezelés a formon, ha a szerver visszadob valamit
           if (this.error?.response?.data?.errors) {
              this.$refs.form.setServerErrors(this.error.response.data.errors);
           }

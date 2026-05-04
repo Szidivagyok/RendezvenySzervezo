@@ -1,9 +1,198 @@
 # Backend tesztek
 
+
+## Request.rest szerkezete
+```js
+# @name login
+POST {{host}}/api/users/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "admin@example.com",
+    "password": "123"
+}
+
+###
+@token = {{login.response.body.data.token}}
+
+### logout user
+POST  {{host}}/api/users/logout
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### --- users
+### get users
+GET  {{host}}/api/users
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### get user by id
+GET  {{host}}/api/users/1
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### post user
+POST {{host}}/api/users 
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name":  "booker2",
+    "email": "booker2@example.com",
+    "password": "456"
+}
+
+### patch user
+PATCH {{host}}/api/users/2
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "No Boss"
+}
+
+### delete user
+DELETE {{host}}/api/users/2
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+//Eredmény:
+HTTP/1.1 200 OK
+Host: localhost:8000
+Connection: close
+X-Powered-By: PHP/8.3.14
+Cache-Control: no-cache, private
+Date: Mon, 04 May 2026 06:50:14 GMT
+Content-Type: application/json
+Access-Control-Allow-Origin: *
+
+
+  "message": "OK",
+  "data": 
+    {
+      "id": 1,
+      "name": "Admin",
+      "email": "admin@example.com",
+      "role": 1,
+      "idNumber": "JA748638",
+      "city": "Budapest",
+      "street": "Endre dűlőút",
+      "houseNumber": "81",
+      "postCode": "4066"
+    },
+```
+
+## Bejelentkezés
+```js
+### --- login
+### login
+# @name login
+POST {{host}}/api/users/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "admin@example.com",
+    "password": "123"
+}
+
+###
+@token = {{login.response.body.data.token}}
+
+### logout user
+POST  {{host}}/api/users/logout
+Accept: application/json
+Authorization: Bearer {{token}}
+
+
+
+HTTP/1.1 200 OK
+Host: localhost:8000
+Connection: close
+X-Powered-By: PHP/8.3.14
+Cache-Control: no-cache, private
+Date: Mon, 04 May 2026 06:51:37 GMT
+Content-Type: application/json
+Access-Control-Allow-Origin: *
+
+{
+  "message": "ok",
+  "data": {
+    "id": 1,
+    "name": "Admin",
+    "email": "admin@example.com",
+    "role": 1,
+    "idNumber": "JA748638",
+    "city": "Budapest",
+    "street": "Endre dűlőút",
+    "houseNumber": "81",
+    "postCode": "4066",
+    "token": "2|oRLkRed5ZmJWr6nOXWJdtl7Os4Zj1uz6fUaF4pC862260fcf"
+  }
+}
+```
+## CRUD minta kód
+```js
+Route::get('locations', [LocationController::class, 'index']);
+Route::get('locations/{id}', [LocationController::class, 'show']);
+Route::post('locations', [LocationController::class, 'store'])
+    ->middleware(['auth:sanctum', 'ability:locations:post']);
+Route::patch('locations/{id}', [LocationController::class, 'update'])
+    ->middleware(['auth:sanctum', 'ability:locations:patch']);
+Route::delete('locations/{id}', [LocationController::class, 'destroy'])
+    ->middleware(['auth:sanctum', 'ability:locations:delete']);
+```
 ## Unit tesztek
+```js
+//Unit LocationTest.php
+    public static function expectedSchemaDataProvider(): array
+    {
+        return [
+            'id'                => ['id', 'bigint'],
+            'cityName'          => ['cityName', 'varchar'],
+            'zipCode'           => ['zipCode', 'varchar'],
+            'street'            => ['street', 'varchar'],
+            'houseNumber'       => ['houseNumber', 'varchar'],
+            'locationName'      => ['locationName', 'varchar'],
+            'maxCapacity'       => ['maxCapacity', 'int'],
+            'minCapacity'       => ['minCapacity', 'int'],
+            'priceSlashPerson'  => ['priceSlashPerson', 'decimal'],
+            'roomPriceSlashDay' => ['roomPriceSlashDay', 'decimal'],
+        ];
+    }
+
+    public function test_exists_locations_table(): void
+    {
+        $this->assertTrue(
+            Schema::hasTable($this->table), 
+            "A '{$this->table}' tábla nem létezik."
+        );
+    }
+```
 
 ## Feature tesztek
-Feature unit teszt minta:
+```js
+//Feature unit teszt minta:
+//Feature PingTest.php
+  public static function tablesGetDataProvider(): array
+    {
+        return [
+            'get users admin: 200' => ['users', 'admin@example.com', '123', 200],
+            'get locations admin: 200' => ['locations', 'admin@example.com', '123', 200],
+            'get services admin: 200' => ['services', 'admin@example.com', '123', 200],
+            'get orders admin: 200' => ['orders', 'admin@example.com', '123', 200],
+            'get users booker: 403' => ['users', 'megrendelo@gmail.com', '456', 403],
+            'get locations booker: 200' => ['locations', 'megrendelo@gmail.com', '456', 200],
+        ];
+    } 
+    ```
+
+
+
 # A tesztek végeredménye: 
 ```console
 php artisan test --testdox-text test-results.txt
@@ -144,3 +333,14 @@ User (Tests\Unit\User)
 
 
 ```
+
+
+# Frontend
+
+## vitest
+
+## e2e teszt
+
+## néhány mintakód és magyarázat
+
+## teszt eredményének dokumentálása

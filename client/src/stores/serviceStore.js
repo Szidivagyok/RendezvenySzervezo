@@ -5,7 +5,7 @@ import { useSearchStore } from "./searchStore";
 class Item {
   constructor(id = 0, service = "", serviceTypeId = null, price = 0) {
     this.id = id;
-    this.service = service; // Ez a kulcs jelenik meg a táblázatban!
+    this.service = service;
     this.serviceTypeId = serviceTypeId;
     this.price = price;
   }
@@ -52,11 +52,10 @@ export const useServiceStore = defineStore("services", {
  async create(data) {
   this.loading = true;
   try {
-    // A hibaüzenet szerint a backend PONTOSAN ezt a kulcsot várja: serviceTypeId
     const payload = {
       service: data.service,
       price: Number(data.price),
-      serviceTypeId: data.serviceTypeId // Ez az, ami hiányzott az SQL-ből!
+      serviceTypeId: data.serviceTypeId
     };
 
     console.log("Store küldésre előkészítve:", payload);

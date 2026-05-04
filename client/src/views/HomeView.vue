@@ -139,7 +139,7 @@
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Twinkle+Star&display=swap");
 
-/* VIRÁG POZÍCIONÁLÁS ALAPOK */
+
 .flower-overflow-wrapper {
   position: relative;
   width: 100%;
@@ -149,21 +149,21 @@
 
 .corner-flower {
   position: absolute;
-  top: -10px; /* Megtartva a FENTI pozíció */
-  width: 500px; /* Megtartva a NAGY méret */
+  top: -10px; 
+  width: 500px; 
   height: auto;
   z-index: 1; 
   pointer-events: none;
   opacity: 0.95; 
 }
 
-/* KÜLÖN POZÍCIÓK A KÉT OLDALRA */
+
 .flower-right {
-  right: -20px; /* Megtartva a BALRA tolás a jobb szélétől */
+  right: -20px;
 }
 
 .flower-left {
-  left: 0; /* MÓDOSÍTVA: Jobbra tolva (-20px-ről 0-ra) */
+  left: 0; 
 }
 
 .welcome-section {
@@ -171,24 +171,24 @@
   z-index: 2; 
 }
 
-/* HERO ÉS EGYÉB STÍLUSOK */
+
 .hero-video-container { position: relative; max-height: 500px; overflow: hidden; }
 .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.3); }
 .hero-text { font-family: "Twinkle Star", cursive; font-size: 4.5rem; text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5); }
 .hero-subtext { font-size: 1.5rem; letter-spacing: 2px; text-transform: uppercase; }
 
-/* STATS BAR */
+
 .stats-bar { background: linear-gradient(90deg, #fdf2f8 0%, #f3e8ff 100%); position: relative; z-index: 3; }
 .stat-number { font-family: "Twinkle Star", cursive; color: #a855f7; font-size: 3rem; margin-bottom: 0; }
 .stat-label { color: #6b7280; font-weight: 600; text-transform: uppercase; font-size: 0.8rem; }
 
-/* FEATURE BOXES */
+
 .feature-box { padding: 30px; border-radius: 20px; background: white; transition: all 0.3s ease; border: 1px solid #f3e8ff; position: relative; z-index: 2; }
 .feature-box:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(168, 85, 247, 0.1); }
 .active-feature { border: 2px solid #f5d0fe; background: #fffaff; }
 .icon-circle { width: 60px; height: 60px; background: #f3e8ff; color: #a855f7; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 1.5rem; }
 
-/* RÓLUNK ÉS TÉRKÉP STÍLUSOK */
+
 .twinkle-title { font-family: "Twinkle Star", cursive; font-size: 3.5rem; color: #8533e4; position: relative; z-index: 2; }
 .about-card { background: white; border-radius: 20px; border-left: 8px solid #f3e8ff; }
 .border-glow { box-shadow: 0 0 15px rgba(243, 232, 255, 0.5); }
@@ -204,6 +204,6 @@
   .title-spacer { display: none; }
   .corner-flower { width: 280px; top: 0px; }
   .flower-right { right: -10px; }
-  .flower-left { left: 0; } /* Mobilon is módosítva */
+  .flower-left { left: 0; }
 }
 </style>

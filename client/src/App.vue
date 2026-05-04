@@ -45,12 +45,11 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Twinkle+Star&display=swap');
 #app {
-  background-color: #fce4ec; /* Halványabb babarózsaszín */
+  background-color: #fce4ec; 
   min-height: 100vh;
   width: 100%;
 }
 
-/* Ha azt akarod, hogy a teljes böngészőablak olyan legyen */
 body {
   background-color: #fce4ec !important;
   margin: 0;

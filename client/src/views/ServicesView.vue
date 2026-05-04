@@ -67,7 +67,7 @@ export default {
       useCollectionStore: useServiceStore,
       isOpenConfirmModal: false,
       toDeleteId: null,
-      state: "r", // 'r' = read, 'c' = create, 'u' = update, 'd' = delete
+      state: "r", 
       title: "",
     
     };
@@ -81,14 +81,14 @@ export default {
     ...mapActions(useSearchStore, ["resetSearchWord"]),
     ...mapActions(useServiceTypeStore, { getServiceTypeStoreAll: "getAll"}),
 
-    // TÖRLÉS: Megnyitja a ConfirmModal-t
+  
     deleteHandler(id) {
       this.state = "d";
       this.toDeleteId = id;
       this.isOpenConfirmModal = true;
     },
 
-    // MÓDOSÍTÁS: Betölti az adatot és megnyitja a Form-ot
+  
     updateHandler(id) {
       this.state = "u";
       this.title = "Szolgáltatás módosítása";
@@ -96,12 +96,12 @@ export default {
       this.$refs.form.show();
     },
 
-    // HOZZÁADÁS: Ez fut le a zöld gombra kattintva!
+   
     createHandler() {
       this.state = "c";
       this.title = "Új szolgáltatás hozzáadása";
-      this.clearItem(); // Kiüríti a store-ban az aktuális elemet
-      this.$refs.form.show(); // Megnyitja az üres űrlapot
+      this.clearItem(); 
+      this.$refs.form.show(); 
     },
 
     cancelHandler() {
@@ -113,18 +113,18 @@ export default {
       this.isOpenConfirmModal = false;
     },
 
-    // Mentés gomb kezelése az űrlapon
+ 
    async yesEventFormHandler({ item, done }) {
   try {
     let success = false;
     if (this.state === "c") {
-      success = await this.create(item); // Várjuk meg a mentést
+      success = await this.create(item); 
     } else {
       success = await this.update(item.id, item);
     }
 
     if (success) {
-      done(true); // Csak akkor zárjuk be az ablakot, ha sikerült a mentés
+      done(true); 
     } else {
       alert("Hiba történt a mentés során. Ellenőrizd az adatokat!");
       done(false); 
