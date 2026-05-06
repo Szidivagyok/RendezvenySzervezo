@@ -407,5 +407,5 @@ class ExampleTest extends TestBase
 A felhasználó regisztrál ami azt követi hogy át dobja a bejlentkezés oldalra ahol bejelentkezés követően bedobja az új felhasználót a profiljába.
 
 ```js
-![Valami kép](kepek2/sikeresvalidáció.jpg)
+![Teszt kép](kepek2/sikeresvalidáció.jpg)
 ```
