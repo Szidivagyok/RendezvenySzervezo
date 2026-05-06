@@ -406,4 +406,4 @@ class ExampleTest extends TestBase
 ## teszt eredményének dokumentálása
 A felhasználó regisztrál ami azt követi hogy át dobja a bejlentkezés oldalra ahol bejelentkezés követően bedobja az új felhasználót a profiljába.
 
-![Teszt kép](kepek2/sikeresvalidáció.jpg)
+![Teszt kép](kepek3/sikeresvalidáció.jpg)

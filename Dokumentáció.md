@@ -81,9 +81,9 @@ A szolgáltatás előnyei közé tartozik:
 
   ## 5. Használatának rövid bemutatása
 (Ide illessz be képernyőképeket a futó programról)
-![Főoldal](kepek2/kep1.jpg)
-![Rólunk](kepek2/kep2.jpg.png)
-![Rendelés](kepek2/kep3.jpg.png)
+![Főoldal](kepek3/kep1.jpg)
+![Rólunk](kepek3/kep2.jpg.png)
+![Rendelés](kepek3/kep3.jpg.png)
 
   - Böngészés: A főoldalon a látogatók megtekinthetik a helyszíneket.
 
