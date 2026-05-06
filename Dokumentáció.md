@@ -147,7 +147,20 @@ Schema::create('locations', function (Blueprint $table) {
         Location::factory()->count(20)->create();
     }
 ```
+## Controller minta (Locations)
+```php
+  public function update(Request $request, int $id) 
+{
+    return $this->apiResponse(function () use ($request, $id) {
+        $row = CurrentModel::findOrFail($id);
+        
+        $row->update($request->all()); 
+        
+        return $row;
+    });
+}
 
+```
 
 ## 7. Endpointok és Autentikáció
   - A rendszer a Laravel Sanctum könyvtárat használja token-alapú hitelesítésre.
@@ -172,3 +185,79 @@ Schema::create('locations', function (Blueprint $table) {
   - views/: Teljes oldalak (LoginView, LocationsView).
 
   - components/: Újrafelhasználható elemek (Kártyák, Űrlapok).
+
+  ## 9. Jogosultság ellenőrzése a Frontend oldalon:
+  - A Menu.vue komponens a Pinia store adatait használva dönti el, mely menüpontok láthatóak az adott felhasználónak.
+  ```js 
+  hasMenuAccess(targetPath) {
+  const userStore = useUserLoginLogoutStore();
+  const resolved = this.$router.resolve(targetPath);
+  return resolved.matched.every((route) => {
+    const requiredRoles = route.meta?.roles;
+    return userStore.canAccess(requiredRoles);
+  });
+  }```
+
+## 10. View komponensek
+  - LocationsView.vue
+  - Ez a komponens felelős a helyszínek listázásáért, az új helyszín felvételéért, valamint a módosításért és törlésért.
+
+  ```
+  js
+  <template>
+  <div class="container py-4">
+    <div class="d-flex align-items-center mb-4">
+      <h1 class="m-0">{{ pageTitle }}</h1>
+      <div class="ms-3 d-flex align-items-center">
+        <i v-if="loading" class="bi bi-hourglass-split fs-3 text-primary me-2"></i>
+        <span class="badge bg-secondary fs-6" v-if="items">{{ items.length }} db</span>
+      </div>
+    </div>
+```
+
+```
+php
+    <!-- Generikus táblázat a megjelenítéshez -->
+    <GenericTable
+      v-if="items && items.length > 0"
+      :items="items"
+      :columns="tableColumns"
+      :useCollectionStore="useCollectionStore"
+      :cButtonVisible="true" 
+      :pButtonVisible="false"
+      @delete="deleteHandler"
+      > ```
+ 
+
+  ## 11. Store és Service réteg
+  - Service (api)
+  - Az API hívásokért felelős réteg.
+
+  ```js
+  async create(data) {
+  return await axios.post('/api/locations', data);
+  } 
+  ```
+  ## Store (Pinia)
+- Az adatok állapotát kezeli az alkalmazásban
+
+```js 
+async create(data) {
+  this.loading = true;
+  try {
+    const response = await locationService.create(data);
+    await this.getAll(); 
+    return true;
+  } catch (err) {
+    this.error = err;
+    return false;
+  }
+}
+```
+## 11. Összegzés
+- Az adatokat a saját kódunkból gyűjtöttük, és segítséget is kértünk a tanártól. Ha el akadtunk, akkor néha a mesterséges intelligenciát is segítségül hívtuk.
+
+ 
+
+
+

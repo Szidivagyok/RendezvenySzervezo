@@ -51,7 +51,6 @@ class PictureController extends Controller
         return Picture::whereHas('locations', function ($query) use ($id) {
             $query->where('locations.id', $id);
         })
-        // Itt hozzáadtuk az 'id'-t a select-hez
         ->select('id', 'pictureName') 
         ->get();
     });

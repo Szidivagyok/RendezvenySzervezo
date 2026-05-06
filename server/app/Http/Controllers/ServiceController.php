@@ -32,7 +32,7 @@ class ServiceController extends Controller
     $validated = $request->validate([
         'service' => 'required|string|unique:services',
         'price' => 'required|numeric',
-        'serviceTypeId' => 'required|integer', // EZT IS ADD HOZZÁ!
+        'serviceTypeId' => 'required|integer', 
     ]);
 
     return Service::create($validated);
