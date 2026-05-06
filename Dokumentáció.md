@@ -75,5 +75,96 @@ A szolgáltatás előnyei közé tartozik:
   - Rendelés
     - /rendeles
     - OrdersView
+  - Főoldal
+  - /adatok/about
+  - AboutView
 
-    
+  ## 5. Használatának rövid bemutatása
+(Ide illessz be képernyőképeket a futó programról)
+
+  - Böngészés: A főoldalon a látogatók megtekinthetik a helyszíneket.
+
+  - Foglalás: Regisztrált felhasználóként kiválasztható a helyszín, időpont és a kiegészítő szolgáltatások.
+
+  - Adminisztráció: Az admin felületen kezelhetőek a felhasználók és a törzsadatok (helyszínek, árak).
+
+## 6. Komponensek technikai leírása
+Adatbázis:
+  - Technológia: MySQL
+
+  - Diagram: (Ide illessz be egy ER diagramot az adatbázisodról)
+
+## Főbb táblák:
+
+  - users: Felhasználók adatai és jogosultságai.
+
+  - locations: Helyszínek adatai (város, cím, kapacitás, ár).
+
+  - services: Rendelhető extra szolgáltatások (pl. zene, étel).
+
+  - orders: Rendelések.
+
+## Backend (Laravel)
+Telepítés:
+
+  - composer install
+
+  - .env fájl beállítása (adatbázis kapcsolat)
+
+  - php artisan migrate --seed
+
+## Használt parancsok:
+
+php artisan make:model -mcr (Modell, migráció és kontroller létrehozása)
+
+php artisan migrate:fresh --seed (Adatbázis újrahúzása mintaadatokkal)
+
+## Migráció példa (Locations)
+```js
+Schema::create('locations', function (Blueprint $table) {
+   $table->id();
+            $table->string('cityName',80);
+            $table->string('zipCode', 5);
+            $table->string('street', 125);
+            $table->string('houseNumber', 10);
+            $table->string('locationName', 80);
+            $table->unique(['zipCode', 'street', 'houseNumber', 'locationName']);
+            $table->integer('maxCapacity');
+            $table->integer('minCapacity');
+            $table->decimal('priceSlashPerson', 10,2);
+            $table->decimal('roomPriceSlashDay', 10,2);
+            $table->timestamps();
+});
+```
+## Seeder példa (LocationSeeder)
+  - A tesztadatokat Factory segítségével generáljuk:
+```js
+ public function run(): void
+    { 
+        Location::factory()->count(20)->create();
+    }
+```
+
+## 7. Endpointok és Autentikáció
+  - A rendszer a Laravel Sanctum könyvtárat használja token-alapú hitelesítésre.
+
+  - Bejelentkezés: POST /api/users/login -> Visszaad egy Bearer Tokent.
+
+  - Védett útvonalak: Az auth:sanctum middleware védi őket.
+
+  - Jogosultságkezelés: A abilities middleware ellenőrzi a felhasználó szintjét (Admin vagy User).
+
+  - Például : Metódus : GET	| Endpoint: /users |	Leírás: Felhasználók listázása |	Védelem: Admin
+
+  ## 8. Frontend (Vue.js)
+  - Belépési pont: main.js, App.vue
+
+  - Állapotkezelés: Pinia (store) - itt tároljuk a bejelentkezett felhasználó adatait és a tokent.
+
+  - Router: Vue Router kezeli az URL útvonalakat és a navigációs védelmet (Navigation Guards).
+
+  - Komponensek:
+
+  - views/: Teljes oldalak (LoginView, LocationsView).
+
+  - components/: Újrafelhasználható elemek (Kártyák, Űrlapok).
