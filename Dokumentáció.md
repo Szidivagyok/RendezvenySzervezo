@@ -201,8 +201,7 @@ Schema::create('locations', function (Blueprint $table) {
   - LocationsView.vue
   - Ez a komponens felelős a helyszínek listázásáért, az új helyszín felvételéért, valamint a módosításért és törlésért.
 
-  ```
-  js
+  ```js
   <template>
   <div class="container py-4">
     <div class="d-flex align-items-center mb-4">
@@ -211,11 +210,10 @@ Schema::create('locations', function (Blueprint $table) {
         <i v-if="loading" class="bi bi-hourglass-split fs-3 text-primary me-2"></i>
         <span class="badge bg-secondary fs-6" v-if="items">{{ items.length }} db</span>
       </div>
-    </div>
-```
+    </div> ```
 
-```
-php
+
+```php
     <!-- Generikus táblázat a megjelenítéshez -->
     <GenericTable
       v-if="items && items.length > 0"
@@ -225,8 +223,8 @@ php
       :cButtonVisible="true" 
       :pButtonVisible="false"
       @delete="deleteHandler"
-      > ```
- 
+      > 
+ ```
 
   ## 11. Store és Service réteg
   - Service (api)
