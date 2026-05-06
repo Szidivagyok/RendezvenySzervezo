@@ -60,30 +60,6 @@ Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{token}}
 
-//Eredmény:
-HTTP/1.1 200 OK
-Host: localhost:8000
-Connection: close
-X-Powered-By: PHP/8.3.14
-Cache-Control: no-cache, private
-Date: Mon, 04 May 2026 06:50:14 GMT
-Content-Type: application/json
-Access-Control-Allow-Origin: *
-
-
-  "message": "OK",
-  "data": 
-    {
-      "id": 1,
-      "name": "Admin",
-      "email": "admin@example.com",
-      "role": 1,
-      "idNumber": "JA748638",
-      "city": "Budapest",
-      "street": "Endre dűlőút",
-      "houseNumber": "81",
-      "postCode": "4066"
-    },
 ```
 
 ## Bejelentkezés
@@ -134,17 +110,36 @@ Access-Control-Allow-Origin: *
     "token": "2|oRLkRed5ZmJWr6nOXWJdtl7Os4Zj1uz6fUaF4pC862260fcf"
   }
 }
+
+
 ```
 ## CRUD minta kód
 ```js
-Route::get('locations', [LocationController::class, 'index']);
-Route::get('locations/{id}', [LocationController::class, 'show']);
-Route::post('locations', [LocationController::class, 'store'])
-    ->middleware(['auth:sanctum', 'ability:locations:post']);
-Route::patch('locations/{id}', [LocationController::class, 'update'])
-    ->middleware(['auth:sanctum', 'ability:locations:patch']);
-Route::delete('locations/{id}', [LocationController::class, 'destroy'])
-    ->middleware(['auth:sanctum', 'ability:locations:delete']);
+
+//Eredmény:
+HTTP/1.1 200 OK
+Host: localhost:8000
+Connection: close
+X-Powered-By: PHP/8.3.14
+Cache-Control: no-cache, private
+Date: Mon, 04 May 2026 06:50:14 GMT
+Content-Type: application/json
+Access-Control-Allow-Origin: *
+
+
+  "message": "OK",
+  "data": 
+    {
+      "id": 1,
+      "name": "Admin",
+      "email": "admin@example.com",
+      "role": 1,
+      "idNumber": "JA748638",
+      "city": "Budapest",
+      "street": "Endre dűlőút",
+      "houseNumber": "81",
+      "postCode": "4066"
+    },
 ```
 ## Unit tesztek
 ```js
@@ -356,8 +351,61 @@ export default mergeConfig(
 ```
 
 ## e2e teszt
+```js
+<?php
 
+namespace Tests\Feature;
+
+// use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestBase;
+
+class ExampleTest extends TestBase
+{
+    /**
+     * A basic test example.
+     */
+    public function test_the_application_returns_a_successful_response(): void
+    {
+        $response = $this->get('/api/x');
+        //dd($response);
+        $response->assertStatus(200);
+        $response->assertSee('API');
+    }
+
+    public function test_user_login_logout()
+    {
+        //login admin
+        $response = $this->login('admin@example.com', '123');
+        $response->assertStatus(200);
+
+        //token
+        $token = $this->myGetToken($response);
+
+        //get
+        $uri = '/api/users';
+        $response = $this->myGet($uri, $token);
+        //2xx: minden oké
+        //4xx: klienshiba
+        //5xx: serverhiba
+        // $response->assertStatus(403);
+       //$response->assertSuccessful();
+        //$response->assertClientError();
+     $response->assertStatus(200);
+
+        //logout
+        $response = $this->logout($token);
+        $response->assertStatus(200);
+
+
+    }
+}
+```
 ## néhány mintakód és magyarázat
 
 
 ## teszt eredményének dokumentálása
+A felhasználó regisztrál ami azt követi hogy át dobja a bejlentkezés oldalra ahol bejelentkezés követően bedobja az új felhasználót a profiljába.
+
+```js
+![Valami kép](kepek2/sikeresvalidáció.jpg)
+```
