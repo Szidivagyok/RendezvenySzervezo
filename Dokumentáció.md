@@ -80,7 +80,6 @@ A szolgáltatás előnyei közé tartozik:
   - AboutView
 
   ## 5. Használatának rövid bemutatása
-(Ide illessz be képernyőképeket a futó programról)
 ![Főoldal](kepek3/kep1.jpg)
 ![Rólunk](kepek3/kep2.jpg.png)
 ![Rendelés](kepek3/kep3.jpg.png)
