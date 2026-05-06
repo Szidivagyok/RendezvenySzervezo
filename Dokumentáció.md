@@ -81,6 +81,9 @@ A szolgáltatás előnyei közé tartozik:
 
   ## 5. Használatának rövid bemutatása
 (Ide illessz be képernyőképeket a futó programról)
+![Főoldal](kepek2/kep1.jpg)
+![Rólunk](kepek2/kep2.jpg.png)
+![Rendelés](kepek2/kep3.jpg.png)
 
   - Böngészés: A főoldalon a látogatók megtekinthetik a helyszíneket.
 
@@ -144,6 +147,7 @@ Schema::create('locations', function (Blueprint $table) {
         Location::factory()->count(20)->create();
     }
 ```
+
 
 ## 7. Endpointok és Autentikáció
   - A rendszer a Laravel Sanctum könyvtárat használja token-alapú hitelesítésre.
