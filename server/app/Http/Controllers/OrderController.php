@@ -13,6 +13,7 @@ class OrderController extends Controller
     {
         return $this->apiResponse(
             function () {
+                /** @var \App\Models\User $user */
                 $user = Auth::user();
 
                 // Ha admin, akkor látja az összes foglalást (a seeder-eset is)
@@ -32,6 +33,7 @@ class OrderController extends Controller
     public function show(int $id)
     {
         return $this->apiResponse(function () use ($id) {
+            /** @var \App\Models\User $user */
             $user = Auth::user();
             $row = CurrentModel::findOrFail($id);
 
@@ -63,6 +65,7 @@ class OrderController extends Controller
     public function update(UpdateCurrentModelRequest $request, int $id)
     {
         return $this->apiResponse(function () use ($request, $id) {
+            /** @var \App\Models\User $user */
             $user = Auth::user();
             $row = CurrentModel::findOrFail($id);
 
@@ -79,6 +82,7 @@ class OrderController extends Controller
     public function destroy($id)
     {
         return $this->apiResponse(function () use ($id) {
+            /** @var \App\Models\User $user */
             $user = Auth::user();
             $row = CurrentModel::findOrFail($id);
 
